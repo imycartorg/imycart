@@ -1,0 +1,100 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-04-18 20:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: .\article.py:36 .\product.py:55
+msgid "File already generated."
+msgstr "文件创建成功。"
+
+#: .\article.py:40 .\product.py:59
+msgid "File generate failed."
+msgstr "文件创建失败。"
+
+#: .\cart.py:47
+msgid "Unknown Exception."
+msgstr "未知的系统错误。"
+
+#: .\cart.py:56
+msgid "Opration successsul."
+msgstr "操作成功。"
+
+#: .\cart.py:83 .\cart.py:121 .\order.py:25 .\wishlist.py:29 .\wishlist.py:63
+#, fuzzy
+#| msgid "Opration successfully."
+msgid "Opration successful."
+msgstr "操作成功。"
+
+#: .\index.py:26
+msgid "Welcome to imycart.com"
+msgstr "欢迎光临 imycart.com"
+
+#: .\myuser.py:37
+msgid "Registration faild."
+msgstr "注册失败。"
+
+#: .\myuser.py:82
+msgid "Your email or password is not correct."
+msgstr "你输入的邮件地址或者密码不正确。"
+
+#: .\myuser.py:85
+msgid "Please check you input."
+msgstr "输入不正确，请检查。"
+
+#: .\myuser.py:157
+msgid "You are resetting you password in imycart.com"
+msgstr "您正在重置您在imycart.com的密码"
+
+#: .\myuser.py:158
+msgid "Your password reset apply is succeed.Please check your mail box."
+msgstr "您的重置密码申请已经受理。请检查您的邮箱。"
+
+#: .\myuser.py:160
+msgid "Please check your verify code."
+msgstr "校验码不正确，请检查后再试。"
+
+#: .\myuser.py:174
+msgid "Can not find the password reset apply request."
+msgstr "找不到重置密码的申请记录或者申请记录已经过期，请重新申请。"
+
+#: .\myuser.py:185
+msgid "The password has been reseted."
+msgstr "您的密码已经重置了。"
+
+#: .\myuser.py:188
+msgid "Opration faild."
+msgstr "操作失败。"
+
+#: .\myuser.py:205
+msgid "Address successfully saved."
+msgstr "地址保存成功。"
+
+#: .\order.py:30
+msgid "Parameter Error."
+msgstr "参数错误。"
+
+#: .\validate.py:29 .\validate.py:39
+msgid "The email has been registered!"
+msgstr "这个邮件地址已经被注册了。"
+
+#: .\validate.py:33 .\validate.py:43
+msgid "The email has not been registered!"
+msgstr "这个邮件地址还没有注册。"
+
+#~ msgid "Opration success."
+#~ msgstr "操作成功。"

@@ -1,0 +1,97 @@
+﻿{% extends "classic/base.html" %}
+{% block main %}
+  <!-- Main Container -->
+  <section class="main-container col1-layout wow bounceInUp animated">
+    <div class="main container">
+      <div class="account-login">
+        <div class="page-title">
+          <h2>Login or Create an Account</h2>
+		  <h2>{{ login_result }}</h2>
+        </div>
+        <fieldset class="col2-set">
+          <legend>Login or Create an Account</legend>
+          <div class="col-1 new-users"><strong>New Customers</strong>
+            <div class="content">
+              <p>By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.</p>
+              <div class="buttons-set">
+                <button id="CreateAccount" class="button create-account"><span>Create an Account</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="col-2 registered-users"><strong>Registered Customers</strong>
+			  <h3 id="loginMessage"></h3>
+              <form method="post" id="login_form" class="box" autocomplete="off">
+			  {% csrf_token %}
+	            <div class="content">
+	              <p>Please log in with your e-mail and password:</p>
+	              <ul class="form-list">
+	                <li>
+	                	<div class="control-group">
+				             	<div class="controls">
+				                		<label for="email">Email Address <span class="required">*</span></label>
+				                  		<br>
+				                  		<input type="email" title="Email Address" 
+				                  		 class="input-text" id="email" value="" name="email" 
+				                  		 placeholder="example@example.com"
+				                  		 required/>
+				                  		 <p class="help-block required"></p>
+				              	</div>
+			            </div>
+	                </li>
+	                <li>
+	                	<div class="control-group">
+						    <label for="pass">Password <span class="required">*</span></label>
+						    <div class="controls">
+						      <input type="password" name="password" id="password"  class="input-text" minlength="6" maxlength="10" required/>
+						      <p class="help-block required"></p>
+						    </div>
+						</div>
+	                </li>
+	                <li>
+		                <div id="verifyCodeDiv">
+		                	<div class="control-group">
+				              		<div class="controls">
+											<label for="pass">Verify Code <span class="required">*</span></label>
+											<br>
+											<input type="input-text"  id="id_reg_captcha_1" data-captcha-key='id_reg_captcha_0' name="captcha_1" class="form-control form-control-captcha fl" placeholder="Enter the code below">
+											<span class="v5-yzm fr"><a href="#" class="next-captcha"><img src="{{ imgage_url }}" class="captcha" alt="captcha">换一张</a></span>
+											<input id="id_reg_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}"> 
+											<p class="help-block required"></p>
+					               	</div>
+				            </div>
+		                </div>
+	                </li>
+	              </ul>
+	              <div class="buttons-set">
+				  
+					<input type="hidden" name="next" value="{{ next }}" /> 
+	                <button id="SubmitLogin" name="send" type="submit" class="button login"><span>Login</span></button>
+	                <a class="forgot-word" href="/user/forget-password">Forgot Your Password?</a> 
+                 </div>
+	            </div>
+              </form>
+          </div>
+        </fieldset>
+
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+    </div>
+    </div>
+  </section>
+  <!-- Main Container End -->
+{% endblock %}
+<!-- JavaScript -->
+{% block scripts %}
+	{% load staticfiles %}
+	<script type="text/javascript" src="{% static 'classic/js/jqBootstrapValidation.js' %}"></script>
+	<script type="text/javascript">
+		$(function () { $("input,select,textarea").not("[type=submit]").jqBootstrapValidation(); } );
+		$(document).ready(function() {
+
+		});
+	</script>
+{% endblock %}
+  

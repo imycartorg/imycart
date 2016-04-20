@@ -1,0 +1,53 @@
+  {% extends "classic/base.html" %}
+  <!-- Breadcrumbs -->
+  {% block breadcrumbs %}
+   <div class="breadcrumbs bounceInUp animated">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12">
+          <ul>
+            <li class="home"> <a title="Go to Home Page" href="index.html">Home</a><span>» </span></li>
+            <li class=""> <a title="Go to Home Page" href="grid.html">Women</a><span>» </span></li>
+            <li class="category13"><strong>Sed volutpat ac massa eget lacinia</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endblock %}
+  <!-- Breadcrumbs End --> 
+  <!-- Main Container -->
+  {% block main %}
+	<div class="main-container col1-layout">
+		<div class="main container">
+			<div class="col-main">
+			  <div class="row">
+					<div class="product-view">
+						<div class="product-essential">							
+							<form action='/user/address/add/' method='POST'>
+								{% csrf_token %}
+								 {% for field in form %}
+								   <div class="fieldWrapper">
+									  {{ field.label_tag }}:{{ field }} 
+									  {{ field.errors }}
+								   </div>
+								 {% endfor %}
+								<input type='submit' value='Submit' />
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+  {% endblock %}
+  {% block scripts %}
+	<script type="text/javascript">
+
+		$(document).ready(function() {  
+
+		});
+	</script>
+  {% endblock %}
+  
+  

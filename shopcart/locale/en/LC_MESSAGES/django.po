@@ -1,0 +1,94 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-04-18 20:45+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: .\article.py:36 .\product.py:55
+msgid "File already generated."
+msgstr ""
+
+#: .\article.py:40 .\product.py:59
+msgid "File generate failed."
+msgstr ""
+
+#: .\cart.py:47
+msgid "Unknown Exception."
+msgstr ""
+
+#: .\cart.py:56
+msgid "Opration successsul."
+msgstr ""
+
+#: .\cart.py:83 .\cart.py:121 .\order.py:25 .\wishlist.py:29 .\wishlist.py:63
+msgid "Opration successful."
+msgstr ""
+
+#: .\index.py:26
+msgid "Welcome to imycart.com"
+msgstr ""
+
+#: .\myuser.py:37
+msgid "Registration faild."
+msgstr ""
+
+#: .\myuser.py:82
+msgid "Your email or password is not correct."
+msgstr ""
+
+#: .\myuser.py:85
+msgid "Please check you input."
+msgstr ""
+
+#: .\myuser.py:157
+msgid "You are resetting you password in imycart.com"
+msgstr ""
+
+#: .\myuser.py:158
+msgid "Your password reset apply is succeed.Please check your mail box."
+msgstr ""
+
+#: .\myuser.py:160
+msgid "Please check your verify code."
+msgstr ""
+
+#: .\myuser.py:174
+msgid "Can not find the password reset apply request."
+msgstr ""
+
+#: .\myuser.py:185
+msgid "The password has been reseted."
+msgstr ""
+
+#: .\myuser.py:188
+msgid "Opration faild."
+msgstr ""
+
+#: .\myuser.py:205
+msgid "Address successfully saved."
+msgstr ""
+
+#: .\order.py:30
+msgid "Parameter Error."
+msgstr ""
+
+#: .\validate.py:29 .\validate.py:39
+msgid "The email has been registered!"
+msgstr ""
+
+#: .\validate.py:33 .\validate.py:43
+msgid "The email has not been registered!"
+msgstr ""
