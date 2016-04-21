@@ -155,7 +155,7 @@ def forget_password(request):
 			reset_password = Reset_Password.objects.create(email=request.POST['email'],validate_code=s_uuid,apply_time=datetime.datetime.now(),expirt_time=(datetime.datetime.now() + datetime.timedelta(hours=24)),is_active=True)
 			mail_ctx = {}
 			mail_ctx['reset_url'] =  System_Config.get_base_url() + "/user/reset-password?email=" + reset_password.email + "&validate_code=" + reset_password.validate_code
-			my_send_mail(useage='reset_password',ctx=mail_ctx,send_to=reset_password.email,title=_('You are resetting you password in imycart.com'))
+			my_send_mail(useage='reset_password',ctx=mail_ctx,send_to=reset_password.email,title=_('You are resetting you password in %(site_name)s .') % {'site_name':System_Config.objects.get(name='site_name').val})
 			ctx['apply_message'] = _('Your password reset apply is succeed.Please check your mail box.')
 		else:
 			ctx['apply_message'] = _('Please check your verify code.')

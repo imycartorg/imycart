@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-19 22:22+0800\n"
+"POT-Creation-Date: 2016-04-21 22:25+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,11 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: .\article.py:41 .\product.py:59
+#: .\article.py:41 .\product.py:60
 msgid "File already generated."
 msgstr "文件创建成功。"
 
-#: .\article.py:45 .\product.py:63
+#: .\article.py:45 .\product.py:64
 msgid "File generate failed."
 msgstr "文件创建失败。"
 
@@ -38,9 +38,25 @@ msgstr "操作成功。"
 msgid "Opration successful."
 msgstr "操作成功。"
 
-#: .\index.py:26
-msgid "Welcome to imycart.com"
-msgstr "欢迎光临 imycart.com"
+#: .\index.py:27
+#, python-format
+msgid "You are resetting you password in %(sitename)s ."
+msgstr "您正在重置您在 %(sitename)s 的密码"
+
+#: .\index.py:28
+#, python-format
+msgid "Today is %(sitename)s."
+msgstr "今天是 %(sitename)s"
+
+#: .\index.py:29
+#, python-format
+msgid "Today is %(month)s."
+msgstr "今天是 %(month)s 月"
+
+#: .\index.py:30
+#, python-format
+msgid "Today is %(month)s %(day)s."
+msgstr "今天是 %(month)s 月 %(day)s号"
 
 #: .\myuser.py:38
 msgid "Registration faild."
@@ -54,9 +70,10 @@ msgstr "你输入的邮件地址或者密码不正确。"
 msgid "Please check you input."
 msgstr "输入不正确，请检查。"
 
-#: .\myuser.py:158
-msgid "You are resetting you password in imycart.com"
-msgstr "您正在重置您在imycart.com的密码"
+#: .\myuser.py:158 .\views.py:108
+#, python-format
+msgid "You are resetting you password in %(site_name)s ."
+msgstr "您正在重置您在%(site_name)s的密码"
 
 #: .\myuser.py:159
 msgid "Your password reset apply is succeed.Please check your mail box."
@@ -82,6 +99,15 @@ msgstr "地址保存成功。"
 msgid "Parameter Error."
 msgstr "参数错误。"
 
+#: .\templates\classic\index.html:37
+msgid "Translate in template."
+msgstr "模板中的翻译."
+
+#: .\templates\classic\index.html:38
+#, python-format
+msgid "This string will have %(value)s inside."
+msgstr "这个复杂的字符串包含%(value)s变量"
+
 #: .\validate.py:30 .\validate.py:40
 msgid "The email has been registered!"
 msgstr "这个邮件地址已经被注册了。"
@@ -97,3 +123,4 @@ msgstr "验证码正确"
 #: .\validate.py:58
 msgid "Varify code is not correct."
 msgstr "验证码错误"
+

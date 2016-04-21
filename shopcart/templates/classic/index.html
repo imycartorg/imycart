@@ -25,11 +25,19 @@
 					<div class="product-view">
 						<div class="product-essential">
 							<h2>{{i18n_text}}</h2>
+							<h2>{{i18n_text_test}}</h2>
+							<h2>{{i18n_text_near_example}}</h2>
+							<h2>{{i18n_text_example}}</h2>
 							<input type="text"  id="id_reg_captcha_1" name="captcha_1" class="form-control form-control-captcha fl" placeholder="请输入验证码">
 							<span class="v5-yzm fr"><a href="#" class="next-captcha"><img src="{{ imgage_url }}" class="captcha" alt="captcha">换一张</a></span>
 							<input id="id_reg_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}"> 
 							
 							<button type = 'button' id='tryGetProductInfo'>Try Get Product Info</button>
+							
+							{% load i18n %}
+							<p>{% trans 'Translate in template.'%}</p>
+							<p>{% blocktrans %}This string will have {{ value }} inside.{% endblocktrans %}</p>
+
 							
 							<form action='/product/52/' method='POST'>
 								{% csrf_token %}

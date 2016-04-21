@@ -105,7 +105,7 @@ def add_product(item_number,name,quantity,price,market_price,description,categor
 def send_mail(request):
 	ctx = {}
 	ctx['username'] = '倪先生'
-	my_send_mail(useage='register',ctx=ctx,send_to='zjuoliver@163.com',title='welcome to imycart.com')
+	my_send_mail(useage='reset_password',ctx=ctx,send_to='zjuoliver@163.com',title=_('You are resetting you password in %(site_name)s .') % {'site_name':System_Config.objects.get(name='site_name').val})
 	return HttpResponse('成功')
 
 
