@@ -57,8 +57,8 @@
 				<div class="pages">
 					<label>Page:</label>
 					<ul class="pagination">
-						{% if wish_list.has_previous %}
-						<li><a name="pageChange" data-tag="Previous" href="?page={{ wish_list.previous_page_number }}">&laquo;</a></li>
+						{% if product_list.has_previous %}
+						<li><a name="pageChange" data-tag="Previous" href="?page={{ product_list.previous_page_number }}">&laquo;</a></li>
 						{% else %}
 						<li class="active"><a>&laquo;</a></li>
 						{% endif %}
@@ -67,12 +67,12 @@
 						  {% ifequal p objects.number %}
 						  <li class="active"><a>{{p}}</a></li>
 						  {% else %}
-						  <li><a href="?page={{p}}" title="第{{p}}页">{{p}}</a><li>
+						  <li><a href="?page={{p}}" title="{{p}}">{{p}}</a><li>
 						  {% endifequal %}
 						{% endfor %}
 
-						{% if wish_list.has_next %}
-						<li><a name="pageChange" data-tag="Next" href="?page={{ wish_list.next_page_number }}">&raquo;</a></li>
+						{% if product_list.has_next %}
+						<li><a name="pageChange" data-tag="Next" href="?page={{ product_list.next_page_number }}">&raquo;</a></li>
 						{% else %}
 						<li class="active"> <a>&raquo;</a></li>
 						{% endif %}

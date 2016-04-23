@@ -47,3 +47,29 @@ def detail(request,id):
 			if f is not None:
 				f.close()
 		return JsonResponse(result_dict)
+		
+def view_blog_list(request):
+	ctx = {}
+	ctx['system_para'] = System_Para.get_default_system_parameters()
+	
+	if request.method =='GET':
+		product_list = None
+		if 'sort_by' in request.GET:
+			if 'direction' in request.GET:
+				if 'desc' == request.GET['direction']:
+					article_list = Article.objects.filter(category=Article.ARTICLE_CATEGORY_BLOG).order_by(request.GET['sort_by']).reverse()
+				else:
+					article_list = Article.objects.filter(category=Article.ARTICLE_CATEGORY_BLOG).order_by(request.GET['sort_by'])
+			else:
+				article_list = Article.objects.filter(category=Article.ARTICLE_CATEGORY_BLOG).order_by(request.GET['sort_by'])
+		else:
+			article_list = Article.objects.filter(category=Article.ARTICLE_CATEGORY_BLOG)
+		
+		if 'page_size' in request.GET:
+			article_list, page_range = my_pagination(request=request, queryset=article_list,display_amount=request.GET['page_size'])
+		else:
+			article_list, page_range = my_pagination(request=request, queryset=article_list)
+		
+		ctx['article_list'] = article_list
+		ctx['page_range'] = page_range
+		return render(request,System_Config.get_template_name() + '/blog_list.html',ctx)

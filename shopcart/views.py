@@ -198,4 +198,6 @@ def init_database(request):
 	
 	article = Article.objects.create(user=myuser,title='About us',folder='about_us',static_file_name='about-us.html',content=read_file('test_data/about-us.txt'),breadcrumbs=read_file('test_data/about-us-breadcrumbs.txt'))
 	
+	
+	
 	return HttpResponse('成功.尝试产生几个流水号：' + get_serial_number() + "||" + get_serial_number() + "||" + get_serial_number())

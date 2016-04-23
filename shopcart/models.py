@@ -27,7 +27,6 @@ class MyUserManager(BaseUserManager):
 
 	def create_superuser(self, username, email, password, **extra_fields):
 		extra_fields.setdefault('is_staff', True)
-		extra_fields.setdefault('is_super', True)
 		if extra_fields.get('is_staff') is not True:
 			raise ValueError('Superuser must have is_staff=True')
 
@@ -426,12 +425,26 @@ class Serial_Number(models.Model):
 @python_2_unicode_compatible
 class Article(models.Model):
 	title = models.CharField(max_length=254,null=True,db_index=True,verbose_name = '标题')
+	# 博客类宣传文章
+	ARTICLE_CATEGORY_BLOG = '0' 
+	# 公告类文章
+	ARTICLE_CATEGORY_NOTICE = '10'
+	# 网站信息文章
+	ARTICLE_CATEGORY_SITEINFO = '20'
+	# 文章状态选项 
+	CATEGORY_CHOICES = ( 
+		(ARTICLE_CATEGORY_BLOG,'宣传博客'),
+		(ARTICLE_CATEGORY_NOTICE,'网站公告'),
+		(ARTICLE_CATEGORY_SITEINFO,'站点信息'),
+	) 
+	category = models.CharField(max_length=10,null=True,blank=True,verbose_name = '文章分类',choices=CATEGORY_CHOICES)
 	content = models.TextField(null=True,blank=True,verbose_name = '内容')
 	user = models.ForeignKey(MyUser,null=True,blank=True,verbose_name = '用户')
 	keywords = models.CharField(max_length=254,null=True,blank=True,verbose_name = '关键字')
 	static_file_name = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '静态文件名')
 	folder = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '静态文件目录')
 	breadcrumbs = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '导航位置')
+	image = models.URLField(null=True,blank=True,verbose_name = '图片链接')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
 	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
 	

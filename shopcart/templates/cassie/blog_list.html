@@ -1,0 +1,50 @@
+{% extends "cassie/base.html" %}
+{% block breadcrumbs %}
+<div class="crumb container">
+   <a href="/">Home</a> - Blog
+</div>
+{% endblock %}
+{% block main%}
+<div class="blog">
+  <div class="container">
+    <div class="row">
+     <div class="row blog-list">
+		{% for blog in article_list%}
+			<div class="blog-main col-md-4">
+				<a href="/article/{{blog.id}}"><img src="{{blog.image}}"></a>
+				<h2><a href="blog.html">How to brush wet hair</a></h2>
+			</div>
+		{% empty %}
+			<div class="blog-main col-md-12">
+				<h2>There are no blogs at all.</h2>
+			</div>
+		{% endfor %}
+     </div>   
+     <div class="blog-pages">
+		{% if article_list.has_previous %}
+		<a name="pageChange" data-tag="Previous" href="?page={{ article_list.previous_page_number }}" class="blog-btn">Prev</a>
+		{% else %}
+		<a class="blog-current">Prev</a>
+		{% endif %}
+
+		{% for p in page_range %}
+		  {% ifequal p objects.number %}
+		  <a class="blog-current">{{p}}</a>
+		  {% else %}
+		  <a href="?page={{p}}" title="{{p}}">{{p}}</a>
+		  {% endifequal %}
+		{% endfor %}
+
+		{% if article_list.has_next %}
+		<a name="pageChange" data-tag="Next" href="?page={{ article_list.next_page_number }}" class="blog-btn">Next</a>
+		{% else %}
+		<a class="blog-current">Next</a>
+		{% endif %}
+
+     </div>
+     </div>
+  </div>
+  </div>
+</div>
+{% endblock %}
+
