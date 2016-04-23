@@ -1,0 +1,54 @@
+<!--头部-->
+{% load staticfiles %}
+<div class="header">
+    <div class="container">
+    
+        <div class="row">
+          <div class="col-md-9">
+            <div class="row">
+            <div class="header-left">
+               <div class="header-left-top">
+                    <ul>
+                        <li><a href="/order/show">My Account</a></li>
+                        <li><a href="#">Delivery</a></li>
+                        <li><a href="#">Help</a></li>
+						<li>
+							{%	if user.is_authenticated %}          
+								<div class="login"><a href="/user/logout/"><span class="hidden-xs">Log Out</span></a></div>    
+							{% else %}
+								<div class="logout"><a href="/user/login/" class="loginModalLink"><span class="hidden-xs">Log In</span></a></div>
+							{% endif %}
+						</li>
+                    </ul>
+                </div>
+                <div class="header-left-bottom">
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Products</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contacts</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="header-center-img">
+                <img src="{% static 'cassie/images/logo.jpg' %}">
+            </div>
+          </div>
+          </div>
+          
+          <div class="header-right col-md-3">
+          
+             <div class="row">
+                <div class="header-right-top">
+                    <span class="glyphicon glyphicon-shopping-cart"><span>CART</span><span class="number">0</span></span>
+                </div>
+                <div class="header-right-search">
+                    <input class="form-control " type="text" placeholder="Search">
+                    <button class="glyphicon glyphicon-search search" type="submit"></button>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

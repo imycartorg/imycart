@@ -1,0 +1,87 @@
+{% extends "cassie/base.html" %}
+<!--产品幻灯开始-->
+{% block breadcrumbs %}
+<div class="crumb container">
+   <a href="">Home</a> - <a>{{product.name}}</a>
+</div>
+{% endblock %}
+
+{% block main%}
+<div class="detail">
+  <div class="detail-main">
+   <div class="spec-scroll">
+      <div class="items">
+        <ul>
+			{% for image in product.images.all %} 
+				<li><img src="{{image.thumb}}" alt = "{{product.name}}" bimg="{{image.image}}" onmousemove="preview(this);"/></li>
+			{% endfor %}
+        </ul>
+      </div>
+   </div>    
+   <div id="preview" class="spec-preview"> <span class="jqzoom"><img jqimg="{{product.thumb}}" src="{{product.image}}" class="cart-move-img"/></span> </div>
+  </div>
+  <div class="detail-attr">
+     <h1>{{product.name}}</h1>
+     <p class="detail-attr-des">{{product.short_desc}} </p>
+     <div class="detail-price price">
+		<span id="product-price-main">
+			{% if has_price_range %}
+				${{price_min|floatformat:"2"}} - ${{price_max|floatformat:"2"}}
+			{% else %}
+				${{product.price|floatformat:"2"}}
+			{% endif %}
+		</span>
+		<span>${{product.market_price|floatformat:"2"}}</span></div>
+     <p class="detail-attr-discount">20% of net profits will be donated towards BCA research.</p>
+     
+	<div class="product-attributes">
+		<!-- 先找出商品关联的所有的attributes，然后找出分组 -->
+		<input type="hidden" id="product-attribute-id" value="" />
+		{% for group in product.get_attributes %}
+			<div><p class="detail-attr-lable">{{group.name}}</p></div>
+			{% for attr in group.attr_list %}
+				{% if group.group_type == 'text' %}
+					{% if forloop.first %}
+						<div>
+							<input type='hidden' class="product-attribute-group-selected" title="{{group.code}}" value="" />
+							<ul>
+							{% endif %}
+								<li><input class="product-attribute-item" data-attribute-id="{{attr.id}}" data-group-code="{{group.code}}" data-product-id="{{product.id}}" type="radio" name="{{group.code}}" value="{{attr.id}}" />{{attr.name}}</li>
+							{% if forloop.last %}
+							</ul>
+						</div>
+					{% endif %}
+				{% elif group.group_type == 'image' %}
+					{% if forloop.first %}<div><input type='hidden' class="product-attribute-group-selected" title="{{group.code}}" value="" />{% endif %}
+					<img class="product-attribute-item" data-attribute-id="{{attr.id}}" data-group-code="{{group.code}}" data-product-id="{{product.id}}" height='30px' width='30px' src='{{attr.thumb}}' alt='{{attr.name}}' />
+					{% if forloop.last %}</div>{% endif %}
+				{% else%}
+					<p>{{attr.name}}</p>
+				{% endif %}
+			{% endfor %}
+		{% endfor %}
+	</div>
+     <div class="detail-quality">
+        <span>quality</span>
+        <input type="text" class="spinnerEfect" title="Qty" value="1" maxlength="12" id="qty" name="qty"/>
+     </div>
+     <div class="detail-shop-btn"><a href="#" id="addToCartBtn"  class="button btn-cart" data-product-id="{{product.id}}">add to cart</a></div>
+     <p class="detail-attr-lable"><span class=""></span><span class="glyphicon glyphicon-heart"></span>add to wishlist</p>
+	 {% include 'cassie/pay_logos.html' %}
+	 {% include 'cassie/share_logos.html' %}
+     <p class="detail-send-friend"><span class="glyphicon glyphicon-envelope"></span>Send to A Friend </p>   
+  </div>
+</div>
+<div class="container content">
+  <h2><span>More info</span></h2>
+  <div class="content-des">
+	{{product.description|safe}}
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}

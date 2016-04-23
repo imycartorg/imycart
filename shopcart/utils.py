@@ -8,7 +8,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.db import transaction
 from django.utils.translation import ugettext as _
-import datetime
+import datetime,uuid
 # import the logging library
 import logging
 # Get an instance of a logger
@@ -79,12 +79,16 @@ def my_pagination(request, queryset, display_amount=10, after_range_num = 5,bevo
 	return objects,page_range
 
 class System_Para:
-	def __init__(self,_page_title='',_site_name='',_default_welcome_message='',_logo_image='',_base_url='',):
+	def __init__(self,_page_title='',_site_name='',_default_welcome_message='',_logo_image='',_base_url='',_contact_address='',_thumb_width=128,_service_email='',_copyright=''):
 		self.page_title = _page_title
 		self.site_name = _site_name
 		self.default_welcome_message = _default_welcome_message
 		self.logo_image = _logo_image
 		self.base_url = _base_url
+		self.contact_address = _contact_address
+		self.thumb_width = _thumb_width
+		self.service_email = _service_email
+		self.copyright = _copyright
 	
 	@staticmethod	
 	def get_default_system_parameters():
@@ -92,7 +96,11 @@ class System_Para:
 			_site_name = System_Config.objects.get(name='site_name').val,
 			_default_welcome_message = System_Config.objects.get(name='default_welcome_message').val,
 			_logo_image = System_Config.objects.get(name='logo_image').val,
-			_base_url = System_Config.objects.get(name='base_url').val
+			_base_url = System_Config.objects.get(name='base_url').val,
+			_contact_address = System_Config.objects.get(name='contact_address').val,
+			_thumb_width = System_Config.objects.get(name='thumb_width').val,
+			_service_email = System_Config.objects.get(name='service_email').val,
+			_copyright = System_Config.objects.get(name='copyright').val
 		)
 	
 	
@@ -124,8 +132,74 @@ def my_send_mail(useage,ctx,send_to,title):
 				conn.close()# 发送完毕记得关闭连接
 		except:
 			pass
-
 			
+def handle_uploaded_file(f,type='other',id='-1'):
+	file_name = ""
+
+	file_names = {}
+	
+	if not type.endswith('/'):
+		type += '/'
+	if not id.endswith('/'):
+		id += '/'
+	
+	try:
+		path = 'media/' + type + id
+		import os
+		if not os.path.exists(path):
+			os.makedirs(path)
+			
+		ext = f.name.split('.')[-1]
+		logger.debug(str(ext))
+		
+		#允许上传的类型
+		file_allow = ['jpg','jpeg','png','gif']
+		if ext not in file_allow:
+			raise Exception('%s File type is not allowed to upload.' % [ext])
+		
+		random_name = str(uuid.uuid1())
+		
+		file_name = path + random_name + '.' + ext
+		file_thumb_name = path + random_name + '-thumb' + '.' + ext
+		
+		destination = open(file_name, 'wb+')
+		logger.debug('file_name: %s' % file_name)
+		for chunk in f.chunks():
+			destination.write(chunk)
+		destination.close()
+		
+		result = thumbnail(file_name,file_thumb_name)
+		if not result:
+			raise Exception('thumbnail failed.')
+		else:
+			file_names['image'] = file_name
+			file_names['thumb'] = file_thumb_name
+			file_names['image_url'] = System_Config.get_base_url() + '/' + file_name
+			file_names['thumb_url'] = System_Config.get_base_url() + '/' + file_thumb_name
+	except Exception as e:
+		print(str(e))
+	finally:
+		if destination:
+			destination.close()
+	return file_names
+
+def thumbnail(file_name,file_thumb_name):
+	#生成缩略图
+	from PIL import Image
+	try:
+		img = Image.open(file_name)
+		width = int(System_Config.objects.get(name='thumb_width').val)
+		logger.debug('系统参数thumb_width:%s' % [width])
+		img.thumbnail((width,width),Image.ANTIALIAS)#对图片进行等比缩放
+		img.save(file_thumb_name)#保存图片
+		return True		
+	except Exception as err:
+		logger.error('thumbnail failed:' + str(err))
+		return False
+	finally:
+		if img:
+			img.close()
+	
 class Stack():  
      def __init__(self,size):  
          self.size=size;  

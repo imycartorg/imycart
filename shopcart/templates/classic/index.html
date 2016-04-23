@@ -28,6 +28,7 @@
 							<h2>{{i18n_text_test}}</h2>
 							<h2>{{i18n_text_near_example}}</h2>
 							<h2>{{i18n_text_example}}</h2>
+							<h2>{{show_const}}</h2>
 							<input type="text"  id="id_reg_captcha_1" name="captcha_1" class="form-control form-control-captcha fl" placeholder="请输入验证码">
 							<span class="v5-yzm fr"><a href="#" class="next-captcha"><img src="{{ imgage_url }}" class="captcha" alt="captcha">换一张</a></span>
 							<input id="id_reg_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}"> 
@@ -44,6 +45,13 @@
 								<input type='submit' value='Make Static File' />
 							</form>
 							
+							<p>form提交文件</p>
+							<form enctype="multipart/form-data" method="POST" action="/upload/"> 
+								{% csrf_token %}
+								<input type="file" name="file" />
+								<br /> 
+								<input type="submit" value="上传文件" /> 
+							</form>
 							
 							{% load i18n %}
 							i18N设置
@@ -69,9 +77,11 @@
 	</div>
   {% endblock %}
   {% block scripts %}
+	{% load staticfiles %}
+	<script type="text/javascript" src="{% static 'classic/js/ajaxfileupload.js' %}"></script> 
 	<script type="text/javascript">
-
-		$(document).ready(function() {  
+		$(document).ready(function() {
+				
 			$('#tryGetProductInfo').click(function(){
 				var product_to_get = new Object();
 				product_to_get.product_id = 18;

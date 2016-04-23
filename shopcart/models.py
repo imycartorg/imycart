@@ -4,33 +4,34 @@ import uuid
 from django.conf import settings
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,PermissionsMixin
 from django.utils.translation import ugettext as _
+from django.utils.encoding import python_2_unicode_compatible
 
 # Create your models here.
 class MyUserManager(BaseUserManager):
-    def _create_user(self, username, email, password, **extra_fields):
-        """
-        Creates and saves a User with the given username, email and password.
-        """
+	def _create_user(self, username, email, password, **extra_fields):
+		"""
+		Creates and saves a User with the given username, email and password.
+		"""
 		
-        #if not username:
-        #    raise ValueError('The given username must be set')
-        email = self.normalize_email(email)
-        user = self.model(username=username, email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+		#if not username:
+		#    raise ValueError('The given username must be set')
+		email = self.normalize_email(email)
+		user = self.model(username=username, email=email, **extra_fields)
+		user.set_password(password)
+		user.save(using=self._db)
+		return user
 
-    def create_user(self, username, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        return self._create_user(username, email, password, **extra_fields)
+	def create_user(self, username, email, password, **extra_fields):
+		extra_fields.setdefault('is_staff', False)
+		return self._create_user(username, email, password, **extra_fields)
 
-    def create_superuser(self, username, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
+	def create_superuser(self, username, email, password, **extra_fields):
+		extra_fields.setdefault('is_staff', True)
+		extra_fields.setdefault('is_super', True)
+		if extra_fields.get('is_staff') is not True:
+			raise ValueError('Superuser must have is_staff=True')
 
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True')
-
-        return self._create_user(username, email, password, **extra_fields)
+		return self._create_user(username, email, password, **extra_fields)
 
 class MyUser(AbstractBaseUser, PermissionsMixin):
 	username = models.CharField(max_length=254,unique=True, null=True,db_index=True)
@@ -68,28 +69,29 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 class Address(models.Model):
 	useage = models.CharField(max_length=254,default='',null=True)
 	is_default = models.BooleanField(default=True)
-	first_name = models.CharField(max_length=50,default='',null=True)
-	last_name = models.CharField(max_length=50,default='',null=True)
+	first_name = models.CharField(max_length=50,default='',null=True,blank=True)
+	last_name = models.CharField(max_length=50,default='',null=True,blank=True)
 	user = models.ForeignKey(MyUser,null=True,related_name='addresses')
-	country = models.CharField(max_length=50,default='',null=True)
-	province = models.CharField(max_length=50,default='',null=True)
-	city = models.CharField(max_length=50,default='',null=True)
-	district = models.CharField(max_length=50,default='',null=True)
-	address_line_1 = models.CharField(max_length=100,default='',null=True)
-	address_line_2 = models.CharField(max_length=100,default='',null=True)
-	zipcode = models.CharField(max_length=50,default='',null=True)
-	tel = models.CharField(max_length=50,default='',null=True)
-	mobile = models.CharField(max_length=50,default='',null=True)
-	sign_building = models.CharField(max_length=50,default='',null=True)
-	best_time = models.CharField(max_length=50,default='',null=True)
+	country = models.CharField(max_length=50,default='',null=True,blank=True)
+	province = models.CharField(max_length=50,default='',null=True,blank=True)
+	city = models.CharField(max_length=50,default='',null=True,blank=True)
+	district = models.CharField(max_length=50,default='',null=True,blank=True)
+	address_line_1 = models.CharField(max_length=100,default='',null=True,blank=True)
+	address_line_2 = models.CharField(max_length=100,default='',null=True,blank=True)
+	zipcode = models.CharField(max_length=50,default='',null=True,blank=True)
+	tel = models.CharField(max_length=50,default='',null=True,blank=True)
+	mobile = models.CharField(max_length=50,default='',null=True,blank=True)
+	sign_building = models.CharField(max_length=50,default='',null=True,blank=True)
+	best_time = models.CharField(max_length=50,default='',null=True,blank=True)
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 
+@python_2_unicode_compatible
 class System_Config(models.Model):
-	name = models.CharField(max_length = 100)
-	val = models.CharField(max_length = 254)
-	create_time = models.DateTimeField(auto_now_add = True)
-	update_time = models.DateTimeField(auto_now = True)
+	name = models.CharField(max_length = 100,verbose_name = '参数名称')
+	val = models.CharField(max_length = 254,verbose_name = '参数值')
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建时间')
+	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新时间')
 
 	@staticmethod
 	#获取模板名字
@@ -102,14 +104,22 @@ class System_Config(models.Model):
 	def get_base_url():
 		sys_conf = System_Config.objects.get(name='base_url')
 		return sys_conf.val
+		
+	def __str__(self):
+		return self.name
+		
+	class Meta:
+		verbose_name = '系统参数'
+		verbose_name_plural = '系统参数'
 
+@python_2_unicode_compatible
 class Category(models.Model):
-	code = models.CharField(max_length = 100,default='',db_index=True)
-	name = models.CharField(max_length = 100,default='')
-	sort_order = models.CharField(max_length = 100,default='')
-	create_time = models.DateTimeField(auto_now_add = True)
-	update_time = models.DateTimeField(auto_now = True)
-	parent = models.ForeignKey('self',null=True,default=None,related_name='childrens')
+	code = models.CharField(max_length = 100,default='',db_index=True,unique=True,verbose_name = '分类代码')
+	name = models.CharField(max_length = 100,default='',verbose_name = '分类名称')
+	sort_order = models.CharField(max_length = 100,default='',verbose_name = '排序序号')
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建时间')
+	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新时间')
+	parent = models.ForeignKey('self',null=True,default=None,related_name='childrens',blank=True,verbose_name = '上级分类')
 	
 	def get_parent_stack(self):
 		from shopcart.utils import Stack  
@@ -130,23 +140,31 @@ class Category(models.Model):
 			dir = dir + s.pop().code + '/'
 		return dir
 
+	def __str__(self):
+		return self.name
+		
+	class Meta:
+		verbose_name = '商品分类'
+		verbose_name_plural = '商品分类'
+
+@python_2_unicode_compatible
 class Product(models.Model):
-	item_number = models.CharField(max_length = 100,default='',db_index=True)
-	name = models.CharField(max_length = 100,default='')
-	click_count = models.IntegerField(default=0)
-	quantity = models.IntegerField(default=0)
-	warn_quantity = models.IntegerField(default=0)
-	price = models.FloatField()
-	market_price = models.FloatField()
-	keywords = models.CharField(max_length = 254,default='')
-	short_desc = models.CharField(max_length = 254,default='')
-	description = models.TextField()
-	thumb = models.URLField()
-	image = models.URLField()
-	is_free_shipping = models.BooleanField(default=False)
-	sort_order = models.IntegerField(default=0)
-	static_file_name = models.CharField(max_length = 254,null=True)
-	categorys = models.ManyToManyField(Category)
+	item_number = models.CharField(max_length = 100,default='',db_index=True,blank=True,verbose_name='商品编号')
+	name = models.CharField(max_length = 100,default='',verbose_name='商品名称')
+	click_count = models.IntegerField(default=0,verbose_name='浏览次数')
+	quantity = models.IntegerField(default=0,verbose_name='库存数量')
+	warn_quantity = models.IntegerField(default=0,verbose_name='预警库存')
+	price = models.FloatField(default=0.0,verbose_name='基准价格')
+	market_price = models.FloatField(default=0.0,verbose_name='市场价')
+	keywords = models.CharField(max_length = 254,default='',blank=True,verbose_name='关键字')
+	short_desc = models.CharField(max_length = 254,default='',blank=True,verbose_name='简略描述')
+	description = models.TextField(blank=True,verbose_name='详细描述')
+	thumb = models.URLField(verbose_name='主缩略图')
+	image = models.URLField(verbose_name='主图大图')
+	is_free_shipping = models.BooleanField(default=False,verbose_name='是否包邮')
+	sort_order = models.IntegerField(default=0,verbose_name='排序序号')
+	static_file_name = models.CharField(max_length = 254,null=True,blank=True,verbose_name='静态文件名(不包含路径，以html结尾)')
+	categorys = models.ManyToManyField(Category,verbose_name='商品分类')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 
@@ -165,6 +183,12 @@ class Product(models.Model):
 		
 		return attribute_group_list
 	
+	def __str__(self):
+		return self.name
+	
+	class Meta:
+		verbose_name = '商品'
+		verbose_name_plural = '商品'
 		
 class Product_Images(models.Model):
 	#product_id = models.IntegerField(default=0)
@@ -174,6 +198,8 @@ class Product_Images(models.Model):
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 
+	
+@python_2_unicode_compatible
 class Attribute_Group(models.Model):
 	name = models.CharField(max_length = 100,default='')
 	group_type = models.CharField(max_length = 100,default='') #分为text,image两种，一种是前台显示文字，一种是前台显示图片
@@ -181,7 +207,15 @@ class Attribute_Group(models.Model):
 	code = models.CharField(max_length = 100,default='') #用于html中用的name属性的
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
+	
+	def __str__(self):
+		return self.name
+	
+	class Meta:
+		verbose_name = '商品属性组'
+		verbose_name_plural = '商品属性组'
 
+@python_2_unicode_compatible
 class Attribute(models.Model):
 	group = models.ForeignKey(Attribute_Group,related_name='attributes',null=True)
 	name = models.CharField(max_length = 100,default='')
@@ -189,7 +223,15 @@ class Attribute(models.Model):
 	thumb = models.URLField(null=True,default=None)
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
+	
+	def __str__(self):
+		return self.name
+	
+	class Meta:
+		verbose_name = '商品属性'
+		verbose_name_plural = '商品属性'
 
+@python_2_unicode_compatible
 class Product_Attribute(models.Model):
 	product = models.ForeignKey(Product,null=True,related_name='attributes')
 	sub_item_number = models.CharField(max_length = 100,default='',db_index=True)
@@ -200,6 +242,9 @@ class Product_Attribute(models.Model):
 	attribute = models.ManyToManyField(Attribute,null=True) 
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
+	
+	def __str__(self):
+		return self.name
 
 
 class Cart(models.Model):
@@ -254,58 +299,106 @@ class Email(models.Model):
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 
+@python_2_unicode_compatible
 class Order(models.Model):
-	order_number = models.CharField(max_length = 100,unique=True,db_index=True)
-	user = models.ForeignKey(MyUser,null=True,related_name='orders')
-	status = models.CharField(max_length = 32,default='0')
-	shipping_status = models.CharField(max_length = 100,default='not yet')
-	pay_status = models.CharField(max_length = 100,default='wait for payment')
-	country = models.CharField(max_length = 100,default='')
-	province = models.CharField(max_length = 100,default='')
-	city = models.CharField(max_length = 100,default='')
-	district = models.CharField(max_length = 100,default='')
-	address_line_1 = models.CharField(max_length = 254,default='')
-	address_line_2 = models.CharField(max_length = 254,default='')
-	zipcode = models.CharField(max_length = 10,default='')
-	tel = models.CharField(max_length = 20,default='')
-	mobile = models.CharField(max_length = 20,default='')
-	email = models.CharField(max_length = 100,default='')
-	shipper_name = models.CharField(max_length = 100,default='')
-	shpping_no = models.CharField(max_length = 100,default='')
-	pay_id = models.CharField(max_length = 100,default='')
-	pay_name = models.CharField(max_length = 100,default='')
+	# 订单等待付款 
+	ORDER_STATUS_PLACE_ORDER = '0' 
+	# 订单已付款，等待确认 
+	ORDER_STATUS_PAYED_UNCONFIRMED = '5'
+	# 订单付款已确认
+	ORDER_STATUS_PAYED_SUCCESS = '10'
+	# 订单已发货
+	ORDER_STATUS_SHIPPING = '20'
+	# 订单已完成
+	ORDER_STATUS_COMPLETE = '30'
+	# 订单已取消
+	ORDER_STATUS_CANCLED = '40'
+	# 订单异常
+	ORDER_STATUS_ERROR = '90'
+	# 订单已关闭
+	ORDER_STATUS_CLOSED = '99'
+	# 文章状态选项 
+	ORDER_STATUS_CHOICES = ( 
+		(ORDER_STATUS_PLACE_ORDER,'等待付款'),
+		(ORDER_STATUS_PAYED_UNCONFIRMED,'已付款未确认'),
+		(ORDER_STATUS_PAYED_SUCCESS,'已付款'),
+		(ORDER_STATUS_SHIPPING,'已发货'),
+		(ORDER_STATUS_COMPLETE,'已完成'),
+		(ORDER_STATUS_CANCLED,'已取消'),
+		(ORDER_STATUS_ERROR,'订单异常'),
+		(ORDER_STATUS_CLOSED,'订单已关闭')
+	) 
+
+
+	order_number = models.CharField(max_length = 100,unique=True,db_index=True,verbose_name='订单编号')
+	user = models.ForeignKey(MyUser,null=True,related_name='orders',verbose_name='用户')
+	status = models.CharField(max_length = 32,default='0',verbose_name='订单状态',choices=ORDER_STATUS_CHOICES)
+	shipping_status = models.CharField(max_length = 100,default='not yet',blank=True,verbose_name='发货状态')
+	pay_status = models.CharField(max_length = 100,default='wait for payment',blank=True)
+	country = models.CharField(max_length = 100,default='',blank=True)
+	province = models.CharField(max_length = 100,default='',blank=True)
+	city = models.CharField(max_length = 100,default='',blank=True)
+	district = models.CharField(max_length = 100,default='',blank=True)
+	address_line_1 = models.CharField(max_length = 254,default='',blank=True)
+	address_line_2 = models.CharField(max_length = 254,default='',blank=True)
+	zipcode = models.CharField(max_length = 10,default='',blank=True)
+	tel = models.CharField(max_length = 20,default='',blank=True)
+	mobile = models.CharField(max_length = 20,default='',blank=True)
+	email = models.CharField(max_length = 100,default='',blank=True)
+	shipper_name = models.CharField(max_length = 100,default='',blank=True)
+	shpping_no = models.CharField(max_length = 100,default='',blank=True)
+	pay_id = models.CharField(max_length = 100,default='',blank=True)
+	pay_name = models.CharField(max_length = 100,default='',blank=True)
 	products_amount = models.FloatField(default=0.00)
 	shipping_fee = models.FloatField(default=0.00)
 	discount = models.FloatField(default=0.00)
 	order_amount = models.FloatField(default=0.00)
 	money_paid = models.FloatField(default=0.00)
-	refer = models.CharField(max_length = 10,default='')
+	refer = models.CharField(max_length = 10,default='',blank=True)
 	pay_time = models.DateTimeField(null=True)
 	shipping_time = models.DateTimeField(null=True)
-	to_seller = models.CharField(max_length = 100)
-	create_time = models.DateTimeField(auto_now_add = True)
-	update_time = models.DateTimeField(auto_now = True)
+	to_seller = models.CharField(max_length = 100,blank=True)
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name='下单日期')
+	update_time = models.DateTimeField(auto_now = True,verbose_name='更新日期')
 
+	def __str__(self):
+		return self.order_number
+	
 	def get_human_status(self):
 		dict = {'0':'Wait For Payment','10':'Wait For Shipment','20':'Shipping','30':'Complete','40':'Canceled','90':'Payment Error','99':'Closed'}
 		return dict[self.status]
+	#get_human_status.admin_order_field = 'pub_date'
+	#get_human_status.boolean = True
+	get_human_status.short_description = '订单状态'
 	
-		
+	class Meta:
+		verbose_name = '订单'
+		verbose_name_plural = '订单'
+
+@python_2_unicode_compatible		
 class Order_Products(models.Model):
-	product_id = models.IntegerField(default=0)
+	product_id = models.IntegerField(default=0,verbose_name='商品编号')
 	product_attribute = models.ForeignKey(Product_Attribute,null=True)
 	order = models.ForeignKey(Order,null=True,related_name='order_products')
-	name = models.CharField(max_length = 100,default='')
+	name = models.CharField(max_length = 100,default='',verbose_name='商品名称')
 	short_desc = models.CharField(max_length = 254,default='')
-	price = models.FloatField()
+	price = models.FloatField(verbose_name='商品价格')
 	thumb = models.URLField()
 	image = models.URLField()
-	quantity = models.IntegerField(default=0)
+	quantity = models.IntegerField(default=0,verbose_name='订购数量')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 	
 	def get_total(self):
 		return self.quantity * self.price
+	get_total.short_description = '金额小计'
+	
+	def __str__(self):
+		return self.name
+	
+	class Meta:
+		verbose_name = '订单商品'
+		verbose_name_plural = '订单商品'
 
 class Abnormal_Order(models.Model):
 	order = models.ForeignKey(Order,null=True,related_name='abnormal_orders')
@@ -329,18 +422,26 @@ class Serial_Number(models.Model):
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 
-class Article(models.Model):
-	title = models.CharField(max_length=254,null=True,db_index=True)
-	content = models.TextField(null=True)
-	user = models.ForeignKey(MyUser,null=True)
-	keywords = models.CharField(max_length=254,null=True)
-	static_file_name = models.CharField(max_length = 254,null=True)
-	folder = models.CharField(max_length = 254,null=True)
-	breadcrumbs = models.CharField(max_length = 254,null=True)
-	create_time = models.DateTimeField(auto_now_add = True)
-	update_time = models.DateTimeField(auto_now = True)
-
 	
+@python_2_unicode_compatible
+class Article(models.Model):
+	title = models.CharField(max_length=254,null=True,db_index=True,verbose_name = '标题')
+	content = models.TextField(null=True,blank=True,verbose_name = '内容')
+	user = models.ForeignKey(MyUser,null=True,blank=True,verbose_name = '用户')
+	keywords = models.CharField(max_length=254,null=True,blank=True,verbose_name = '关键字')
+	static_file_name = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '静态文件名')
+	folder = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '静态文件目录')
+	breadcrumbs = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '导航位置')
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
+	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
+	
+	def __str__(self):
+		return self.title
+	
+	class Meta:
+		verbose_name = '文章'
+		verbose_name_plural = '文章'
+
 	
 	
 	

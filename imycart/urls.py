@@ -48,10 +48,13 @@ urlpatterns = patterns("",
 	url(r'^ajax_val_captcha/$', 'shopcart.validate.ajax_validate_captcha',name='ajax_validate_captcha'),
 	url(r'^paypal/', include('paypal.standard.ipn.urls')),
 	url(r'^comments/', include('django_comments.urls')),
+	#url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
+	url('^admin/product/report/$', 'shopcart.admin_views.product_report',name='admin_product_report'),
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^i18n/', include('django.conf.urls.i18n')),
 	#下面是测试方法
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
 	url(r'^add-product/$', 'shopcart.views.add_product_manual',name='add_product_manual'),
 	url(r'^send-mail/$', 'shopcart.views.send_mail',name='send_mail'),
-) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+	url(r'^upload/$', 'shopcart.index.upload_file',name='upload_file'),
+) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

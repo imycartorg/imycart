@@ -1,0 +1,19 @@
+{% extends "cassie/base.html" %}
+{% block breadcrumbs %}
+<div class="crumb container">
+   {{article.breadcrumbs|safe}} - {{article.title|safe}}
+</div>
+{% endblock %}
+
+{% block main%}
+<div class="blog">
+  <div class="container">
+     <div class="row">
+       <h1>{{article.title|safe}}</h1>
+		<div class="blog-content">
+			{{article.content|safe}}
+		</div>
+  </div>  
+ </div>
+</div>
+{% endblock %}

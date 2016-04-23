@@ -144,6 +144,11 @@ def init_database(request):
 	sys_con = System_Config.objects.create(name='base_url',val='http://nb886.imycart.com')
 	sys_con = System_Config.objects.create(name='paypal_account',val='shawnzju@163.com')
 	sys_con = System_Config.objects.create(name='default_currency',val='USD')
+	
+	sys_con = System_Config.objects.create(name='copyright',val='Copyright © cassiecomb.com All Rights Reserved. Designed by iMyCart')
+	sys_con = System_Config.objects.create(name='service_email',val='info@cassiecomb.com')
+	sys_con = System_Config.objects.create(name='contact_address',val='4578 MARMORA ROAD,GLASGOW D04 89 GR')
+	sys_con = System_Config.objects.create(name='thumb_width',val='128')
 	#"""
 
 	ag_size = Attribute_Group.objects.create(name='尺码',group_type='text',code='size')

@@ -19,7 +19,7 @@ def ajax_cancel_order(request):
 	result_dict = {}
 	try:
 		order = Order.objects.get(user=request.user,id=order_to_cancel['order_id'])
-		order.status = '40'
+		order.status = Order.ORDER_STATUS_CANCLED
 		order.save()
 		result_dict['success'] = True
 		result_dict['message'] = _('Opration successful.')
@@ -49,7 +49,7 @@ def place_order(request):
 		logger.debug('>>>>>0:sub_total=' + str(sub_total))
 		#生成主订单
 		logger.debug('>>>>>1')
-		order = Order.objects.create(order_number=get_serial_number(),user=request.user,country=address.country,province=address.province,city=address.city,district=address.district,address_line_1=address.address_line_1,
+		order = Order.objects.create(order_number=get_serial_number(),user=request.user,status=Order.ORDER_STATUS_PLACE_ORDER,country=address.country,province=address.province,city=address.city,district=address.district,address_line_1=address.address_line_1,
 			address_line_2=address.address_line_2,zipcode=address.zipcode,tel=address.tel,mobile=address.mobile,email=request.user.email,
 			products_amount = sub_total,shipping_fee=shipping,discount=discount,order_amount=total)
 
@@ -125,7 +125,7 @@ def paypal_notify(sender, **kwargs):
 		logger.info(detail)
 		logger.info(str('记录到异常订单中，可能存在金额被篡改的情况'))
 		abnormal_order = Abnormal_Order.create(order=order,reason=reason,detail=detail)
-		order.status = '90'
+		order.status = Order.ORDER_STATUS_ERROR
 		order.pay_status = 'Payment amount not equal'
 		order.save()
 		return
@@ -138,13 +138,13 @@ def paypal_notify(sender, **kwargs):
 		logger.info(detail)
 		print(str('记录到异常订单中，可能存在账户被篡改的情况'))
 		abnormal_order = Abnormal_Order.create(order=order,reason=reason,detail=detail)
-		order.status = '90'
+		order.status = Order.ORDER_STATUS_ERROR
 		order.pay_status = 'Payment receiver not correct'
 		order.save()
 		return
 
 	logger.info(str('STEP_4:校验通过，修改订单状态为支付成功'))
-	order.status = '10'
+	order.status = Order.ORDER_STATUS_PAYED_SUCCESS
 	order.pay_status = 'Paid Successfully'
 	order.save()
 	return
