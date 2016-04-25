@@ -16,6 +16,7 @@
 			CKEDITOR.replace('editor',{
 				filebrowserUploadUrl: '{{upload_url}}'
 			});
+			CKEDITOR.instances.editor.setData('{{article_content|safe}}');
 		});
 	</script>
 </body>
