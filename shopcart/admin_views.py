@@ -42,17 +42,28 @@ def file_upload(request,item_type,item_id):
 			raise Http404
 		return render(request,System_Config.get_template_name() + '/file_upload.html',ctx)
 	else:
+		logger.debug('>>>>>1')
 		if item_type == 'product' or item_type == 'product_album':
+			logger.debug('>>>>>2')
 			try:
+				logger.debug('>>>>>3')
 				item = Product.objects.get(id=item_id)
+				logger.debug('>>>>>4')
 			except:
 				raise Http404
+			logger.debug('>>>>>5')
 			filenames = handle_uploaded_file(request.FILES['upload'],item_type,item_id)
+			logger.debug('>>>>>6')
 			#加入到对象的图片列表中去
+			logger.debug('>>>>>7')
 			if item_type == 'product':
+				logger.debug('>>>>>8')
 				pi = Product_Images.objects.create(image=filenames['image_url'],thumb=filenames['thumb_url'],product=item)
+				logger.debug('>>>>>9')
 			else:
+				logger.debug('>>>>>10')
 				ai = Album.objects.create(image=filenames['image_url'],thumb=filenames['thumb_url'],item_type=item_type,item_id=item.id)
+				logger.debug('>>>>>11')
 		elif item_type == 'article':
 			raise Http404
 		else:

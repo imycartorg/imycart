@@ -114,23 +114,17 @@ def merge_cart(request):
 	else:
 		#两个购物车都不为空，则要合并
 		for p in cart.cart_products.all():
-			#print("当前的p：" + str(p.id) + ",p代表的product:" + str(p.product.id))
 			has_p = False
 			for mp in mycart.cart_products.all():
-				#print("当前的mp：" + str(mp.id) + ",mp代表的product:" + str(mp.product.id))
 				if mp.product == p.product and mp.product_attribute == p.product_attribute:
-					#print("判断条件为真，开始合并数量.")
 					mp.quantity = mp.quantity + p.quantity
 					mp.save()
 					p.delete()
 					has_p = True
-					#print("删除p")
-					break;
-			#print("循环结束，没有匹配的，说明没有同类项，把cart中的项目转移到mycart中")		
+					break;	
 			if has_p == False:
 				p.cart = mycart
 				p.save()
-		#print("将空的cart删除")
 		cart.delete()
 		return mycart
 			
@@ -208,7 +202,7 @@ def address(request,method):
 			else:
 				logger.error('address parameter error.' + str(request.POST))
 		elif method == 'del':
-			print('TDDO: Delete address')
+			logger.debug('TDDO: Delete address')
 		else:
 			pass
 	else:

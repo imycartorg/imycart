@@ -136,7 +136,6 @@ def paypal_notify(sender, **kwargs):
 		reason = 'receiver not correct'
 		detail = str('收款账户不正确。订单ID[%s]的实际收款账户为[%s]，配置的收款账户为：[%s]' % [ipn_obj.receiver_email,paypal_account])
 		logger.info(detail)
-		print(str('记录到异常订单中，可能存在账户被篡改的情况'))
 		abnormal_order = Abnormal_Order.create(order=order,reason=reason,detail=detail)
 		order.status = Order.ORDER_STATUS_ERROR
 		order.pay_status = 'Payment receiver not correct'

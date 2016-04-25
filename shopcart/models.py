@@ -124,9 +124,7 @@ class Category(models.Model):
 		from shopcart.utils import Stack  
 		s=Stack(20);
 		target = self
-		print('self:' + self.code)
 		while target is not None:
-			print('target:' + target.code)
 			s.push(target)
 			target = target.parent
 		return s
@@ -169,11 +167,8 @@ class Product(models.Model):
 
 	def get_attributes(self):
 		pa_list = self.attributes.all()
-		print("pa_list size:" + str(len(pa_list)))
 		attribute_list = Attribute.objects.filter(product_attribute__in=pa_list).distinct()
-		print("attribute_list size:" + str(len(attribute_list)))
 		attribute_group_list = list(set([attr.group for attr in attribute_list]))#用set去重后，再转回list
-		print("attribute_group_list size:" + str(len(attribute_group_list)))
 		attribute_group_list.sort(key=lambda x:x.position)#利用position字段排序
 		
 		for ag in attribute_group_list:

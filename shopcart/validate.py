@@ -13,7 +13,6 @@ from captcha.models import CaptchaStore
 # Create your views here.
 def ajax_validate_user(request,exits):
 	result_dict = {}
-	print('exits:' + exits)
 	if request.method == 'GET':
 		if 'value' in request.GET:
 			myuser = None

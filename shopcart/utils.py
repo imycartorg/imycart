@@ -178,7 +178,8 @@ def handle_uploaded_file(f,type='other',id='-1'):
 			file_names['image_url'] = System_Config.get_base_url() + '/' + file_name
 			file_names['thumb_url'] = System_Config.get_base_url() + '/' + file_thumb_name
 	except Exception as e:
-		print(str(e))
+		#pass
+		logger.error(str(e))
 	finally:
 		if destination:
 			destination.close()
