@@ -455,8 +455,17 @@ class Article(models.Model):
 		verbose_name = '文章'
 		verbose_name_plural = '文章'
 
+class Album(models.Model):
+	item_type = models.CharField(max_length=100,verbose_name = '对象类型')
+	item_id = models.IntegerField(default=0,verbose_name = '对象ID')
+	image = models.URLField(verbose_name = '图片链接')
+	thumb = models.URLField(verbose_name = '缩略图链接')
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
+	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
 	
-	
+	class Meta:
+		verbose_name = '相册'
+		verbose_name_plural = '相册'
 	
 	
 	

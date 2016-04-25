@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>CKEditor Sample</title>
+</head>
+<body id="main">
+	<div>	
+		<textarea id='editor' name="editor"></textarea>  
+	</div>
+	{% load staticfiles %}
+	<script src="{% static "admin/js/ckeditor.js" %}"></script>
+	<script type="text/javascript" src="{% static 'classic/js/jquery.min.js' %}"></script> 
+	<script>
+		$(document).ready(function(){  
+			CKEDITOR.replace('editor',{
+				filebrowserUploadUrl: '{{upload_url}}'
+			});
+		});
+	</script>
+</body>
+</html>

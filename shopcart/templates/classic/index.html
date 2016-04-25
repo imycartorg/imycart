@@ -53,6 +53,9 @@
 								<input type="submit" value="上传文件" /> 
 							</form>
 							
+							
+							<a href='/file_upload/product/1' target='_blank'>打开上传文件窗口</a>
+							
 							{% load i18n %}
 							i18N设置
 							<form action="{% url 'set_language' %}" method="post">{% csrf_token %}

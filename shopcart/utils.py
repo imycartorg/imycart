@@ -143,6 +143,7 @@ def handle_uploaded_file(f,type='other',id='-1'):
 	if not id.endswith('/'):
 		id += '/'
 	
+	destination = None
 	try:
 		path = 'media/' + type + id
 		import os
@@ -153,8 +154,8 @@ def handle_uploaded_file(f,type='other',id='-1'):
 		logger.debug(str(ext))
 		
 		#允许上传的类型
-		file_allow = ['jpg','jpeg','png','gif']
-		if ext not in file_allow:
+		file_allow = ['JPG','JPEG','PNG','GIF']
+		if ext.upper() not in file_allow:
 			raise Exception('%s File type is not allowed to upload.' % [ext])
 		
 		random_name = str(uuid.uuid1())
