@@ -2,6 +2,7 @@
 {% block main %}
 <!-- Main Container -->
 {% load staticfiles %}
+{% load i18n %}
 <div class="main-container col2-right-layout bounceInUp animated">
   <div class="main container">
     <div class="row">
@@ -15,7 +16,7 @@
         <ol class="one-page-checkout" id="checkoutSteps">
           <li id="opc-billing" class="section allow active">
             <div class="step-title"> <span class="number">1</span>
-              <h3>Select your shipping information:</h3>
+              <h3>{% trans 'Select your shipping information' %}</h3>
               <!--<a href="#">Edit</a> --> 
             </div>
             <div id="checkout-step-billing" class="step a-item">
@@ -31,7 +32,7 @@
           <div class="clearfix"></div>
           <li id="opc-shipping" class="section">
             <div class="step-title"> <span class="number">2</span>
-              <h3 class="one_page_heading"> Shopping Method</h3>
+              <h3 class="one_page_heading"> {% trans 'Shopping Method' %}</h3>
               <!--<a href="#">Edit</a>--> 
             </div>
             <div id="checkout-step-shipping" class="step a-item">
@@ -40,7 +41,7 @@
           </li>
           <li id="opc-shipping_method" class="section">
             <div class="step-title"> <span class="number">3</span>
-              <h3 class="one_page_heading"> Payment Information</h3>
+              <h3 class="one_page_heading"> {% trans 'Payment Information' %}</h3>
             </div>
             <div id="checkout-step-shipping_method" class="step a-item">
                <label for="shipping:save_in_address_book"><img src="{% static 'classic/images/check-paypal.jpg' %}" class="check-payment-img"></label>
@@ -48,17 +49,17 @@
           </li>
          <li id="opc-review" class="section">
 	          <div class="step-title"> <span class="number">4</span>
-	              <h3 class="one_page_heading">Order Review</h3>
+	              <h3 class="one_page_heading">{% trans 'Order Review' %}</h3>
 	            </div>
 	          <div class="table-responsive checkout-order-list">
                 <table class="data-table cart-table shopping-cart-table" id="shopping-cart-table">
                   <tbody id="productList">
                      <tr class="first odd check-order-header">
                       <td class="image"></td>
-                      <td><strong>Product Name</strong></td>
-                      <td class="a-center"><strong>Unit price</strong></td>
-                      <td class="a-center"><strong>Quantity</strong></td>
-                      <td class="a-center"><strong>Total</strong></td>
+                      <td><strong>{% trans 'Product Name' %}</strong></td>
+                      <td class="a-center"><strong>{% trans 'Unit Price' %}</strong></td>
+                      <td class="a-center"><strong>{% trans 'Quantity' %}</strong></td>
+                      <td class="a-center"><strong>{% trans 'Total' %}</strong></td>
                     </tr>
 				{% for cart_product in product_list %}	
 					<tr>
@@ -82,7 +83,7 @@
           </div>
 	          <div class="check-return col-xs-9">
 	            <div class="row">
-	              <button class="button btn-return return-to-cart"  type="button"><span>Return to Cart</span></button>
+	              <button class="button btn-return return-to-cart"  type="button"><span>{% trans 'Return to Cart' %}</span></button>
 	            </div>
 	          </div>
 	          <div class="totals col-xs-3">
@@ -90,14 +91,14 @@
               <div class="inner check-inner">
                 <table class="table shopping-cart-table-total" id="shopping-cart-totals-table">
                     <tr>
-                      <td colspan="1" class="a-left">Subtotal</td>
+                      <td colspan="1" class="a-left">{% trans 'Subtotal' %}</td>
                       <td class="a-right">
 						<span class="price" id="checkOutSubTotal">${{sub_total|floatformat:"2"}}</span>
 						<input name="sub_total" type="hidden" value="{{sub_total}}" />
 					  </td>
                     </tr>
                     <tr>
-                      <td colspan="1" class="a-left">Shipping</td>
+                      <td colspan="1" class="a-left">{% trans 'Shipping Fee' %}</td>
                       <td class="a-right">
 							<span id="checkOutShippingFee" class="price">${{shipping|floatformat:"2"}}</span>
 							<input name="shipping" type="hidden" value="{{shipping}}" />
@@ -111,7 +112,7 @@
 					  </td>
                     </tr>
                     <tr>
-                      <td colspan="1" class="a-left"><strong>All Total:</strong></td>
+                      <td colspan="1" class="a-left"><strong>{% trans 'All Total' %}:</strong></td>
                       <td class="a-right">
 						<span class="price" id = "checkOutAllTotal">${{total|floatformat:"2"}}</span>
 						<input name="total" type="hidden" value="{{total}}" />

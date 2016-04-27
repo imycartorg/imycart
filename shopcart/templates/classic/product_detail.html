@@ -18,6 +18,7 @@
   <!-- Breadcrumbs End --> 
   <!-- Main Container -->
   {% block main %}
+  {% load i18n %}
 	<div class="main-container col1-layout">
 		<div class="main container">
 			<div class="col-main">
@@ -52,8 +53,8 @@
 
 						<div class="price-block">
 						  <div class="price-box">
-							<p class="old-price"> <span class="price-label">Regular Price:</span> <span class="price"> ${{product.market_price|floatformat:"2"}} </span> </p>
-							<p class="special-price"> <span class="price-label">Special Price</span> 
+							<p class="old-price"> <span class="price-label">{%trans 'Market Price'%}:</span> <span class="price"> ${{product.market_price|floatformat:"2"}} </span> </p>
+							<p class="special-price"> <span class="price-label">{%trans 'Price'%}</span> 
 								<span id="product-price-main" class="price"> 
 									{% if has_price_range %}
 										${{price_min|floatformat:"2"}} - ${{price_max|floatformat:"2"}}
@@ -63,10 +64,10 @@
 								</span> </p>
 						  </div>
 						</div>
-						<p class="availability in-stock pull-right"><span>In Stock</span></p>
+						<p class="availability in-stock pull-right"><span>{%trans 'In Stock'%}</span></p>
 						<div class="add-to-box">
 						  <div class="add-to-cart">
-							<label for="qty">Qty:</label>
+							<label for="qty">{%trans 'Quantity'%}:</label>
 							<div class="pull-left">
 							  <div class="custom pull-left">
 								<button onClick="var result = document.getElementById('qty'); var qty = result.value; if( !isNaN( qty )) result.value++;return false;" class="increase items-count" type="button"><i class="icon-plus">&nbsp;</i></button>
@@ -76,12 +77,12 @@
 							  </div>
 							</div>
 			  
-							 <button id="addToCartBtn"  class="button btn-cart" data-product-id="{{product.id}}" title="Add to Cart" type="button"><span><i class="icon-basket"></i> Add to Cart</span></button>
+							 <button id="addToCartBtn"  class="button btn-cart" data-product-id="{{product.id}}" title="Add to Cart" type="button"><span><i class="icon-basket"></i> {%trans 'Add to Cart'%}</span></button>
 			  
 						  </div>
 						 </div>
 						 <div class="email-addto-box">
-							  <p class="add-to-links"> <a id="addToWishList" data-product-id="{{product.id}}" class="link-wishlist" href="#"><span>Add to Wishlist</span></a></p>
+							  <p class="add-to-links"> <a id="addToWishList" data-product-id="{{product.id}}" class="link-wishlist" href="#"><span>{%trans 'Add to Wishlist'%}</span></a></p>
 						 </div>
 						 <div class="product-attributes">
 							<!-- 先找出商品关联的所有的attributes，然后找出分组 -->
@@ -116,7 +117,7 @@
 				  <div class="product-collateral col-sm-12 col-xs-12 bounceInUp animated">
 					<div class="add_info">
 					  <ul id="product-detail-tab" class="nav nav-tabs product-tabs">
-						<li class="active"> <a href="#product_tabs_description" data-toggle="tab"> Product Description </a> </li>
+						<li class="active"> <a href="#product_tabs_description" data-toggle="tab"> {%trans 'Product Description'%} </a> </li>
 						<li> <a href="#reviews_tabs" data-toggle="tab">Reviews</a> </li>
 					  </ul>
 					  <div id="productTabContent" class="tab-content">

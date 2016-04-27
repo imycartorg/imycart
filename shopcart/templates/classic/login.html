@@ -1,16 +1,17 @@
 ﻿{% extends "classic/base.html" %}
 {% block main %}
+{% load i18n %}
   <!-- Main Container -->
   <section class="main-container col1-layout wow bounceInUp animated">
     <div class="main container">
       <div class="account-login">
         <div class="page-title">
-          <h2>Login or Create an Account</h2>
+          <h2>{% trans 'Login or Create an Account' %}</h2>
 		  <h2>{{ login_result }}</h2>
         </div>
         <fieldset class="col2-set">
-          <legend>Login or Create an Account</legend>
-          <div class="col-1 new-users"><strong>New Customers</strong>
+          <legend>{% trans 'Login or Create an Account' %}</legend>
+          <div class="col-1 new-users"><strong>{% trans 'New Customers' %}</strong>
             <div class="content">
               <p>By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.</p>
               <div class="buttons-set">
@@ -18,12 +19,12 @@
               </div>
             </div>
           </div>
-          <div class="col-2 registered-users"><strong>Registered Customers</strong>
+          <div class="col-2 registered-users"><strong>{% trans 'Registered Customers' %}</strong>
 			  <h3 id="loginMessage"></h3>
               <form method="post" id="login_form" class="box" autocomplete="off">
 			  {% csrf_token %}
 	            <div class="content">
-	              <p>Please log in with your e-mail and password:</p>
+	              <p>{% trans 'Please log in with your e-mail and password' %}:</p>
 	              <ul class="form-list">
 	                <li>
 	                	<div class="control-group">
@@ -51,10 +52,10 @@
 		                <div id="verifyCodeDiv">
 		                	<div class="control-group">
 				              		<div class="controls">
-											<label for="pass">Verify Code <span class="required">*</span></label>
+											<label for="pass">{% trans 'Verify Code' %} <span class="required">*</span></label>
 											<br>
 											<input type="input-text"  id="id_reg_captcha_1" data-captcha-key='id_reg_captcha_0' name="captcha_1" class="form-control form-control-captcha fl" placeholder="Enter the code below">
-											<span class="v5-yzm fr"><a href="#" class="next-captcha"><img src="{{ imgage_url }}" class="captcha" alt="captcha">换一张</a></span>
+											<span class="v5-yzm fr"><a href="#" class="next-captcha"><img src="{{ imgage_url }}" class="captcha" alt="captcha">{% trans 'Chang one' %}</a></span>
 											<input id="id_reg_captcha_0" name="captcha_0" type="hidden" value="{{ hashkey }}"> 
 											<p class="help-block required"></p>
 					               	</div>
@@ -65,8 +66,8 @@
 	              <div class="buttons-set">
 				  
 					<input type="hidden" name="next" value="{{ next }}" /> 
-	                <button id="SubmitLogin" name="send" type="submit" class="button login"><span>Login</span></button>
-	                <a class="forgot-word" href="/user/forget-password">Forgot Your Password?</a> 
+	                <button id="SubmitLogin" name="send" type="submit" class="button login"><span>{% trans 'Login' %}</span></button>
+	                <a class="forgot-word" href="/user/forget-password">{% trans 'Forgot Your Password' %}?</a> 
                  </div>
 	            </div>
               </form>

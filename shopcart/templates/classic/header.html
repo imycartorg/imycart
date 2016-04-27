@@ -1,4 +1,5 @@
 <!-- Header -->
+{% load i18n %}
 <header>
   <div class="header-container">
     <div class="container">
@@ -14,9 +15,9 @@
             <div class="welcome-msg hidden-xs">{{system_para.default_welcome_message}} {{user.email}}</div>
             <!-- End Default Welcome Message -->
             <div class="links">
-              <div class="myaccount"><a title="My Account" href="/cart/show"><span class="hidden-xs">My Cart</span></a></div>
-              <div class="wishlist"><a title="My Wishlist" href="/wishlist"><span class="hidden-xs">Wishlist</span></a></div>
-			  <div class="myaccount"><a title="My Orders" href="/order/show"><span class="hidden-xs">My Orders</span></a></div>
+              <div class="myaccount"><a title="My Account" href="/cart/show"><span class="hidden-xs">{% trans 'My Cart' %}</span></a></div>
+              <div class="wishlist"><a title="My Wishlist" href="/wishlist"><span class="hidden-xs">{% trans ' My Wishlist' %}</span></a></div>
+			  <div class="myaccount"><a title="My Orders" href="/order/show"><span class="hidden-xs">{% trans 'My Orders' %}</span></a></div>
               <!-- <div class="check"><a title="Checkout" href="${ctxPath}/Cart/CheckOut.htm?step=review"><span class="hidden-xs">Checkout</span></a></div> -->
               <!-- <div class="demo"><a title="Blog" href="blog.html"><span class="hidden-xs">Blog</span></a></div> -->
               <!-- Header Company -->
@@ -32,9 +33,9 @@
               </div>
               <!-- End Header Company -->
 				{%	if user.is_authenticated %}          
-					<div class="login"><a href="/user/logout/"><span class="hidden-xs">Log Out</span></a></div>    
+					<div class="login"><a href="/user/logout/"><span class="hidden-xs">{%trans 'Log Out' %}</span></a></div>    
 				{% else %}
-					<div class="logout"><a href="/user/login/" class="loginModalLink"><span class="hidden-xs">Log In</span></a></div>
+					<div class="logout"><a href="/user/login/" class="loginModalLink"><span class="hidden-xs">{% trans 'Log In' %}</span></a></div>
 				{% endif %}
               </div>
               <!-- links --> 

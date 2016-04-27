@@ -1,4 +1,4 @@
-0、调整secureCRT终端的字符集，防止乱码
+﻿0、调整secureCRT终端的字符集，防止乱码
 Options - Session Options - Appearance
 在Character Encoding下拉框中选择UTF-8
 
@@ -10,7 +10,7 @@ $ sudo apt-get install language-pack-zh-hant
 $ sudo apt-get update
 $ sudo apt-get install nginx
 $ sudo service nginx start
-#访问一下，看是否能访问到nginx的欢迎页面，可以的话，可以关了
+#访问一下，看是否能访问到nginx的欢迎页面，可以的话，就可以关了
 $ sudo serivce nginx stop
 
 3、安装git 和 虚拟环境
@@ -132,5 +132,43 @@ $ source ../virtualenv/bin/activate
 10、安装容器gunicorn
 (virtualenv)$pip install gunicorn
 
-11、启动
+11、启动前准备
+(virtualenv)$ cd /home/ubuntu/stagingsite/source
+(virtualenv)$ vi imycart/settings.py
+#编辑一下setting文件，将数据库指向本机
+(virtualenv)$ python manage.py makemigrations shopcart
+(virtualenv)$ python manage.py makemigrations captcha
+(virtualenv)$ python manage.py migrate
+#建表
+(virtualenv)$ python manage.py collectstatic
+#归集静态文件
+(virtualenv)$ gunicorn --bind unix:/tmp/aws.imycart.com.socket imycart.wsgi:application
+#启动，并且将输出定向到unix管道
+
+12、配置nginx
+#将nignx配置文件ubuntu.imycart.com上传到tmp目录
+$ cd /etc/nginx/sites-available
+$ sudo cp /tmp/ubuntu.imycart.com .
+$ cd /etc/nginx/sites-enabled
+$ sudo ln -s /etc/nginx/sites-available/ubuntu.imycart.com /etc/nginx/sites-enabled/ubuntu.imycart.com
+$ sudo rm default
+$ sudo service nginx reload
+
+#修改nginx默认的上传文件大小
+$ cd /etc/nginx/
+$ vi ngixn.conf
+
+#在http{}段中加入下面这句：
+ client_max_body_size 10m;
+#保存后重启nginx
+$ sudo service nginx reload
+
+13、初始化数据
+打开浏览器，输入网址http://aws.imycart.com/initdb/
+成功的话，会显示 尝试产生三条流水。。。。之类的
+
+OK，大功告成了
+
+
+
 

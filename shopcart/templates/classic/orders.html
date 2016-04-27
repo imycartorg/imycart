@@ -1,5 +1,6 @@
 ﻿{% extends "classic/base.html" %}
 {% block main %}
+{% load i18n %}
 <!-- Main Container -->
 <div class="main-container col2-right-layout wow bounceInUp animated">
   <div class="main container">
@@ -15,10 +16,10 @@
                   <tbody>
                     <tr class="first last">
                       <th>&nbsp;</th>
-                      <th>Product Name</th>
-                      <th class="a-center">Unit Price</th>
-                      <th class="a-center">Qty</th>
-                      <th class="a-center">Subtotal</th>
+                      <th>{% trans 'Product Name' %}</th>
+                      <th class="a-center">{% trans 'Unit Price' %}</th>
+                      <th class="a-center">{% trans 'Quantity' %}</th>
+                      <th class="a-center">{% trans 'Total' %}</th>
                     </tr>
                   </tbody>
                  </table>
@@ -27,8 +28,8 @@
 				{% for order in order_list %}
                  <table class="data-table cart-table order-title-info" title="container_order_{{order.id}}">
                    <tr>
-                      <td><span class="myorder-number">Order: <span>{{order.order_number}}</span><a href="ViewOrder.htm?Id=${order.id}" class="view-order-detail">View Details</a></span>
-                          <span class="myorder-status"> Order Status: {{order.get_human_status}}</span>
+                      <td><span class="myorder-number">{% trans 'Order number' %}: <span>{{order.order_number}}</span><a href="ViewOrder.htm?Id=${order.id}" class="view-order-detail">{% trans 'View Details' %}</a></span>
+                          <span class="myorder-status"> {% trans 'Order Status' %}: {{order.get_human_status}}</span>
                       </td>
 					{% if order.status == '0' %}
                       <td rowspan="2">
@@ -37,7 +38,7 @@
                         		name="cancel_order"
                         		data-id="{{order.id}}"
                         		data-action="cancel">
-                        	<span>Cancel</span>
+                        	<span>{% trans 'Cancel' %}</span>
                         </button>                        
                         <button class="button order-pay-button"  
                         		title="Pay Now" 
@@ -50,7 +51,7 @@
 					{% elif order.status == '10' %}
                       <td rowspan="2">
                         <button class="button order-waitting-button" title="Order Waitting" value="orderWaitting" name="order_waitting" type="submit">
-                        	<span>Waitting Shipping</span>
+                        	<span>{%trans 'Waitting Shipping'%}</span>
                         </button>                    
                       </td>
 					{% elif order.status == '20' or order.status == '40' or order.status == '99' %}
@@ -77,9 +78,9 @@
                    </tr>
                    <tr>
                       <td>
-                         <span class="myorder-placed"> Order Placed:  {{order.create_time}}</span>
+                         <span class="myorder-placed"> {%trans 'Order Placed Time'%}:  {{order.create_time}}</span>
                          <span class="myorder-total">
-                         	Total: <span class="myorder-money">${{order.order_amount|floatformat:"2"}}</span>
+                         	{%trans 'Total'%}: <span class="myorder-money">${{order.order_amount|floatformat:"2"}}</span>
                          	<span class="myorder-shipping">Shipping: ${{order.shipping_fee|floatformat:"2"}}</span>
                          </span>
                       </td>
@@ -145,7 +146,7 @@
 								  {% ifequal p objects.number %}
 								  <li class="active"><a>{{p}}</a></li>
 								  {% else %}
-								  <li><a href="?page={{p}}" title="第{{p}}页">{{p}}</a><li>
+								  <li><a href="?page={{p}}" title="{{p}}">{{p}}</a><li>
 								  {% endifequal %}
 								{% endfor %}
 
