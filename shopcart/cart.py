@@ -37,23 +37,34 @@ def add_to_cart(request):
 				
 		product = Product.objects.get(id=product_to_be_add['product_id'])
 		#如果商品有额外属性，则必须指定额外属性的条目
+		
 		product_attribute = None
-		if product.attributes.all():
+		add_result_flag = True
+		try:
+			product_attribute_id_to_be_add = int(product_to_be_add['product_attribute_id'])
+		except Exception as err:
+			logger.error('The product has muti values but not selected.')
+			add_result_flag = False
+		
+		if product.attributes.all() and add_result_flag:
 			for pa in product.attributes.all():
-				if pa.id == int(product_to_be_add['product_attribute_id']):
+				#logger.debug('pa.id %s and product_attribute_id_to_be_add %s' % [str(pa.id),str(product_attribute_id_to_be_add)])
+				if pa.id == product_attribute_id_to_be_add:
 					product_attribute = pa
-			if product_attribute == None:#循环完了还没找到匹配的pa，说明不对了
-				result_dict['success'] = False
-				result_dict['message'] = _('Unknown Exception.')
-				return result_dict
-					
+					add_result_flag = True
+					break
 		
-		cart_product,create = Cart_Products.objects.get_or_create(cart=cart,product=product,product_attribute=product_attribute)
-		cart_product.quantity = cart_product.quantity + int(product_to_be_add['quantity'])
-		cart_product.save()
 		
-		result_dict['success'] = True
-		result_dict['message'] = _('Opration successsul.')
+		if add_result_flag:
+			cart_product,create = Cart_Products.objects.get_or_create(cart=cart,product=product,product_attribute=product_attribute)
+			cart_product.quantity = cart_product.quantity + int(product_to_be_add['quantity'])
+			cart_product.save()
+		
+			result_dict['success'] = True
+			result_dict['message'] = _('Opration successsul.')
+		else:
+			result_dict['success'] = False
+			result_dict['message'] = _('Unknown Exception.')
 		
 		#为了将cart_id写到cookie里，不得不用response对象，要不然可以简单的使用上面这句
 		response = HttpResponse()

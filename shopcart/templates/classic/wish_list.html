@@ -64,11 +64,15 @@
                           </div></td>
                         <td data-rwd-label="Quantity" class="wishlist-cell2 customer-wishlist-item-quantity"><div class="cart-cell">
                             <div class="add-to-cart-alt">
-                              <input type="text" value="1" id="qty_{{wish.product.id}}" name="quantity" class="input-text qty validate-not-negative-number" pattern="\d*">
+							<!--
+								<input type="text" value="1" id="qty_{{wish.product.id}}" name="quantity" class="input-text qty validate-not-negative-number" pattern="\d*">
+								-->
                             </div>
                           </div></td>
                         <td class="wishlist-cell4 customer-wishlist-item-cart">
+						<!--
                         <button class="button btn-add" name="add-to-cart" type="button" data-wishlistid="{{wish.id}}" data-productid="{{wish.product.id}}"><span><span>Add to Cart</span></span></button>
+						-->
                       </td>
                       <td class="wishlist-cell5 customer-wishlist-item-remove last"><a class="remove-item" data-wishlistid="{{wish.id}}" name="remove-wishlist" href="#"><span><span></span></span></a></td>                     </tr>
                      {% endfor %}

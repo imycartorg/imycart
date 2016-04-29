@@ -27,6 +27,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SESSION_COOKIE_AGE = 1800
+#SESSION_COOKIE_AGE = 10
+#默认的session过期时间，默认是1800秒
+
 SITE_ID = '1'
 
 LOGIN_URL = '/user/login/'
