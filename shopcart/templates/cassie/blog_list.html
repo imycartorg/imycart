@@ -22,7 +22,7 @@
      </div>   
      <div class="blog-pages">
 		{% if article_list.has_previous %}
-		<a name="pageChange" data-tag="Previous" href="?page={{ article_list.previous_page_number }}" class="blog-btn">Prev</a>
+		<a name="pageChange" data-tag="Previous" class="pageChage blog-btn" data-page="{{ order_list.previous_page_number }}" href="#">Prev</a>
 		{% else %}
 		<a class="blog-current">Prev</a>
 		{% endif %}
@@ -31,16 +31,16 @@
 		  {% ifequal p objects.number %}
 		  <a class="blog-current">{{p}}</a>
 		  {% else %}
-		  <a href="?page={{p}}" title="{{p}}">{{p}}</a>
+		  <a class="pageChage"  data-page = "{{p}}" href="#" title="{{p}}">{{p}}</a>
 		  {% endifequal %}
 		{% endfor %}
 
 		{% if article_list.has_next %}
-		<a name="pageChange" data-tag="Next" href="?page={{ article_list.next_page_number }}" class="blog-btn">Next</a>
+		<a name="pageChange" data-tag="Next" class="pageChage blog-btn" data-page = "{{p}}" data-page-range="{{page_range}}" href="#" class="blog-btn">Next</a>
 		{% else %}
 		<a class="blog-current">Next</a>
 		{% endif %}
-
+		
      </div>
      </div>
   </div>

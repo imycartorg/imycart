@@ -34,22 +34,24 @@
             <div id="sort-by">
               <label class="left">Sort By: </label>
               <ul>
-                <li><a title="orderBy" data-column="on_sale_date" href="#">On sale<span class="right-arrow"></span></a>
+                <li><a title="orderBy" class="orderBy" data-column="create_time" href="#">On sale<span class="right-arrow"></span></a>
                   <ul>
-                    <li><a title="orderBy" data-column="shopPrice" href="#">Price</a></li>
+                    <li><a title="orderBy" class="orderBy" data-column="price" href="#">Price</a></li>
                   </ul>
                 </li>
               </ul>
-              <a class="button-asc left" href="#" title="Set Descending Direction" id="sordDirection"><span id="sortArrow" class="glyphicon glyphicon-arrow-down"></span></a> </div>
+              <a class="button-asc left sortDirection" href="#" title="Set Descending Direction">
+				<span id="sortArrow" class="glyphicon {% if direction == 'desc' %}glyphicon-arrow-down {%else%} glyphicon-arrow-up {%endif%}"></span>
+			  </a> </div>
             <div class="pager">
               <div id="limiter">
                 <label>View: </label>
                 <ul>
-                  <li><a title="pageSize" href="#">15<span class="right-arrow"></span></a>
+                  <li><a title="pageSize" class="pageSize" data-page-size="15" href="#">15<span class="right-arrow"></span></a>
                     <ul>
-                      <li><a title="pageSize" href="#">20</a></li>
-                      <li><a title="pageSize" href="#">30</a></li>
-                      <li><a title="pageSize" href="#">35</a></li>
+                      <li><a title="pageSize" class="pageSize" data-page-size="20" href="#">20</a></li>
+                      <li><a title="pageSize" class="pageSize" data-page-size="25" href="#">25</a></li>
+                      <li><a title="pageSize" class="pageSize" data-page-size="30" href="#">30</a></li>
                     </ul>
                   </li>
                 </ul>
@@ -58,7 +60,7 @@
 					<label>Page:</label>
 					<ul class="pagination">
 						{% if product_list.has_previous %}
-						<li><a name="pageChange" data-tag="Previous" href="?page={{ product_list.previous_page_number }}">&laquo;</a></li>
+						<li><a name="pageChange" data-tag="Previous" class="pageChage" data-page="{{ product_list.previous_page_number }}" href="#">&laquo;</a></li>
 						{% else %}
 						<li class="active"><a>&laquo;</a></li>
 						{% endif %}
@@ -67,12 +69,12 @@
 						  {% ifequal p objects.number %}
 						  <li class="active"><a>{{p}}</a></li>
 						  {% else %}
-						  <li><a href="?page={{p}}" title="{{p}}">{{p}}</a><li>
+						  <li><a class="pageChage"  data-page = "{{p}}" href="#" title="{{p}}">{{p}}</a><li>
 						  {% endifequal %}
 						{% endfor %}
 
 						{% if product_list.has_next %}
-						<li><a name="pageChange" data-tag="Next" href="?page={{ product_list.next_page_number }}">&raquo;</a></li>
+						<li><a name="pageChange" class="pageChage" data-page = "{{p}}" data-page-range="{{page_range}}" data-tag="Next" href="#">&raquo;</a></li>
 						{% else %}
 						<li class="active"> <a>&raquo;</a></li>
 						{% endif %}
@@ -325,22 +327,13 @@
 {% endblock %}
 {% block scripts %}
 		<script type="text/javascript">
-			$(document).ready(function() {
-
-				$("[name=addToCart]").click(
-						function(event) {
-							event.preventDefault();
-							imycartAddProductToCartaddProductToCart($(this).attr("data-productid"),1);
-						}
-				);
-				
+			$(document).ready(function() {				
 				$("[name=addToWishList]").click(
 						function(event) {
 							event.preventDefault();
 							imycartAddProductToWishlist($(this).attr("data-productid"));
 						}
 				);
-					
 			});
 		</script>
 {% endblock %}

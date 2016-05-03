@@ -91,6 +91,70 @@ function imycartAjaxCallWithCallback(url,object,callback,triggerControl,extraInf
 	});
 };
 
+//每页显示数量设置
+jQuery(".pageSize").click(function(){
+	event.preventDefault();
+	var url = location.href;
+	var newurl = changeURLArg(url,"pageSize",$(this).data("page-size"));
+	location.href = newurl;//跳转到对应的页面
+});
+
+
+//页数点击切换
+jQuery(".pageChage").click(function(){
+	event.preventDefault();//阻止A标签跳转
+	var url = location.href;
+	var pageNo = $.getUrlParam("page");
+	var tag = $(this).attr("data-tag");
+	if(tag=="Previous"){
+		//向前，如果当前不是第一页，则向前翻页
+		if(pageNo>1){
+			pageNo--;
+			var newurl = changeURLArg(url,"page",pageNo);
+			location.href = newurl;//跳转到对应的页面
+		}
+	}else if(tag=="Next"){
+		//向后，如果当前不是最后一页，则翻页
+		var pages = $(this).data("page-range");
+		if(pageNo<pages){
+			pageNo++;
+			var newurl = changeURLArg(url,"page",pageNo);
+			location.href = newurl;//跳转到对应的页面
+		}
+	}else{
+			var page = $(this).data("page");
+			var newurl = changeURLArg(url,"page",page);
+			location.href = newurl;//跳转到对应的页面
+	}
+});
+
+//按某列排序
+jQuery(".orderBy").click(function(){
+	event.preventDefault();//阻止A标签跳转
+	var url = location.href;
+	var newurl = changeURLArg(url,"sort_by",$(this).data("column"));
+	location.href = newurl;//跳转到对应的页面
+});
+
+//排序方向
+jQuery(".sortDirection").click(function(event) {
+	event.preventDefault();//阻止A标签跳转
+	var url = location.href;
+	var sp = $(this).find("span");
+ 	//var css = sp.attr("class");
+	if(sp.hasClass("glyphicon-arrow-up")){
+		var newurl = changeURLArg(url,"direction","desc");
+		sp.removeClass("glyphicon-arrow-up");
+		sp.addClass("glyphicon-arrow-down");
+		location.href = newurl;//跳转到对应的页面
+	}else{
+		var newurl = changeURLArg(url,"direction","asc");
+		sp.removeClass("glyphicon-arrow-down");
+		sp.addClass("glyphicon-arrow-up");
+		location.href = newurl;//跳转到对应的页面
+	}
+});
+
 //刷新验证码
 jQuery(".next-captcha").click(function(){
 	event.preventDefault();
@@ -118,9 +182,9 @@ jQuery('.form-control-captcha').blur(function(){
 	$.getJSON('/ajax_val_captcha', json_data, function(data){ //ajax发送            
 		$('#captcha_status').remove();            
 		if(data['success'] == true){ //status返回1为验证码正确， status返回0为验证码错误， 在输入框的后面写入提示信息               
-			alert(data['message']);        
+			//alert(data['message']);        
 		}else{
-			alert(data['message']);
+			//alert(data['message']);
 			//$(this).after('<span id="captcha_status" >*' + data['message'] + '</span>')     
 		}        
 	});     
@@ -275,7 +339,7 @@ jQuery(".product-attribute-item").click(function(){
 							$("#product-price-main").text("$" + result.message.price.toFixed(2));
 						}else{
 							//设定可以选择的属性列表
-							alert('Attributs avaliable to select are:' + result.message)
+							//alert('Attributs avaliable to select are:' + result.message)
 						
 						}
 						//alert('pa_id:' + $("input[name=product-attribute-id]").val());
@@ -285,3 +349,59 @@ jQuery(".product-attribute-item").click(function(){
 				}
 		});
 });
+
+
+/* 
+* url 目标url 
+* arg 需要替换的参数名称 
+* arg_val 替换后的参数的值 
+* return url 参数替换后的url 
+*/ 
+function changeURLArg(url,arg,arg_val){ 
+	if(url.endWith("#")){
+		url = url.replace("#","");
+	}
+    var pattern=arg+'=([^&]*)'; 
+    var replaceText=arg+'='+arg_val; 
+    if(url.match(pattern)){ 
+        var tmp='/('+ arg+'=)([^&]*)/gi'; 
+        tmp=url.replace(eval(tmp),replaceText); 
+        return tmp; 
+    }else{ 
+        if(url.match('[\?]')){ 
+            return url+'&'+replaceText; 
+        }else{ 
+            return url+'?'+replaceText; 
+        } 
+    } 
+    return url+'\n'+arg+'\n'+arg_val; 
+};
+
+String.prototype.endWith=function(s){
+	  if(s==null||s==""||this.length==0||s.length>this.length)
+	     return false;
+	  if(this.substring(this.length-s.length)==s)
+	     return true;
+	  else
+	     return false;
+	  return true;
+};
+
+String.prototype.startWith=function(s){
+	  if(s==null||s==""||this.length==0||s.length>this.length)
+	   return false;
+	  if(this.substr(0,s.length)==s)
+	     return true;
+	  else
+	     return false;
+	  return true;
+};
+
+//为jquery扩展一个能取得url中某个参数的方法
+(function ($) {
+    $.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+})(jQuery);

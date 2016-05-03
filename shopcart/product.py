@@ -79,6 +79,8 @@ def view_list(request):
 					product_list = Product.objects.order_by(request.GET['sort_by']).reverse()
 				else:
 					product_list = Product.objects.order_by(request.GET['sort_by'])
+				
+				ctx['direction'] = request.GET['direction']
 			else:
 				product_list = Product.objects.order_by(request.GET['sort_by'])
 		else:
