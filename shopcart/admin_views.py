@@ -97,6 +97,7 @@ def ckediter(request,item_type,item_id):
 	ctx['system_para'] = System_Para.get_default_system_parameters()
 	ctx['upload_url'] = '/file-upload/' + item_type + '/' + item_id + '/'
 	ctx['article_content'] = ''
+	ctx['id'] = item_id
 	if request.method == 'GET':
 		try:
 			if item_type == 'product':
@@ -108,4 +109,17 @@ def ckediter(request,item_type,item_id):
 		except:
 			raise Http404
 		return render(request,'admin/ckediter.html',ctx)
-	
+
+def product_edit(request,id):
+	logger.info('Enter into the product_edit function.')
+	if request.method=='POST':
+		try:
+			product = Product.objects.get(id=id)
+			product.description = request.POST['editor']
+			product.save()
+			return HttpResponse('成功')
+		except Exception as err:
+			logger.error('The Product which id is %s can not found.' % [id])
+			raise Http404
+	else:
+		raise Http404

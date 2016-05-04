@@ -38,20 +38,25 @@ def place_order(request):
 	ctx['system_para'] = System_Para.get_default_system_parameters()
 	if request.method == 'POST':
 		logger.debug('address_id:' + str(request.POST['address_id']))
-		address = Address.objects.get(id=request.POST['address_id'])
+		try:
+			address = Address.objects.get(id=request.POST['address_id'])
+		except:
+			ctx['order_result'] = _('Address is not correct')
+			return render(request,System_Config.get_template_name() + '/order_result.html',ctx)
+			
 		if address not in request.user.addresses.all():
 			#如果这个地址不是这个用户的，报错
 			ctx['order_result'] = 'System Error.Please try again.'
 			return render(request,System_Config.get_template_name() + '/order_result.html',ctx)
 		
 		#金额
-		sub_total,shipping,discount,total = request.POST['sub_total'],request.POST['shipping'],request.POST['discount'],request.POST['total']
+		sub_total,shipping,discount,total,remark = request.POST['sub_total'],request.POST['shipping'],request.POST['discount'],request.POST['total'],request.POST['remark']
 		logger.debug('>>>>>0:sub_total=' + str(sub_total))
 		#生成主订单
 		logger.debug('>>>>>1')
 		order = Order.objects.create(order_number=get_serial_number(),user=request.user,status=Order.ORDER_STATUS_PLACE_ORDER,country=address.country,province=address.province,city=address.city,district=address.district,address_line_1=address.address_line_1,
 			address_line_2=address.address_line_2,zipcode=address.zipcode,tel=address.tel,mobile=address.mobile,email=request.user.email,
-			products_amount = sub_total,shipping_fee=shipping,discount=discount,order_amount=total)
+			products_amount = sub_total,shipping_fee=shipping,discount=discount,order_amount=total,to_seller=remark)
 
 		logger.debug('>>>>>2:order.id='+str(order.id))
 		cart_product_id = request.POST.getlist('cart_product_id',[])

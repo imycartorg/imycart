@@ -7,6 +7,7 @@ import json,os
 from django.http import JsonResponse
 from django.utils.translation import ugettext as _
 from django.http import Http404
+from django.http import HttpResponse
 # import the logging library
 import logging
 # Get an instance of a logger
@@ -151,3 +152,14 @@ def ajax_get_product_info(request):
 	result_dict['message'] = list(attr_avaliable_set)#返回可以选择的attribute_id列表
 	return JsonResponse(result_dict)
 
+def ajax_get_product_description(request,id):
+	logger.info('Entered the ajax_get_product_description function')
+	product_desc = ''
+	if request.is_ajax():
+		try:
+			product = Product.objects.get(id=id)
+			product_desc = product.description
+		except Exception as err:
+			logger.error('检索id为%s的商品不存在.' % [id])
+	return HttpResponse(product_desc)
+	
