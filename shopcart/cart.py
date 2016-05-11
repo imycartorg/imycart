@@ -40,6 +40,8 @@ def add_to_cart(request):
 		
 		product_attribute = None
 		add_result_flag = True
+		min_order_quantity = product.min_order_quantity #最小下单数量
+		logger.debug('The min_order_quantity of this product is :%s' % (min_order_quantity))
 		try:
 			product_attribute_id_to_be_add = int(product_to_be_add['product_attribute_id'])
 		except Exception as err:
@@ -51,20 +53,29 @@ def add_to_cart(request):
 				#logger.debug('pa.id %s and product_attribute_id_to_be_add %s' % [str(pa.id),str(product_attribute_id_to_be_add)])
 				if pa.id == product_attribute_id_to_be_add:
 					product_attribute = pa
+					min_order_quantity = pa.min_order_quantity
+					logger.debug('The min_order_quantity of this product has been changed to :%s' % (min_order_quantity))
 					add_result_flag = True
 					break
 		
+		#判断加入购物车的数量数量否达到了最小下单数量
+		quantity = int(product_to_be_add['quantity'])
+		if quantity < min_order_quantity:
+			result_dict['success'] = False
+			result_dict['message'] = _('This product must order more than %s.' % (min_order_quantity))
+			add_result_flag = False
 		
 		if add_result_flag:
 			cart_product,create = Cart_Products.objects.get_or_create(cart=cart,product=product,product_attribute=product_attribute)
-			cart_product.quantity = cart_product.quantity + int(product_to_be_add['quantity'])
+			cart_product.quantity = cart_product.quantity + quantity
 			cart_product.save()
 		
 			result_dict['success'] = True
 			result_dict['message'] = _('Opration successsul.')
 		else:
 			result_dict['success'] = False
-			result_dict['message'] = _('Unknown Exception.')
+			if not result_dict['message']:
+				result_dict['message'] = _('Unknown Exception.')
 		
 		#为了将cart_id写到cookie里，不得不用response对象，要不然可以简单的使用上面这句
 		response = HttpResponse()
@@ -108,22 +119,21 @@ def ajax_modify_cart(request):
 			result_dict['cart_product_total'] = cart_exist.get_total()
 			result_dict['sub_total'] = cart_exist.cart.get_sub_total()
 		elif cart['method'] == 'sub':
-			cart_exist.quantity = cart_exist.quantity - int(cart['quantity'])
+			quantity = cart_exist.quantity - int(cart['quantity'])
 			#不可减到1个以下
 			if cart_exist.quantity <= 0:
-				cart_exist.quantity = 1
-			cart_exist.save()
-			result_dict['cart_product_total'] = cart_exist.get_total()
-			result_dict['sub_total'] = cart_exist.cart.get_sub_total()
+				cart_exist.quantity = 1			
+			if not set_cart_product_quantity(quantity,cart_exist,result_dict):
+				return JsonResponse(result_dict)
+
 		elif cart['method'] == 'del':
 			parent_cart = cart_exist.cart
 			cart_exist.delete()
 			result_dict['sub_total'] = parent_cart.get_sub_total()			
 		elif cart['method'] == 'set':
-			cart_exist.quantity = int(cart['quantity'])
-			cart_exist.save()
-			result_dict['cart_product_total'] = cart_exist.get_total()
-			result_dict['sub_total'] = cart_exist.cart.get_sub_total()
+			quantity = int(cart['quantity'])
+			if not set_cart_product_quantity(quantity,cart_exist,result_dict):
+				return JsonResponse(result_dict)
 		else:
 			return JsonResponse(result_dict)
 			
@@ -132,6 +142,19 @@ def ajax_modify_cart(request):
 		result_dict['message'] = _('Opration successful.')
 	
 	return JsonResponse(result_dict)
+
+def set_cart_product_quantity(quantity,cart_exist,result_dict):
+	logger.debug('at least:' + str(cart_exist.product_attribute.min_order_quantity))
+	if quantity >= cart_exist.product_attribute.min_order_quantity:
+		cart_exist.quantity = quantity
+		cart_exist.save()
+		result_dict['cart_product_total'] = cart_exist.get_total()
+		result_dict['sub_total'] = cart_exist.cart.get_sub_total()
+		return True
+	else:
+		result_dict['message'] = 'The product must order more than %s' % (cart_exist.product_attribute.min_order_quantity)
+		result_dict['origin'] = cart_exist.quantity
+		return False
 
 def view_cart(request):
 	ctx = {}

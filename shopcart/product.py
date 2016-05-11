@@ -41,6 +41,13 @@ def detail(request,id):
 		ctx['has_price_range'] = True
 		
 	if request.method =='GET': #正常访问，返回动态页面
+		#检查商品是否已经加入了用户的愿望清单
+		if request.user.is_authenticated():
+			wish_list = request.user.wishs.all()
+			for wish in wish_list:
+				if product == wish.product:
+					logger.debug('The product which id is %s has been added to user\'s wishlist.' % (product.id))
+					ctx['is_wished'] = True
 		return render(request,System_Config.get_template_name() + '/product_detail.html', ctx)
 	elif request.method == 'POST':#通过ajax访问，生成静态文件
 		content = render_to_string(System_Config.get_template_name() + '/product_detail.html', ctx)

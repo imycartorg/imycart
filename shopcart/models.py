@@ -35,6 +35,9 @@ class MyUserManager(BaseUserManager):
 class MyUser(AbstractBaseUser, PermissionsMixin):
 	username = models.CharField(max_length=254,unique=True, null=True,db_index=True)
 	email = models.EmailField('email address', unique=True, db_index=True, max_length=254)
+	first_name = models.CharField(max_length=254,null=True)
+	middle_name = models.CharField(max_length=254,null=True)
+	last_name = models.CharField(max_length=254,null=True)
 	mobile_phone = models.CharField(max_length=50,null=True)
 	gender = models.CharField(max_length=3,null=True)
 	birthday = models.DateField(null=True)
@@ -54,7 +57,7 @@ class MyUser(AbstractBaseUser, PermissionsMixin):
 		return self.username
 
 	def get_short_name(self):
-		return self.username
+		return str(self.first_name) + ' ' + str(self.last_name)
 		
 	def get_human_gender(self):
 		if self.gender == '1':
@@ -162,6 +165,7 @@ class Product(models.Model):
 	sort_order = models.IntegerField(default=0,verbose_name='排序序号')
 	static_file_name = models.CharField(max_length = 254,null=True,blank=True,verbose_name='静态文件名(不包含路径，以html结尾)')
 	categorys = models.ManyToManyField(Category,verbose_name='商品分类')
+	min_order_quantity = models.IntegerField(default=0,verbose_name='最小下单数量')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 
@@ -233,7 +237,8 @@ class Product_Attribute(models.Model):
 	price_adjusment = models.FloatField()
 	image = models.ForeignKey(Product_Images,null=True)
 	name = models.CharField(max_length = 254,default='')
-	attribute = models.ManyToManyField(Attribute,null=True) 
+	attribute = models.ManyToManyField(Attribute,null=True)
+	min_order_quantity = models.IntegerField(default=0,verbose_name='最小下单数量')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 	
@@ -463,4 +468,7 @@ class Album(models.Model):
 		verbose_name_plural = '相册'
 	
 	
-	
+class Email_List(models.Model):
+	email = models.EmailField('email address', unique=True, db_index=True, max_length=254)
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
+	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')

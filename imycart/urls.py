@@ -52,6 +52,7 @@ urlpatterns = patterns("",
 	url(r'^comments/', include('django_comments.urls')),
 	url(r'^file-upload/(.+)/(.+)/$', 'shopcart.admin_views.file_upload',name='admin_file_upload'),
 	url(r'^file-delete/(.+)/(.+)/(.+)/$', 'shopcart.admin_views.file_delete',name='admin_file_delete'),
+	url(r'^email-list/add/$', 'shopcart.emaillist.add_to_email_list',name='emaillist_add_to_email_list'),
 	#url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
 	url('^admin/ckediter/(.+)/(.+)/$', 'shopcart.admin_views.ckediter',name='admin_ckediter'),
 	url('^admin/product/report/$', 'shopcart.admin_views.product_report',name='admin_product_report'),

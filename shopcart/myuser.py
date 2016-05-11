@@ -31,8 +31,8 @@ def register(request):
 		return render(request,System_Config.get_template_name() + '/register.html',ctx)
 	else:
 		form = register_form(request.POST) # 获取Post表单数据
-		if form.is_valid():# 验证表单,会自动验证验证码
-			myuser = MyUser.objects.create_user(username=None,email=form.cleaned_data['email'],password=form.cleaned_data['password'])
+		if form.is_valid():# 验证表单
+			myuser = MyUser.objects.create_user(username=None,email=form.cleaned_data['email'],password=form.cleaned_data['password'],first_name=form.cleaned_data['first_name'],last_name=form.cleaned_data['last_name'])
 			return redirect('/user/login')
 		else:
 			ctx['reg_result'] = _('Registration faild.')
@@ -65,26 +65,26 @@ def login(request):
 			next = request.POST['next']
 			ctx['next'] = next
 		
-		if form.is_valid():# 验证表单,会自动验证验证码
-			myuser = auth.authenticate(username = request.POST['email'], password = request.POST['password'])
-			if myuser is not None:
-				auth.login(request,myuser)
-				mycart = merge_cart(request)
-				redirect_url = reverse('product_view_list')
-				if 'next' in request.POST:
-					if len(request.POST['next']) > 0:
-						redirect_url = request.POST['next']
-				
-				response = redirect(redirect_url)
-				response.set_cookie('cart_id',mycart.id)
-				response.set_cookie('imycartuser',myuser.email)
-				return response
-			else:
-				ctx['login_result'] = _('Your email or password is not correct.')
-				return render(request,System_Config.get_template_name() + '/login.html',ctx)
+		#if form.is_valid():# 验证表单,会自动验证验证码，（新版不要验证码了）
+		myuser = auth.authenticate(username = request.POST['email'], password = request.POST['password'])
+		if myuser is not None:
+			auth.login(request,myuser)
+			mycart = merge_cart(request)
+			redirect_url = reverse('product_view_list')
+			if 'next' in request.POST:
+				if len(request.POST['next']) > 0:
+					redirect_url = request.POST['next']
+			
+			response = redirect(redirect_url)
+			response.set_cookie('cart_id',mycart.id)
+			response.set_cookie('imycartuser',myuser.email)
+			return response
 		else:
-			ctx['login_result'] = _('Please check you input.')
+			ctx['login_result'] = _('Your email or password is not correct.')
 			return render(request,System_Config.get_template_name() + '/login.html',ctx)
+		#else:
+		#	ctx['login_result'] = _('Please check you input.')
+		#	return render(request,System_Config.get_template_name() + '/login.html',ctx)
 			
 
 def merge_cart(request):

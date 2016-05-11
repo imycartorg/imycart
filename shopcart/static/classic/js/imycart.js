@@ -57,12 +57,16 @@ function imycartAjaxCall(url,object,is_show_message_box,message){
 					if(is_show_message_box){
 						if(message==null){
 							message = "Your opration is success."
+						}else if(message=='showservermessage'){
+								message = result.message
 						}
 						$("#infoMessage").html(message);
 					}
 				}else{
 					if(message==null){
 							message = "Your opration is failed."
+					}else if(message=='showservermessage'){
+							message = result.message
 					}
 					$("#infoMessage").html(message);
 				}
@@ -90,6 +94,16 @@ function imycartAjaxCallWithCallback(url,object,callback,triggerControl,extraInf
 			}
 	});
 };
+
+//加入邮件列表
+jQuery(".add-to-emaillist").click(function(){
+	event.preventDefault();
+	var email = new Object();
+	email.email = $("#newsletter-email").val();
+	var url = "/email-list/add/"
+	imycartAjaxCall(url,email,true,null);
+});
+
 
 //每页显示数量设置
 jQuery(".pageSize").click(function(){
@@ -205,7 +219,7 @@ jQuery(".return-to-cart").click(function() {
  ***   页面跳转类结束
  ***/
  
- 
+
 
 /***
  ***  查看购物车明细页面使用的方法开始 ***
@@ -219,26 +233,38 @@ function imycartModifyCart(method,cart_id,quantity,triggerControl){
 	
 	extraInfo = new Object();
 	extraInfo.method = method;
+	extraInfo.quantity_origin = quantity;
 	imycartAjaxCallWithCallback(url,cart,imycartModifyCartCallback,triggerControl,extraInfo);
 }
 
 function imycartModifyCartCallback(result,triggerControl,extraInfo){
+	flag = false;
 	if(extraInfo.method=="set"){
-		//先获取出发事件的数量控件旁边的金额字段的span控件
-		var td = triggerControl.parent().siblings("[name=subTotalTd]");
-		var subTotal = td.find("span");
-		subTotal.html("$ " + result.cart_product_total.toFixed(2));
+		if(result.success==true){
+			//先获取出发事件的数量控件旁边的金额字段的span控件
+			var td = triggerControl.parent().siblings("[name=subTotalTd]");
+			var subTotal = td.find("span");
+			subTotal.html("$ " + result.cart_product_total.toFixed(2));
+			flag = true;
+		}else{
+			triggerControl.val(result.origin);
+		}
+		
 	}else if(extraInfo.method == "del"){
 		var tr = triggerControl.parent().parent();	
 		tr.remove();
+		flag = true;
 	}else if(extraInfo.method == "clear"){
 		//都清空
+		flag = true;
 		$("#shopping-cart-table").find("tbody").find("tr").remove();
 		$("#shopping-cart-table").find("tbody").html("<tr><td class='a-center'><span><span>Your shopping cart is empty!</span></span></td></tr>");
 	}
 
 	//更新总金额
-	imycartUpdateTotalAmount(result.sub_total,result.sub_total);
+	if(flag){
+		imycartUpdateTotalAmount(result.sub_total,result.sub_total);
+	}
 }
 
 function imycartUpdateTotalAmount(totalAmount,totalPrice){
@@ -293,7 +319,7 @@ function imycartAddProductToCartaddProductToCart(product_id,product_attribute_id
 		cart.product_id = product_id;
 		cart.product_attribute_id = product_attribute_id;
 		cart.quantity = quantity;
-		imycartAjaxCall(url,cart,true,null);
+		imycartAjaxCall(url,cart,true,'showservermessage');
 };
 
 //把商品添加到愿望清单

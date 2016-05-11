@@ -1,6 +1,6 @@
 __pycache__
 *.pyc
 migrations
-media
+/media
 *.log
-static
+/static

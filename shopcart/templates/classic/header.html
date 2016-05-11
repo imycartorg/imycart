@@ -12,7 +12,7 @@
           <div class="col-lg-9 col-xs-12 right_menu">
             <div class="toplinks">
               <!-- Default Welcome Message -->
-            <div class="welcome-msg hidden-xs">{{system_para.default_welcome_message}} {{user.email}}</div>
+            <div class="welcome-msg hidden-xs">{{system_para.default_welcome_message}} : {{user.get_short_name|default:"^_^"}}</div>
             <!-- End Default Welcome Message -->
             <div class="links">
               <div class="myaccount"><a title="My Account" href="/cart/show"><span class="hidden-xs">{% trans 'My Cart' %}</span></a></div>
