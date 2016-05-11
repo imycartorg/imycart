@@ -192,10 +192,22 @@ def address(request,method):
 	result = False
 	message = 'System Error'
 	if request.method == 'POST':
+		address_id = request.POST.get('address_id','')
+		logger.debug('The address id is %s.' % (address_id))
+		#用途的拼装方法
+		useage = request.POST['first_name'] + ' ' + request.POST['last_name'] + '@' + request.POST['city']
 		if method == 'add' or method == 'modify':
-			address,created = Address.objects.get_or_create(user=request.user,useage=request.POST['useage'])
+			if not address_id:
+				address = Address.objects.create(user=request.user)
+			else:
+				try:
+					address = Address.objects.get(user=request.user,id=address_id)
+				except Exception as err:
+					logger.debug('Can not find address which address_id is %s and belongs to %s .' %(address_id,request.user.email))
+					return HttpResponse(message)					
 			form = address_form(request.POST,instance=address)
 			if form.is_valid():
+				address.useage = useage
 				address.save()				
 				result = True
 				message=_('Address successfully saved.')

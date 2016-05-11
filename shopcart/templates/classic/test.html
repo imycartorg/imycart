@@ -24,7 +24,7 @@
 			  <div class="row">
 					<div class="product-view">
 						<div class="product-essential">							
-							<form action='/user/address/add/' method='POST'>
+							<form id="address-form" action='/user/address/add/' method='POST'>
 								{% csrf_token %}
 								 {% for field in form %}
 								   <div class="fieldWrapper">
@@ -32,7 +32,8 @@
 									  {{ field.errors }}
 								   </div>
 								 {% endfor %}
-								<input type='submit' value='Submit' />
+								 <input name="address_id" type="hidden" value="" />
+								<button type="button" class="btn-address-submit">submit</button>
 							</form>
 						</div>
 					</div>
@@ -45,7 +46,22 @@
 	<script type="text/javascript">
 
 		$(document).ready(function() {  
-
+			$(".btn-address-submit").click(function(){
+				var url = "/user/address/add/";
+				$.ajax({
+					cache: false,
+					type: "POST",
+					url:url,
+					data:$('#address-form').serialize(),
+					async: false,
+					error: function(request) {
+						alert("Connection error");
+					},
+					success: function(data) {
+						alert(data)
+					}
+				});
+			});
 		});
 	</script>
   {% endblock %}
