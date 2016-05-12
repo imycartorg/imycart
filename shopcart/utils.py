@@ -9,7 +9,6 @@ from captcha.helpers import captcha_image_url
 from django.db import transaction
 from django.utils.translation import ugettext as _
 import datetime,uuid
-import simplejson
 from django.core.serializers import serialize,deserialize
 from django.db.models.query import QuerySet
 from django.db import models
