@@ -11,3 +11,5 @@ sudo pip3 install Pillow==2.9.0
 # django-paypal:http://django-paypal.readthedocs.org/en/stable/install.html
 
 # django-comments:http://django-contrib-comments.readthedocs.org/en/latest/porting.html
+
+# xmltodict:  pip install xmltodict
