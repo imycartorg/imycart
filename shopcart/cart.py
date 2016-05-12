@@ -19,7 +19,7 @@ def add_to_cart(request):
 	ctx = {}
 	ctx.update(csrf(request))
 	result_dict = {}
-	
+	result_dict['message'] = ''
 	if request.method =='POST':
 		product_to_be_add = json.loads((request.body).decode())		
 		
@@ -48,22 +48,31 @@ def add_to_cart(request):
 			logger.error('The product has muti values but not selected.')
 			add_result_flag = False
 		
-		if product.attributes.all() and add_result_flag:
-			for pa in product.attributes.all():
-				#logger.debug('pa.id %s and product_attribute_id_to_be_add %s' % [str(pa.id),str(product_attribute_id_to_be_add)])
-				if pa.id == product_attribute_id_to_be_add:
-					product_attribute = pa
-					min_order_quantity = pa.min_order_quantity
-					logger.debug('The min_order_quantity of this product has been changed to :%s' % (min_order_quantity))
-					add_result_flag = True
-					break
+		if product.attributes.all():
+			if add_result_flag:
+				for pa in product.attributes.all():
+					#logger.debug('pa.id %s and product_attribute_id_to_be_add %s' % [str(pa.id),str(product_attribute_id_to_be_add)])
+					if pa.id == product_attribute_id_to_be_add:
+						product_attribute = pa
+						min_order_quantity = pa.min_order_quantity
+						logger.debug('The min_order_quantity of this product has been changed to :%s' % (min_order_quantity))
+						add_result_flag = True
+						break
+			else:
+				#没选特定属性
+				result_dict['message'] = _('Please choose a kind')
+		else:
+			#该商品没有多种属性，可以添加
+			add_result_flag = True
+				
 		
 		#判断加入购物车的数量数量否达到了最小下单数量
-		quantity = int(product_to_be_add['quantity'])
-		if quantity < min_order_quantity:
-			result_dict['success'] = False
-			result_dict['message'] = _('This product must order more than %s.' % (min_order_quantity))
-			add_result_flag = False
+		if add_result_flag:
+			quantity = int(product_to_be_add['quantity'])
+			if quantity < min_order_quantity:
+				result_dict['success'] = False
+				result_dict['message'] = _('This product must order more than %s.' % (min_order_quantity))
+				add_result_flag = False
 		
 		if add_result_flag:
 			cart_product,create = Cart_Products.objects.get_or_create(cart=cart,product=product,product_attribute=product_attribute)
