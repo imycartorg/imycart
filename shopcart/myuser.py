@@ -246,6 +246,7 @@ def address_detail(request,address_id):
 			result = True
 		except Exception as err:
 			logger.error('Can not find the address which id is %s and user is %s .' % (address_id,request.user.email))
+			logger.error(str(err))
 	result_dict['success'] = result
 	#return HttpResponse(serializer(result,datetime_format='string',output_type='json'))
 	return JsonResponse(result_dict)
