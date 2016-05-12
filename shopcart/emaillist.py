@@ -15,7 +15,7 @@ def add_to_email_list(request):
 	email = json.loads((request.body).decode())
 	result_dict = {}
 	try:
-		email_list,create = Email_List.objects.get_or_create(email=email['email'])
+		email_list,create = Email_List.objects.get_or_create(email=email['email'].lower())
 		result_dict['success'] = True
 		result_dict['message'] = _('Add email to email list success')
 	except Exception as err:
