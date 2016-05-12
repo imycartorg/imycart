@@ -211,8 +211,8 @@ class Attribute_Group(models.Model):
 		return self.name
 	
 	class Meta:
-		verbose_name = '商品属性组'
-		verbose_name_plural = '商品属性组'
+		verbose_name = '商品属性组定义'
+		verbose_name_plural = '商品属性组定义'
 
 @python_2_unicode_compatible
 class Attribute(models.Model):
@@ -227,8 +227,8 @@ class Attribute(models.Model):
 		return self.name
 	
 	class Meta:
-		verbose_name = '商品属性'
-		verbose_name_plural = '商品属性'
+		verbose_name = '商品属性定义'
+		verbose_name_plural = '商品属性定义'
 
 @python_2_unicode_compatible
 class Product_Attribute(models.Model):
@@ -245,6 +245,10 @@ class Product_Attribute(models.Model):
 	
 	def __str__(self):
 		return self.name
+	
+	class Meta:
+		verbose_name = '商品属性'
+		verbose_name_plural = '商品属性'
 
 
 class Cart(models.Model):
@@ -468,8 +472,15 @@ class Album(models.Model):
 		verbose_name = '相册'
 		verbose_name_plural = '相册'
 	
-	
+@python_2_unicode_compatible
 class Email_List(models.Model):
-	email = models.EmailField('email address', unique=True, db_index=True, max_length=254)
+	email = models.EmailField(unique=True, db_index=True, max_length=254,verbose_name = '电子邮件')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
 	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
+	
+	def __str__(self):
+		return self.email
+		
+	class Meta:
+		verbose_name = '订阅邮件列表'
+		verbose_name_plural = '订阅邮件列表'

@@ -1,8 +1,14 @@
 from django.contrib import admin
 
-from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article
+from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute
 
 # Register your models here.
+class EmailListAdmin(admin.ModelAdmin):
+	list_filter = ('create_time',)
+	#自然是排序所用了，减号代表降序排列
+	ordering = ('-create_time',)
+admin.site.register(Email_List,EmailListAdmin)
+
 class ArticleAdmin(admin.ModelAdmin):
 	list_filter = ('create_time',)
 	#自然是排序所用了，减号代表降序排列
@@ -46,6 +52,12 @@ class ProductAdmin(admin.ModelAdmin):
 	list_filter = ('create_time',)
 	ordering = ('-create_time',)	
 admin.site.register(Product,ProductAdmin)
+
+class ProductAttributeAdmin(admin.ModelAdmin):
+	list_filter = ('create_time',)
+	#自然是排序所用了，减号代表降序排列
+	ordering = ('-create_time',)
+admin.site.register(Product_Attribute,ProductAttributeAdmin)
 
 #class Order_ProductsInline(admin.StackedInline):
 class Order_ProductsInline(admin.TabularInline):
