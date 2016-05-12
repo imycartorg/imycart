@@ -280,7 +280,80 @@ jQuery(".order-pay-button").click(function(event) {
 	var url = '/cart/payment/' + $(this).data("id");
 	location.href = url;
 }); 
- 
+
+//地址添加与修改
+jQuery(".btn-address-submit").click(function(){
+	var address_id = $("#select_address_id").val();
+	var url = "/user/address/opration/";
+	if (address_id == ""){
+		//说明是新增
+		url = url + "add/";
+	}else{
+		url = url + "modify/"
+	}
+	
+	$.ajax({
+		cache: false,
+		type: "POST",
+		url:url,
+		data:$('#address-form').serialize(),
+		async: false,
+		error: function(request) {
+			alert("System error");
+		},
+		success: function(data) {
+			if(data.success==true){
+				var address_id = data.address.id;
+				var useage = data.address.useage;
+				var changeFlag = false;
+				$("#select_address_id option").each(function(){
+					if($(this).val()==address_id){
+						changeFlag = true;
+						$(this).text(useage);
+						alert("TODO:Opration success");
+					}
+				});
+				if (!changeFlag){
+					//新增的
+					$("#select_address_id").append("<option value='" + address_id + "'>" + useage +  "</option>");
+					$("#select_address_id").val(address_id);
+					alert("TODO:Opration success");
+				}
+			}
+		}
+	});
+});
+
+//地址选择的修改
+$("#select_address_id").change(function(e){
+	//获取地址的详细信息
+	var url = "/user/address/detail/";
+	var address_id = $("#select_address_id").val();
+	if (address_id == ""){
+		//清空下面的列表
+		$("#address-form")[0].reset(); //重置表单要加个[0],神奇的东东。。。。
+	}else{
+		url = url + address_id;
+		$.ajax({
+			cache: false,
+			type: "GET",
+			url:url,
+			data:null,
+			async: false,
+			error: function(request) {
+				alert("System error");
+			},
+			success: function(data) {
+				if(data.success==true){
+					for (key in data.address){
+						$("#id_" + key).val(data.address[key]); //页面上input必须命名成 "id_字段"的形式
+					}
+				}
+			}
+		});
+	}
+});
+
  
 //取消订单
 jQuery(".order-cancel-button").click(function(event) {

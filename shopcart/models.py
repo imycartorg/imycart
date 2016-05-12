@@ -87,6 +87,7 @@ class Address(models.Model):
 	best_time = models.CharField(max_length=50,default='',null=True,blank=True)
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
+	
 
 @python_2_unicode_compatible
 class System_Config(models.Model):

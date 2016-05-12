@@ -32,7 +32,7 @@ def register(request):
 	else:
 		form = register_form(request.POST) # 获取Post表单数据
 		if form.is_valid():# 验证表单
-			myuser = MyUser.objects.create_user(username=None,email=form.cleaned_data['email'],password=form.cleaned_data['password'],first_name=form.cleaned_data['first_name'],last_name=form.cleaned_data['last_name'])
+			myuser = MyUser.objects.create_user(username=None,email=form.cleaned_data['email'].lower(),password=form.cleaned_data['password'],first_name=form.cleaned_data['first_name'],last_name=form.cleaned_data['last_name'])
 			return redirect('/user/login')
 		else:
 			ctx['reg_result'] = _('Registration faild.')
@@ -66,7 +66,7 @@ def login(request):
 			ctx['next'] = next
 		
 		#if form.is_valid():# 验证表单,会自动验证验证码，（新版不要验证码了）
-		myuser = auth.authenticate(username = request.POST['email'], password = request.POST['password'])
+		myuser = auth.authenticate(username = request.POST['email'].lower(), password = request.POST['password'])
 		if myuser is not None:
 			auth.login(request,myuser)
 			mycart = merge_cart(request)
@@ -189,6 +189,7 @@ def reset_password(request):
 def address(request,method):
 	ctx = {}
 	ctx['system_para'] = System_Para.get_default_system_parameters()
+	result_dict = {}
 	result = False
 	message = 'System Error'
 	if request.method == 'POST':
@@ -204,7 +205,7 @@ def address(request,method):
 					address = Address.objects.get(user=request.user,id=address_id)
 				except Exception as err:
 					logger.debug('Can not find address which address_id is %s and belongs to %s .' %(address_id,request.user.email))
-					return HttpResponse(message)					
+					return JsonResponse(result_dict)				
 			form = address_form(request.POST,instance=address)
 			if form.is_valid():
 				address.useage = useage
@@ -220,7 +221,35 @@ def address(request,method):
 	else:
 		ctx['form'] = address_form()
 		return render(request,System_Config.get_template_name() + '/test.html',ctx)
-	return HttpResponse(message)
+	
+	result_dict['success'] = result
+	result_dict['message'] = message
+	ret_add = {}
+	ret_add['useage'] = address.useage
+	ret_add['id'] = address.id
+	result_dict['address'] = ret_add
+	return JsonResponse(result_dict)
+	
+#@login_required
+def address_detail(request,address_id):
+	ctx = {}
+	result_dict = {}
+	result = False
+	if request.method=='GET':
+		try:
+			address = Address.objects.get(user=request.user,id=address_id)
+			from shopcart.serializer import serializer
+			serialized_address = serializer(address,datetime_format='string',output_type='dict')
+			#serialized_address = serialized_address.replace('\n','').replace('\\"','"')
+			logger.debug(serialized_address)
+			result_dict['address'] = serialized_address
+			result = True
+		except Exception as err:
+			logger.error('Can not find the address which id is %s and user is %s .' % (address_id,request.user.email))
+	result_dict['success'] = result
+	#return HttpResponse(serializer(result,datetime_format='string',output_type='json'))
+	return JsonResponse(result_dict)
+
 			
 			
 			

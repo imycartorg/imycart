@@ -24,15 +24,61 @@
 			  <div class="row">
 					<div class="product-view">
 						<div class="product-essential">							
-							<form id="address-form" action='/user/address/add/' method='POST'>
+							<form id="address-form">
 								{% csrf_token %}
-								 {% for field in form %}
+								 <select id="select_address_id" name="address_id">
+									<option value="">New Address</option>
+									{%for address in user.addresses.all%}
+										<option value="{{address.id}}">{{address.useage}}</option>
+									{%endfor%}
+								</select>
 								   <div class="fieldWrapper">
-									  {{ field.label_tag }}:{{ field }} 
-									  {{ field.errors }}
+									  <input id="id_useage" type="hidden" maxlength="254" name="useage" type="text" value="" /> 
 								   </div>
-								 {% endfor %}
-								 <input name="address_id" type="hidden" value="" />
+								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_is_default">Is default:</label><input checked="checked" id="id_is_default" name="is_default" type="checkbox" /> 
+									  
+								   </div>
+								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_first_name">First name:</label><input id="id_first_name" maxlength="50" name="first_name" type="text" /> 									  
+								   </div>								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_last_name">Last name:</label><input id="id_last_name" maxlength="50" name="last_name" type="text" /> 									  
+								   </div>								 								
+								   <div class="fieldWrapper">
+									  <label for="id_country">Country:</label><input id="id_country" maxlength="50" name="country" type="text" /> 								  
+								   </div>
+								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_province">Province:</label><input id="id_province" maxlength="50" name="province" type="text" /> 									  
+								   </div>								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_city">City:</label><input id="id_city" maxlength="50" name="city" type="text" /> 									  
+								   </div>							 								 
+								   <div class="fieldWrapper">
+									  <label for="id_district">District:</label><input id="id_district" maxlength="50" name="district" type="text" /> 									  
+								   </div>								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_address_line_1">Address line 1:</label><input id="id_address_line_1" maxlength="100" name="address_line_1" type="text" /> 									  
+								   </div>						 
+								   <div class="fieldWrapper">
+									  <label for="id_address_line_2">Address line 2:</label><input id="id_address_line_2" maxlength="100" name="address_line_2" type="text" /> 									  
+								   </div>
+								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_zipcode">Zipcode:</label><input id="id_zipcode" maxlength="50" name="zipcode" type="text" /> 									  
+								   </div>								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_tel">Tel:</label><input id="id_tel" name="tel" type="text" /> 									  
+								   </div>								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_mobile">Mobile:</label><input id="id_mobile" name="mobile" type="text" /> 									  
+								   </div>								 								 
+								   <div class="fieldWrapper">
+									  <label for="id_sign_building">Sign building:</label><input id="id_sign_building" name="sign_building" type="text" /> 									 
+								   </div>
 								<button type="button" class="btn-address-submit">submit</button>
 							</form>
 						</div>
@@ -46,22 +92,7 @@
 	<script type="text/javascript">
 
 		$(document).ready(function() {  
-			$(".btn-address-submit").click(function(){
-				var url = "/user/address/add/";
-				$.ajax({
-					cache: false,
-					type: "POST",
-					url:url,
-					data:$('#address-form').serialize(),
-					async: false,
-					error: function(request) {
-						alert("Connection error");
-					},
-					success: function(data) {
-						alert(data)
-					}
-				});
-			});
+			
 		});
 	</script>
   {% endblock %}

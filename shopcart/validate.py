@@ -17,7 +17,7 @@ def ajax_validate_user(request,exits):
 		if 'value' in request.GET:
 			myuser = None
 			try:
-				myuser = MyUser.objects.get(email=request.GET['value'])
+				myuser = MyUser.objects.get(email=request.GET['value'].lower())
 			except:
 				pass
 			

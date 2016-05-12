@@ -18,6 +18,7 @@ class address_form(forms.ModelForm):
 	tel = forms.CharField(required=False)
 	mobile = forms.CharField(required=False)
 	sign_building = forms.CharField(required=False)
+	useage = forms.CharField(required=False)
 	class Meta:
 		model = Address
 		fields = ('useage','is_default','first_name','last_name','country','province','city','district','address_line_1','address_line_2','zipcode','tel','mobile','sign_building') 
