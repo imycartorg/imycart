@@ -1,8 +1,14 @@
 from django.contrib import admin
 
-from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute
+from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute,Express
 
 # Register your models here.
+class ExpressAdmin(admin.ModelAdmin):
+	list_filter = ('create_time',)
+	#自然是排序所用了，减号代表降序排列
+	ordering = ('-create_time',)
+admin.site.register(Express,ExpressAdmin)
+
 class EmailListAdmin(admin.ModelAdmin):
 	list_filter = ('create_time',)
 	#自然是排序所用了，减号代表降序排列

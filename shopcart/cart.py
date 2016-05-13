@@ -1,6 +1,6 @@
 #coding=utf-8
 from django.shortcuts import render,redirect
-from shopcart.models import Cart,Product,Cart_Products,System_Config
+from shopcart.models import Cart,Product,Cart_Products,System_Config,Express
 from django.core.context_processors import csrf
 from django.http import HttpResponse,JsonResponse
 import json,uuid
@@ -9,6 +9,7 @@ from shopcart.utils import System_Para
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
+from django.http import Http404
 # import the logging library
 import logging
 # Get an instance of a logger
@@ -190,21 +191,17 @@ def check_out(request):
 	if request.method == 'POST':
 		#得到cart_product_id
 		cart_product_id_list = request.POST.getlist('cart_product_id',[])
-		cart_product_list = Cart_Products.objects.filter(id__in=cart_product_id_list)
+
+		#添加快递选择
+		ctx['express_list'] = Express.objects.all()		
 		
-		sub_total = 0.00
-		for cp in cart_product_list:
-			sub_total = sub_total + cp.get_total()
+		prices = get_prices(cart_product_id_list=cart_product_id_list)
 		
-		#TODO:添加优惠
-		discount = 0.00
-		#TODO:添加邮费
-		shipping = 0.00
-		ctx['product_list'] = cart_product_list
-		ctx['sub_total'] =  sub_total + shipping - discount
-		ctx['shipping'] = shipping
-		ctx['discount'] = discount
-		ctx['total'] = sub_total + shipping - discount
+		ctx['product_list'] = prices['product_list']
+		ctx['sub_total'] =  prices['sub_total']
+		ctx['shipping'] = prices['shipping']
+		ctx['discount'] = prices['discount']
+		ctx['total'] = prices['total']
 		
 		#找出用户的地址簿
 		myuser = request.user
@@ -216,3 +213,53 @@ def check_out(request):
 		return render(request,System_Config.get_template_name() + '/check_out.html',ctx)
 	else:
 		return redirect(reverse('cart_view_cart'))
+
+		
+#重新计算价格，一般用于切换了快递公司，切换了地址，或者输入了优惠码
+def re_calculate_price(request):
+	ret_dict = {}
+	ret_dict['success'] = False
+	ret_dict['message'] = _('Unknown Exception')
+	
+	if request.method == 'GET':
+		cart_product_id_list = request.GET.getlist('cart_product_id',[])
+		express_id = request.GET.get('express','')
+		try:
+			express = Express.objects.get(id=express_id)
+		except Exception as err:
+			logger.error('Can not find express which id is %s.' % (express_id) + str(err))
+			return JsonResponse(ret_dict)
+		prices = get_prices(cart_product_id_list=cart_product_id_list,express=express)
+		#将商品详细情况去掉，不需要
+		prices['product_list'] = None
+		ret_dict['success'] = True
+		ret_dict['message'] = prices
+	return JsonResponse(ret_dict)
+		
+def get_prices(cart_product_id_list,discount=0.0,express=None,express_mode='fixed'):
+	cart_product_list = Cart_Products.objects.filter(id__in=cart_product_id_list)
+	ret_dict = {}
+	ret_dict['product_list'] = cart_product_list
+	ret_dict['sub_total'] = 0.00
+	ret_dict['shipping'] = 0.00
+	ret_dict['discount'] = discount
+	ret_dict['total'] = 0.00
+	
+	for cp in cart_product_list:
+		ret_dict['sub_total'] = ret_dict['sub_total'] + cp.get_total()
+		
+	if express:
+		if express_mode == 'fixed':
+			ret_dict['shipping'] = express.price_fixed
+	
+	ret_dict['total'] = ret_dict['sub_total'] + ret_dict['shipping'] - ret_dict['discount']
+	return ret_dict
+		
+		
+		
+		
+		
+		
+		
+		
+		

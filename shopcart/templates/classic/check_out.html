@@ -36,7 +36,9 @@
               <!--<a href="#">Edit</a>--> 
             </div>
             <div id="checkout-step-shipping" class="step a-item">
-               <label for="shipping:save_in_address_book">Standard 8-20Working days</label>
+			   {%for express in express_list%}
+					<input name="express" type = "radio" value = "{{express.id}}">{{express.name}}(${{express.price_fixed|floatformat:"2"}}) <br />
+			   {%endfor%}
             </div>
           </li>
           <li id="opc-shipping_method" class="section">
@@ -93,28 +95,28 @@
                     <tr>
                       <td colspan="1" class="a-left">{% trans 'Subtotal' %}</td>
                       <td class="a-right">
-						<span class="price" id="checkOutSubTotal">${{sub_total|floatformat:"2"}}</span>
+						<span class="price" id="checkOutSubTotal">$<span id="sub_total_amount">{{sub_total|floatformat:"2"}}</span></span>
 						<input name="sub_total" type="hidden" value="{{sub_total}}" />
 					  </td>
                     </tr>
                     <tr>
                       <td colspan="1" class="a-left">{% trans 'Shipping Fee' %}</td>
                       <td class="a-right">
-							<span id="checkOutShippingFee" class="price">${{shipping|floatformat:"2"}}</span>
+							<span id="checkOutShippingFee" class="price">$<span id="shipping_amount">{{shipping|floatformat:"2"}}</span></span>
 							<input name="shipping" type="hidden" value="{{shipping}}" />
 					  </td>
                     </tr>
                     <tr>
                       <td colspan="1" class="a-left">- US</td>
                       <td class="a-right">
-							<span class="price">${{discount|floatformat:"2"}}</span>
+							<span class="price">$<span id="discount_amount">{{discount|floatformat:"2"}}</span></span>
 							<input name="discount" type="hidden" value="{{discount}}" />
 					  </td>
                     </tr>
                     <tr>
                       <td colspan="1" class="a-left"><strong>{% trans 'All Total' %}:</strong></td>
                       <td class="a-right">
-						<span class="price" id = "checkOutAllTotal">${{total|floatformat:"2"}}</span>
+						<span class="price" id = "checkOutAllTotal">$<span id="total_amount">{{total|floatformat:"2"}}</span></span>
 						<input name="total" type="hidden" value="{{total}}" />
 					  </td>
                     </tr>
@@ -133,7 +135,7 @@
 				              	</div>
 			            </div>
 	                </li>
-                  <li><input class="button btn-proceed-checkout" title="Place Order" id="placeOrder" type="submit" value="Place Order"></button>
+                  <li><input class="button btn-proceed-checkout" title="Place Order" id="placeOrder" type="submit" value="Place Order">
                   </li>
                 </ul>
               </div>

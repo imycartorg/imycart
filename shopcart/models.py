@@ -484,3 +484,18 @@ class Email_List(models.Model):
 	class Meta:
 		verbose_name = '订阅邮件列表'
 		verbose_name_plural = '订阅邮件列表'
+		
+@python_2_unicode_compatible
+class Express(models.Model):
+	name = models.CharField(max_length=100,null=True,verbose_name = '快递名称')
+	price_fixed = models.FloatField(verbose_name = '固定运费')
+	price_per_kilogram = models.FloatField(verbose_name = '每千克运费')
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
+	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
+	
+	def __str__(self):
+		return self.name
+	
+	class Meta:
+		verbose_name = '快递'
+		verbose_name_plural = '快递'

@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse,QueryDict
-from shopcart.models import System_Config,Product,Product_Images,Category,MyUser,Email,Reset_Password,Address,Product_Attribute,Attribute_Group,Attribute,Article
+from shopcart.models import System_Config,Product,Product_Images,Category,MyUser,Email,Reset_Password,Address,Product_Attribute,Attribute_Group,Attribute,Article,Express
 from shopcart.utils import my_send_mail,get_serial_number
 from django.db import transaction
 from django.utils.translation import ugettext as _
@@ -136,6 +136,10 @@ def init_database(request):
 	cat_grand_son2 = Category(code='minibox',name='迷你盒子电脑',parent=cat_son_desktop)
 	cat_grand_son2.save()
 
+	express = Express.objects.create(name='Fedex',price_fixed=5.00,price_per_kilogram=2)
+	express = Express.objects.create(name='DHL',price_fixed=6.00,price_per_kilogram=2)
+	express = Express.objects.create(name='ChinaPost',price_fixed=8.00,price_per_kilogram=2)
+	
 	#"""
 	sys_con = System_Config.objects.create(name='template_name',val='classic')
 	sys_con = System_Config.objects.create(name='site_name',val='iMyCart 小伙伴们的购物车')
@@ -188,6 +192,9 @@ def init_database(request):
 	
 
 	myuser = MyUser.objects.create_superuser(email='super@imycart.com',password='imycart',username='Super',gender='1')
+	myuser.is_super = True
+	myuser.save()
+	
 	myuser = MyUser.objects.create_user(email='shawn@imycart.com',password='imycart',username='Shawn Nee',gender='1')
 	address = Address.objects.create(useage='home',first_name='Dong',last_name='Tuo',user=myuser,country='China',province='Zhejiang',city='Hangzhou',district='Xihu',address_line_1="Zheda road, #38,Zhejiang Univercity",zipcode='310000',tel='13800571505')
 	address = Address.objects.create(useage='office',first_name='Rick',last_name='Jordan',user=myuser,country='USA',province='DE',city='New Castle',district='Xihu',address_line_1="215 Lisa Dr",address_line_2="YJAPTV",zipcode='19720-9002',tel='19720-9002')

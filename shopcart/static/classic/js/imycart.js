@@ -104,6 +104,29 @@ jQuery(".add-to-emaillist").click(function(){
 	imycartAjaxCall(url,email,true,null);
 });
 
+//快递公司选择
+jQuery(":radio[name='express']").click(function(){
+	var url = '/cart/re-calculate-price/';
+	$.ajax({
+		cache: false,
+		type: "GET",
+		url:url,
+		data:$("#place_order_form").serialize(),
+		async: false,
+		error: function(request) {
+			alert("System error");
+		},
+		success: function(data) {
+			if(data.success==true){
+				//alert(data.message.total);
+				$("#sub_total_amount").text(data.message.sub_total.toFixed(2));
+				$("#total_amount").text(data.message.total.toFixed(2));
+				$("#discount_amount").text(data.message.discount.toFixed(2));
+				$("#shipping_amount").text(data.message.shipping.toFixed(2));
+			}
+		}
+	});
+});
 
 //每页显示数量设置
 jQuery(".pageSize").click(function(){
