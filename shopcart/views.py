@@ -192,7 +192,7 @@ def init_database(request):
 	
 
 	myuser = MyUser.objects.create_superuser(email='super@imycart.com',password='imycart',username='Super',gender='1')
-	myuser.is_super = True
+	myuser.is_superuser = True
 	myuser.save()
 	
 	myuser = MyUser.objects.create_user(email='shawn@imycart.com',password='imycart',username='Shawn Nee',gender='1')

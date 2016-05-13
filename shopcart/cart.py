@@ -141,7 +141,9 @@ def ajax_modify_cart(request):
 			cart_exist.delete()
 			result_dict['sub_total'] = parent_cart.get_sub_total()			
 		elif cart['method'] == 'set':
+			logger.debug('111')
 			quantity = int(cart['quantity'])
+			logger.debug('quantity:' + str(quantity))
 			if not set_cart_product_quantity(quantity,cart_exist,result_dict):
 				return JsonResponse(result_dict)
 		else:
@@ -154,15 +156,22 @@ def ajax_modify_cart(request):
 	return JsonResponse(result_dict)
 
 def set_cart_product_quantity(quantity,cart_exist,result_dict):
-	logger.debug('at least:' + str(cart_exist.product_attribute.min_order_quantity))
-	if quantity >= cart_exist.product_attribute.min_order_quantity:
+	min_order_quantity = 0
+	if cart_exist.product_attribute:	
+		min_order_quntity = cart_exist.product_attribute.min_order_quantity
+	else:
+		min_order_quantity = cart_exist.product.min_order_quantity
+	logger.debug('at least:' + str(min_order_quantity))
+	
+	
+	if quantity >= min_order_quantity:
 		cart_exist.quantity = quantity
 		cart_exist.save()
 		result_dict['cart_product_total'] = cart_exist.get_total()
 		result_dict['sub_total'] = cart_exist.cart.get_sub_total()
 		return True
 	else:
-		result_dict['message'] = 'The product must order more than %s' % (cart_exist.product_attribute.min_order_quantity)
+		result_dict['message'] = 'The product must order more than %s' % (min_order_quantity)
 		result_dict['origin'] = cart_exist.quantity
 		return False
 
