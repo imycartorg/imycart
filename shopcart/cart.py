@@ -5,7 +5,7 @@ from django.core.context_processors import csrf
 from django.http import HttpResponse,JsonResponse
 import json,uuid
 from django.db import transaction
-from shopcart.utils import System_Para
+from shopcart.utils import System_Para,get_system_parameters
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
@@ -156,11 +156,14 @@ def ajax_modify_cart(request):
 	return JsonResponse(result_dict)
 
 def set_cart_product_quantity(quantity,cart_exist,result_dict):
+	
 	min_order_quantity = 0
 	if cart_exist.product_attribute:	
-		min_order_quntity = cart_exist.product_attribute.min_order_quantity
+		min_order_quantity = cart_exist.product_attribute.min_order_quantity
+		logger.debug('cart_exist.product_attribute:%s' % (cart_exist.product_attribute.min_order_quantity))
 	else:
 		min_order_quantity = cart_exist.product.min_order_quantity
+		logger.debug('cart_exist.product:%s' % (cart_exist.product.min_order_quantity))
 	logger.debug('at least:' + str(min_order_quantity))
 	
 	
@@ -177,7 +180,8 @@ def set_cart_product_quantity(quantity,cart_exist,result_dict):
 
 def view_cart(request):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'My Cart'
 	if request.method =='GET':
 		if 'cart_id' in request.COOKIES:
 			cart_id = request.COOKIES["cart_id"]
@@ -195,7 +199,8 @@ def view_cart(request):
 @login_required()
 def check_out(request): 
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Check Out'
 	
 	if request.method == 'POST':
 		#得到cart_product_id

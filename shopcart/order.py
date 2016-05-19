@@ -2,7 +2,7 @@
 from django.shortcuts import render,redirect,render_to_response
 from django.core.urlresolvers import reverse
 from shopcart.models import System_Config,MyUser,Order,Address,Product,Order_Products,Cart_Products,Cart,Product_Attribute
-from shopcart.utils import System_Para,my_pagination,get_serial_number
+from shopcart.utils import System_Para,my_pagination,get_serial_number,get_system_parameters
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,JsonResponse
 import logging,json
@@ -35,7 +35,8 @@ def ajax_cancel_order(request):
 def place_order(request):
 	logger.info('Start to place order.')
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Place Order'
 	if request.method == 'POST':
 		logger.debug('address_id:' + str(request.POST['address_id']))
 		try:
@@ -89,7 +90,8 @@ def place_order(request):
 @transaction.atomic()
 def payment(request,order_id):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Payment'
 	
 	order = Order.objects.get(id=order_id)
 	
@@ -157,7 +159,8 @@ def paypal_notify(sender, **kwargs):
 def show_order(request):
 	logger.info('Start to show order.')
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'My Orders'
 	if request.method == 'GET':
 		order_list = Order.objects.filter(user=request.user)
 		order_list, page_range = my_pagination(request, order_list,display_amount=5)

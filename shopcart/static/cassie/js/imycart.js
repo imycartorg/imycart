@@ -57,12 +57,16 @@ function imycartAjaxCall(url,object,is_show_message_box,message){
 					if(is_show_message_box){
 						if(message==null){
 							message = "Your opration is success."
+						}else if(message=='showservermessage'){
+								message = result.message
 						}
 						$("#infoMessage").html(message);
 					}
 				}else{
 					if(message==null){
 							message = "Your opration is failed."
+					}else if(message=='showservermessage'){
+							message = result.message
 					}
 					$("#infoMessage").html(message);
 				}
@@ -91,6 +95,103 @@ function imycartAjaxCallWithCallback(url,object,callback,triggerControl,extraInf
 	});
 };
 
+//加入邮件列表
+jQuery(".add-to-emaillist").click(function(){
+	event.preventDefault();
+	var email = new Object();
+	email.email = $("#newsletter-email").val();
+	var url = "/email-list/add/"
+	imycartAjaxCall(url,email,true,null);
+});
+
+//快递公司选择
+jQuery(":radio[name='express']").click(function(){
+	var url = '/cart/re-calculate-price/';
+	$.ajax({
+		cache: false,
+		type: "GET",
+		url:url,
+		data:$("#place_order_form").serialize(),
+		async: false,
+		error: function(request) {
+			alert("System error");
+		},
+		success: function(data) {
+			if(data.success==true){
+				//alert(data.message.total);
+				$("#sub_total_amount").text(data.message.sub_total.toFixed(2));
+				$("#total_amount").text(data.message.total.toFixed(2));
+				$("#discount_amount").text(data.message.discount.toFixed(2));
+				$("#shipping_amount").text(data.message.shipping.toFixed(2));
+			}
+		}
+	});
+});
+
+//每页显示数量设置
+jQuery(".pageSize").click(function(){
+	event.preventDefault();
+	var url = location.href;
+	var newurl = changeURLArg(url,"pageSize",$(this).data("page-size"));
+	location.href = newurl;//跳转到对应的页面
+});
+
+
+//页数点击切换
+jQuery(".pageChage").click(function(){
+	event.preventDefault();//阻止A标签跳转
+	var url = location.href;
+	var pageNo = $.getUrlParam("page");
+	var tag = $(this).attr("data-tag");
+	if(tag=="Previous"){
+		//向前，如果当前不是第一页，则向前翻页
+		if(pageNo>1){
+			pageNo--;
+			var newurl = changeURLArg(url,"page",pageNo);
+			location.href = newurl;//跳转到对应的页面
+		}
+	}else if(tag=="Next"){
+		//向后，如果当前不是最后一页，则翻页
+		var pages = $(this).data("page-range");
+		if(pageNo<pages){
+			pageNo++;
+			var newurl = changeURLArg(url,"page",pageNo);
+			location.href = newurl;//跳转到对应的页面
+		}
+	}else{
+			var page = $(this).data("page");
+			var newurl = changeURLArg(url,"page",page);
+			location.href = newurl;//跳转到对应的页面
+	}
+});
+
+//按某列排序
+jQuery(".orderBy").click(function(){
+	event.preventDefault();//阻止A标签跳转
+	var url = location.href;
+	var newurl = changeURLArg(url,"sort_by",$(this).data("column"));
+	location.href = newurl;//跳转到对应的页面
+});
+
+//排序方向
+jQuery(".sortDirection").click(function(event) {
+	event.preventDefault();//阻止A标签跳转
+	var url = location.href;
+	var sp = $(this).find("span");
+ 	//var css = sp.attr("class");
+	if(sp.hasClass("glyphicon-arrow-up")){
+		var newurl = changeURLArg(url,"direction","desc");
+		sp.removeClass("glyphicon-arrow-up");
+		sp.addClass("glyphicon-arrow-down");
+		location.href = newurl;//跳转到对应的页面
+	}else{
+		var newurl = changeURLArg(url,"direction","asc");
+		sp.removeClass("glyphicon-arrow-down");
+		sp.addClass("glyphicon-arrow-up");
+		location.href = newurl;//跳转到对应的页面
+	}
+});
+
 //刷新验证码
 jQuery(".next-captcha").click(function(){
 	event.preventDefault();
@@ -118,9 +219,9 @@ jQuery('.form-control-captcha').blur(function(){
 	$.getJSON('/ajax_val_captcha', json_data, function(data){ //ajax发送            
 		$('#captcha_status').remove();            
 		if(data['success'] == true){ //status返回1为验证码正确， status返回0为验证码错误， 在输入框的后面写入提示信息               
-			alert(data['message']);        
+			//alert(data['message']);        
 		}else{
-			alert(data['message']);
+			//alert(data['message']);
 			//$(this).after('<span id="captcha_status" >*' + data['message'] + '</span>')     
 		}        
 	});     
@@ -141,7 +242,50 @@ jQuery(".return-to-cart").click(function() {
  ***   页面跳转类结束
  ***/
  
+//购物车详情
+jQuery(".qty-decrease").click(function(e){
+	var cp_id = $(this).data('cartid');
+	var current_qty = $("#cartqty-" + cp_id).val();
+	if(current_qty<=1){
+		return;
+	}else{
+		var qty = current_qty-1;
+		imycartModifyCart('set',cp_id,qty,$(this));
+		//$("#cartqty-" + cp_id).val(qty);
+	}
+});
+
+jQuery(".qty-increase").click(function(e){
+	var cp_id = $(this).data('cartid');
+	var current_qty = $("#cartqty-" + cp_id).val();
+	var qty = parseInt(current_qty)+1;
+	imycartModifyCart('set',cp_id,qty,$(this));
+	//$("#cartqty-" + cp_id).val(qty);
+});
+
+jQuery("[title^=Qty]").blur(function(event) {
+	var cartid = $(this).attr("data-cartid");
+	var quantity = $(this).val();
+	if( quantity == 0){
+		quantity = 1;
+		$(this).val(1);
+	}
+	imycartModifyCart('set',cartid,quantity,$(this));
+});
+
+jQuery("[title^=Delete]").click(function(event) {
+	event.preventDefault();
+	var cartid = $(this).attr("data-cartid");
+	imycartModifyCart('del',cartid,0,$(this));
+});
+
+jQuery("#empty_cart_button").click(function(event) {
+	var cartid = $(this).attr("data-cartid");
+	imycartModifyCart('clear',cartid,0,$(this));
+}); 
  
+ 
+
 
 /***
  ***  查看购物车明细页面使用的方法开始 ***
@@ -155,33 +299,45 @@ function imycartModifyCart(method,cart_id,quantity,triggerControl){
 	
 	extraInfo = new Object();
 	extraInfo.method = method;
+	extraInfo.quantity_origin = quantity;
+	extraInfo.cart_id = cart_id;
 	imycartAjaxCallWithCallback(url,cart,imycartModifyCartCallback,triggerControl,extraInfo);
-}
+};
 
 function imycartModifyCartCallback(result,triggerControl,extraInfo){
+	flag = false;
 	if(extraInfo.method=="set"){
-		//先获取出发事件的数量控件旁边的金额字段的span控件
-		var td = triggerControl.parent().siblings("[name=subTotalTd]");
-		var subTotal = td.find("span");
-		subTotal.html("$ " + result.cart_product_total.toFixed(2));
+		if(result.success==true){
+			$("#price-" + extraInfo.cart_id).text("$" + result.cart_product_total.toFixed(2));
+			$("#cartqty-" + extraInfo.cart_id).val(extraInfo.quantity_origin);
+			flag = true;
+		}else{
+			triggerControl.val(result.origin);
+			$("#infoMessage").html(result.message);
+			$("#myModal").modal('toggle');
+		}
+		
 	}else if(extraInfo.method == "del"){
 		var tr = triggerControl.parent().parent();	
 		tr.remove();
+		flag = true;
 	}else if(extraInfo.method == "clear"){
 		//都清空
-		$("#shopping-cart-table").find("tbody").find("tr").remove();
-		$("#shopping-cart-table").find("tbody").html("<tr><td class='a-center'><span><span>Your shopping cart is empty!</span></span></td></tr>");
+		flag = true;
+		$(".carts-item").remove();
 	}
 
 	//更新总金额
-	imycartUpdateTotalAmount(result.sub_total,result.sub_total);
-}
+	if(flag){
+		imycartUpdateTotalAmount(result.sub_total,result.sub_total);
+	}
+};
 
 function imycartUpdateTotalAmount(totalAmount,totalPrice){
 	//更新商品总价、总运费、总金额
 	$("#totalPrice").html("$ " + totalPrice.toFixed(2));
 	$("#totalAmount").html("$ " + totalAmount.toFixed(2));
-}
+};
 /***
  ***  查看购物车明细页面使用的方法结束 ***
  ***/
@@ -190,7 +346,80 @@ jQuery(".order-pay-button").click(function(event) {
 	var url = '/cart/payment/' + $(this).data("id");
 	location.href = url;
 }); 
- 
+
+//地址添加与修改
+jQuery(".btn-address-submit").click(function(){
+	var address_id = $("#select_address_id").val();
+	var url = "/user/address/opration/";
+	if (address_id == ""){
+		//说明是新增
+		url = url + "add/";
+	}else{
+		url = url + "modify/"
+	}
+	
+	$.ajax({
+		cache: false,
+		type: "POST",
+		url:url,
+		data:$('#address-form').serialize(),
+		async: false,
+		error: function(request) {
+			alert("System error");
+		},
+		success: function(data) {
+			if(data.success==true){
+				var address_id = data.address.id;
+				var useage = data.address.useage;
+				var changeFlag = false;
+				$("#select_address_id option").each(function(){
+					if($(this).val()==address_id){
+						changeFlag = true;
+						$(this).text(useage);
+						alert("TODO:Opration success");
+					}
+				});
+				if (!changeFlag){
+					//新增的
+					$("#select_address_id").append("<option value='" + address_id + "'>" + useage +  "</option>");
+					$("#select_address_id").val(address_id);
+					alert("TODO:Opration success");
+				}
+			}
+		}
+	});
+});
+
+//地址选择的修改
+$("#select_address_id").change(function(e){
+	//获取地址的详细信息
+	var url = "/user/address/detail/";
+	var address_id = $("#select_address_id").val();
+	if (address_id == ""){
+		//清空下面的列表
+		$("#address-form")[0].reset(); //重置表单要加个[0],神奇的东东。。。。
+	}else{
+		url = url + address_id;
+		$.ajax({
+			cache: false,
+			type: "GET",
+			url:url,
+			data:null,
+			async: false,
+			error: function(request) {
+				alert("System error");
+			},
+			success: function(data) {
+				if(data.success==true){
+					for (key in data.address){
+						$("#id_" + key).val(data.address[key]); //页面上input必须命名成 "id_字段"的形式
+					}
+				}
+			}
+		});
+	}
+});
+
  
 //取消订单
 jQuery(".order-cancel-button").click(function(event) {
@@ -211,7 +440,7 @@ function imycartChangeOrderCallBack(result,triggerControl,extraInfo){
 		condition = "[title=" + "container_order_" + extraInfo.order_id + "]";
 		$(condition).remove();
 	}
-}
+};
 
 
 //把商品添加到购物车	
@@ -220,47 +449,8 @@ jQuery("#addToCartBtn").click(
 		var productId = $(this).data("product-id");
 		var product_attribute_id = $("#product-attribute-id").val();
 		imycartAddProductToCartaddProductToCart(productId,product_attribute_id,$("#qty").val());
-		imycartAddProductToCartFlyingEfect();
 	}
 );
-//加减效果
-$('.spinnerEfect').spinner({});
-
-function imycartAddProductToCartFlyingEfect(){
-	//加入购物车飘动效果
-	var moveimg=$(".cart-move-img").attr("src");
-	var ynums=parseInt($(".number").text());
-	var addnums=parseInt($(".spinnerEfect").val());
-	var wheight=window.screen.height;
-	var wwidth=window.screen.width;
-	var widthMain=$(".crumb").width(); 
-	var rights=(wwidth-widthMain+128)/2;
-	var headerh=$('.detail-quality').offset().top; //飘移起点top使用detail-quality同高度
-	var star=wheight+headerh;
-	var nums=ynums+addnums;
-	$(".cart-move").attr("src",moveimg);
-	$(".cart-move").show();
-	$(".cart-move").animate({
-				'top': headerh,
-				'right': '50%',
-				'width': 120,
-				'height': 120
-	}, 0);
-	$(".cart-move").animate({
-				'top': 42,
-				'right': rights,
-				'width': 30,
-				'height': 30
-			}, 700);
-	$(".cart-move").hide(400);
-	$(".cart-move").animate({
-				'top': headerh,
-				'right': '50%',
-				'width': 60,
-				'height': 60
-			}, 0);
-	setTimeout(function () {$(".number").text(nums);}, 1000);
-};
 
 function imycartAddProductToCartaddProductToCart(product_id,product_attribute_id,quantity){
 		var url = "/cart/add";
@@ -268,7 +458,7 @@ function imycartAddProductToCartaddProductToCart(product_id,product_attribute_id
 		cart.product_id = product_id;
 		cart.product_attribute_id = product_attribute_id;
 		cart.quantity = quantity;
-		imycartAjaxCall(url,cart,true,null);
+		imycartAjaxCall(url,cart,true,'showservermessage');
 };
 
 //把商品添加到愿望清单
@@ -314,7 +504,7 @@ jQuery(".product-attribute-item").click(function(){
 							$("#product-price-main").text("$" + result.message.price.toFixed(2));
 						}else{
 							//设定可以选择的属性列表
-							alert('Attributs avaliable to select are:' + result.message)
+							//alert('Attributs avaliable to select are:' + result.message)
 						
 						}
 						//alert('pa_id:' + $("input[name=product-attribute-id]").val());
@@ -324,3 +514,59 @@ jQuery(".product-attribute-item").click(function(){
 				}
 		});
 });
+
+
+/* 
+* url 目标url 
+* arg 需要替换的参数名称 
+* arg_val 替换后的参数的值 
+* return url 参数替换后的url 
+*/ 
+function changeURLArg(url,arg,arg_val){ 
+	if(url.endWith("#")){
+		url = url.replace("#","");
+	}
+    var pattern=arg+'=([^&]*)'; 
+    var replaceText=arg+'='+arg_val; 
+    if(url.match(pattern)){ 
+        var tmp='/('+ arg+'=)([^&]*)/gi'; 
+        tmp=url.replace(eval(tmp),replaceText); 
+        return tmp; 
+    }else{ 
+        if(url.match('[\?]')){ 
+            return url+'&'+replaceText; 
+        }else{ 
+            return url+'?'+replaceText; 
+        } 
+    } 
+    return url+'\n'+arg+'\n'+arg_val; 
+};
+
+String.prototype.endWith=function(s){
+	  if(s==null||s==""||this.length==0||s.length>this.length)
+	     return false;
+	  if(this.substring(this.length-s.length)==s)
+	     return true;
+	  else
+	     return false;
+	  return true;
+};
+
+String.prototype.startWith=function(s){
+	  if(s==null||s==""||this.length==0||s.length>this.length)
+	   return false;
+	  if(this.substr(0,s.length)==s)
+	     return true;
+	  else
+	     return false;
+	  return true;
+};
+
+//为jquery扩展一个能取得url中某个参数的方法
+(function ($) {
+    $.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    }
+})(jQuery);

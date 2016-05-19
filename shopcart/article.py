@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from shopcart.models import System_Config,Article
-from shopcart.utils import System_Para,my_pagination
+from shopcart.utils import System_Para,my_pagination,get_system_parameters
 import json,os
 from django.http import JsonResponse
 from django.http import Http404
@@ -15,7 +15,8 @@ logger = logging.getLogger('imycart.shopcart')
 # Create your views here.
 def detail(request,id):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Blog'
 	try:
 		article = Article.objects.get(id=id)
 	except:
@@ -50,7 +51,8 @@ def detail(request,id):
 		
 def view_blog_list(request):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Blog'
 	
 	if request.method =='GET':
 		product_list = None

@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from shopcart.models import System_Config,Product,Product_Images
-from shopcart.utils import System_Para,my_pagination
+from shopcart.utils import System_Para,my_pagination,get_system_parameters
 import json,os
 from django.http import JsonResponse
 from django.utils.translation import ugettext as _
@@ -16,7 +16,8 @@ logger = logging.getLogger('imycart.shopcart')
 # Create your views here.
 def detail(request,id):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Product'
 	try:
 		product = Product.objects.get(id=id)
 	except Exception as err:
@@ -77,7 +78,8 @@ def detail(request,id):
 		
 def view_list(request):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Product'
 	
 	if request.method =='GET':
 		product_list = None

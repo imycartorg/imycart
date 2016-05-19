@@ -5,7 +5,7 @@ from django.core.context_processors import csrf
 from django.http import HttpResponse,JsonResponse
 import json,uuid
 from django.db import transaction
-from shopcart.utils import System_Para,my_pagination
+from shopcart.utils import System_Para,my_pagination,get_system_parameters
 from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
 
@@ -37,7 +37,8 @@ def add_to_wishlist(request):
 @login_required()
 def view_wishlist(request):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'My Wishlist'
 	if request.method =='GET':
 		wish_list = Wish.objects.filter(user=request.user)
 		wish_list, page_range = my_pagination(request, wish_list,display_amount=5)
@@ -50,7 +51,7 @@ def remove_from_wishlist(request):
 	ctx = {}
 	ctx.update(csrf(request))
 	result_dict = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
 	if request.method =='POST':
 		wish_to_be_delete = json.loads((request.body).decode())	
 		try:

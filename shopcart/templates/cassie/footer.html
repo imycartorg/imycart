@@ -1,51 +1,62 @@
 <!--底部-->
 {% load staticfiles %}
 <div class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="footer-address col-md-3">
-                <p class="footer-title">Address</p>
+        <div class="container">
+            <div class="row">
+                <div class="footer-item">
+                    <h5>Customer Service</h5>
+                    <ul>
+                        <li><i class="list-allow-left"></i>Contact us</li>
+                        <li><i class="list-allow-left"></i>Delivery</li>
+                        <li><i class="list-allow-left"></i>Warranty Info</li>
+                        <li><i class="list-allow-left"></i>Privacy Policy</li>
+                        <li><i class="list-allow-left"></i>Sitemap</li>
+                    </ul>
+                </div>
+                <div class="footer-item footer-contact">
+                    <h5>Contact Information</h5>
+                    <ul>
+                        <li><i class="glyphicon glyphicon-map-marker"></i>Address</li>
+                        <li class="footer-ico-empty">{{system_para.contact_address}}</li>
+                        <li><i class="glyphicon glyphicon-earphone"></i>Phone:</li>
+                        <li class="footer-ico-empty">{{system_para.office_phone}}</li>
+                        <li><i class="glyphicon glyphicon-envelope"></i>Email:</li>
+                        <li class="footer-ico-empty"><a href="mailto:{{system_para.service_email}}"></a>{{system_para.service_email}}
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-item footer-letter">
+                    <h5>Be the First to Know</h5>
 
-                <div class="footer-left"><span class="glyphicon glyphicon-home"></span>
+                    <p>Get all the latest information on Events,Sales and Offers. Sign up for newsletter today.</p>
+                    <label>Enter your e-mail Address</label>
 
-                    <p>{{system_para.contact_address}}</p></div>
-                <div class="footer-left"><span class="glyphicon glyphicon-envelope"></span>
-
-                    <p>{{system_para.service_email}}</p></div>
-            </div>
-            <div class="footer-address footer-address1 col-md-3">
-                <p class="footer-title footer-title2">Customer Service</p>
-                <ul>
-                    <li><a>Contact us form</a></li>
-                    <li><a>Shipping Information</a></li>
-                    <li><a>Warranty Information</a></li>
-                    <li><a>Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div class="footer-address col-md-3">
-                <p class="footer-title">Foolow Us</p>
-
-                <div>
-                    <p class="footer-body3"><img src="{% static 'cassie/images/f.png' %}">Facebook</p>
-
-                    <p class="footer-body3"><img src="{% static 'cassie/images/P.png' %}">Pinterest</p>
+                    <div class="footer-form">
+                        <input type="text" id="newsletter-email" name="email">
+                        <button class="add-to-emaillist" type="submit">Submit</button>
+                    </div>
                 </div>
             </div>
-            <div class="footer-address col-md-3">
-                <p class="footer-title">Subscribe to Our News </p>
-
-                <div><p class="footer-last">Sign up for our newsletter and get the latest news.</p></div>
-                <input class="form-control " type="text" placeholder="Email">
-                <span class="glyphicon glyphicon-envelope glyphicon-envelope2"></span>
+        </div>
+    </div>
+    <div class="copy">
+        <div class="container">
+            <div class="row">
+                <div class="copy-media">
+                    <a href="#"><img src="{% static "cassie/images/logo.jpg"%}"></a>
+                    <a hre="#"><img src="{% static "cassie/images/ico/facebook-footer.png"%}"></a>
+                    <a hre="#"><img src="{% static "cassie/images/ico/twitter-footer.png"%}"></a>
+                    <a hre="#"><img src="{% static "cassie/images/ico/linkin-footer.png"%}"></a>
+                </div>
+                <div class="copy-pay">
+                    <img src="{% static "cassie/images/ico/icon_visa.jpg"%}">
+                    <img src="{% static "cassie/images/ico/icon_paypal.jpg"%}">
+                    <img src="{% static "cassie/images/ico/icon_discover.jpg"%}">
+                    <img src="{% static "cassie/images/ico/icon_master.jpg"%}">
+                    <img src="{% static "cassie/images/ico/icon_master2.jpg"%}">
+                    <img src="{% static "cassie/images/ico/icon_ae.jpg"%}">
+                </div>
+                <p>{{system_para.copyright}}</p>
             </div>
         </div>
     </div>
-</div>
-<!--最底部-->
-<div class="footer-buttom">
-    <div class="container">
-        <div class="footer-buttom-body">
-            <p>{{system_para.copyright}}</p>
-        </div>
-    </div>
-</div>

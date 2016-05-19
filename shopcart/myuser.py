@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.shortcuts import render,redirect,render_to_response
 from shopcart.models import System_Config,MyUser,Cart,Product,Cart_Products,Wish,Reset_Password,Address,Order,Order_Products,Abnormal_Order
-from shopcart.utils import System_Para,my_pagination,add_captcha,my_send_mail,get_serial_number
+from shopcart.utils import System_Para,my_pagination,add_captcha,my_send_mail,get_serial_number,get_system_parameters
 from django.contrib import auth
 from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
@@ -24,7 +24,8 @@ logger = logging.getLogger('imycart.shopcart')
 def register(request):
 	ctx = {}
 	ctx.update(csrf(request))
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Regitser'
 	ctx = add_captcha(ctx) #添加验证码
 	if request.method == 'GET':
 		#GET请求，直接返回页面
@@ -50,7 +51,8 @@ def info(request):
 
 def login(request):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Login'
 	ctx = add_captcha(ctx) #添加验证码
 	if request.method == 'GET':
 		#GET请求，直接返回页面
@@ -80,7 +82,7 @@ def login(request):
 			response.set_cookie('imycartuser',myuser.email)
 			return response
 		else:
-			ctx['login_result'] = _('Your email or password is not correct.')
+			ctx['login_result'] = _('Your account name or password is incorrect.')
 			return render(request,System_Config.get_template_name() + '/login.html',ctx)
 		#else:
 		#	ctx['login_result'] = _('Please check you input.')
@@ -135,7 +137,8 @@ def logout(request):
 	
 def forget_password(request):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Forget Password'
 	ctx = add_captcha(ctx) #添加验证码
 	if request.method == 'GET':
 		ctx['form_display'] = 'block'
@@ -157,7 +160,8 @@ def forget_password(request):
 
 def reset_password(request):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Reset Password'
 	if request.method == 'GET':
 		try:
 			#日期大小与比较要用 "日期字段名__gt=" 表示大于
@@ -188,7 +192,8 @@ def reset_password(request):
 @transaction.atomic()
 def address(request,method):
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Address Book'
 	result_dict = {}
 	result = False
 	message = 'System Error'

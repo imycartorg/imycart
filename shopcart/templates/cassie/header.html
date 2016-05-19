@@ -1,54 +1,94 @@
 <!--头部-->
 {% load staticfiles %}
-<div class="header">
-    <div class="container">
-    
-        <div class="row">
-          <div class="col-md-9">
+{% load i18n %}
+<div class="menu-phone">
+    <ul class="menu-phone-main">
+        <li><a href="/">home</a></li>
+        <li><a href="#">about</a></li>
+        <li><a href="/product/">products</a>
+            <span class="glyphicon glyphicon-plus menu-phone-plus" data="phone-plus1" status="close"></span>
+            <ul class="menu-low-one" id="phone-plus1">
+                <li><a href="#"><i></i>products1</a></li>
+                <li><a href="#"><i></i>products2</a></li>
+                <li><a href="#"><i></i>products3</a></li>
+            </ul>
+        </li>
+    </ul>
+</div>
+<!--头部-->
+<div class="wapper">
+    <div class="wapper-rgb"></div>
+    <div class="top">
+        <div class="container">
             <div class="row">
-            <div class="header-left">
-               <div class="header-left-top">
+                <div class="top-language">
                     <ul>
-                        <li><a href="/order/show">My Account</a></li>
-                        <li><a href="#">Delivery</a></li>
-                        <li><a href="#">Help</a></li>
-						<li>
+                        <li><a href="#"><img src="{% static "cassie/images/ico/America.jpg"%}">English<span class="ico-down"></span></a>
+                            <ul>
+                                <li><a href="#"><img src="{% static "cassie/images/ico/Chinese.jpg"%}">chinese</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="top-link">
+                    <ul>
+                        <li>{{user.get_short_name|default:"^_^"}} Welcome!</li>
+                        <li><a href="/order/show">{% trans 'MY ACCOUNT' %}</a></li>					
+                        <li><a href="/wishlist">{% trans ' My WISHLIST' %}</a></li>
+                        <li>
 							{%	if user.is_authenticated %}          
-								<div class="login"><a href="/user/logout/"><span class="hidden-xs">Log Out</span></a></div>    
+								<div class="login"><a href="/user/logout/"><span class="hidden-xs">{%trans 'LOG OUT' %}</span></a></div>    
 							{% else %}
-								<div class="logout"><a href="/user/login/" class="loginModalLink"><span class="hidden-xs">Log In</span></a></div>
+								<div class="logout"><a href="/user/login/" class="loginModalLink"><span class="hidden-xs">{% trans 'LOG IN' %}</span></a></div>
 							{% endif %}
 						</li>
                     </ul>
                 </div>
-                <div class="header-left-bottom">
-                    <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/article/2/">About</a></li>
-                        <li><a href="/product/">Products</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Contacts</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="header-center-img">
-                <img src="{% static 'cassie/images/logo.jpg' %}">
-            </div>
-          </div>
-          </div>
-          
-          <div class="header-right col-md-3">
-          
-             <div class="row">
-                <div class="header-right-top">
-                    <span class="glyphicon glyphicon-shopping-cart"><a href='/cart/show/'><span>CART</span></a><span class="number">0</span></span>
-                </div>
-                <div class="header-right-search">
-                    <input class="form-control " type="text" placeholder="Search">
-                    <button class="glyphicon glyphicon-search search" type="submit"></button>
-                </div>
-            </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="top-middle">
+        <div class="container">
+            <div class="row">
+                <div class="top-search">
+                    <input class="form-control" placeholder="Search..." name="q" id="q" value="" type="text">
+                    <button class="glyphicon glyphicon-search" type="submit"></button>
+                </div>
+                <div class="menu-phone-ico">
+                    <button type="button" class="navbar-toggle" id="menu-ico">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="top-logo">
+                    <a href="#"><img src="{% static "cassie/images/logo.jpg"%}" class="logo"></a>
+                </div>
+                <div class="top-middle-right">
+                    <div class="top-phone"><span class="glyphicon glyphicon-earphone"></span><span>{{system_para.hot_line}}</span></div>
+                    <div class="top-cart">
+                        <span class="top-cart-num"><a href="/cart/show/">C</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 菜单 -->
+    <div class="menu">
+        <div class="container">
+            <div class="row">
+                <ul>
+                    <li><a href="#">home</a></li>
+                    <li><a href="#">about</a></li>
+                    <li><a href="#">products <img src="{% static "cassie/images/ico/menu-arrow.jpg"%}"></a>
+                        <ul class="menu-low">
+                            <li><a href="#">products1</a></li>
+                            <li><a href="#">products2</a></li>
+                            <li><a href="#">products3</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>

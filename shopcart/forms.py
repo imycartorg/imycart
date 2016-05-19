@@ -3,6 +3,8 @@ from django import forms
 from shopcart.models import MyUser,Address
 from captcha.fields import CaptchaField
 from django.utils.translation import ugettext as _
+from django.core.exceptions import ValidationError 	
+		
 
 #只验证captcha字段的form
 class captcha_form(forms.Form):

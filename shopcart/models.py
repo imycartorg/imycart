@@ -188,7 +188,8 @@ class Product(models.Model):
 	class Meta:
 		verbose_name = '商品'
 		verbose_name_plural = '商品'
-		
+
+@python_2_unicode_compatible		
 class Product_Images(models.Model):
 	#product_id = models.IntegerField(default=0)
 	thumb = models.URLField(null=True)
@@ -196,6 +197,9 @@ class Product_Images(models.Model):
 	product = models.ForeignKey(Product,default=None,related_name='images')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
+	
+	def __str__(self):
+		return str(self.id) + ' ' + self.thumb
 
 	
 @python_2_unicode_compatible

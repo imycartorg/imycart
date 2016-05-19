@@ -105,7 +105,14 @@ class System_Para:
 			_service_email = System_Config.objects.get(name='service_email').val,
 			_copyright = System_Config.objects.get(name='copyright').val
 		)
-	
+
+def get_system_parameters():
+	parameter_list = System_Config.objects.all()
+	dict = {}
+	for parameter in parameter_list:
+		dict[parameter.name] = parameter.val
+	return dict
+		
 	
 def my_send_mail(useage,ctx,send_to,title):
 	logger.info('准备发送邮件： %s ' % [send_to,])

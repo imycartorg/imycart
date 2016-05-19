@@ -1,87 +1,110 @@
-{% extends "cassie/base.html" %}
-<!--产品幻灯开始-->
+{% extends "cassie/base.html" %}	
 {% block breadcrumbs %}
-<div class="crumb container">
-   <a href="">Home</a> - <a>{{product.name}}</a>
+<div class="crumb">
+    <div class="container">
+        <div class="row">
+           <a href="/">Home</a> &gt; {{product.name}}
+        </div>
+    </div>
 </div>
-{% endblock %}
+{% endblock%}
+{% block main %}
+{% load i18n %}
 
-{% block main%}
-<div class="detail">
+<!--产品幻灯开始-->
+<div class="detail main">
   <div class="detail-main">
+   <div id="preview" class="spec-preview">
+      <span class="jqzoom">
+        <img jqimg="{{product.image}}" alt="" src="{{product.image}}" class="cart-move-img"/>      </span>
+   </div>
    <div class="spec-scroll">
-      <div class="items">
-        <ul>
-			{% for image in product.images.all %} 
-				<li><img src="{{image.thumb}}" alt = "{{product.name}}" bimg="{{image.image}}" onmousemove="preview(this);"/></li>
-			{% endfor %}
-        </ul>
-      </div>
-   </div>    
-   <div id="preview" class="spec-preview"> <span class="jqzoom"><img jqimg="{{product.thumb}}" src="{{product.image}}" class="cart-move-img"/></span> </div>
+          <div class="items">
+              <ul>
+				 {% for image in product.images.all %}
+					<li><img alt="" bimg="{{image.image}}" src="{{image.image}}" onMouseMove="preview(this);"></li>
+				{% endfor %}
+              </ul>
+          </div>
+   </div>
   </div>
   <div class="detail-attr">
      <h1>{{product.name}}</h1>
-     <p class="detail-attr-des">{{product.short_desc}} </p>
-     <div class="detail-price price">
-		<span id="product-price-main">
+     <p class="detail-attr-des">{{product.short_desc}}</p>
+     <div class="detail-price">
+		<span>
+				${{product.market_price|floatformat:"2"}}
+		</span>
+		<span id="product-price-main" class="price">
 			{% if has_price_range %}
 				${{price_min|floatformat:"2"}} - ${{price_max|floatformat:"2"}}
 			{% else %}
 				${{product.price|floatformat:"2"}}
 			{% endif %}
 		</span>
-		<span>${{product.market_price|floatformat:"2"}}</span></div>
-     <p class="detail-attr-discount">20% of net profits will be donated towards BCA research.</p>
-     
+	 </div>
 	<div class="product-attributes">
 		<!-- 先找出商品关联的所有的attributes，然后找出分组 -->
 		<input type="hidden" id="product-attribute-id" value="" />
 		{% for group in product.get_attributes %}
-			<div><p class="detail-attr-lable">{{group.name}}</p></div>
 			{% for attr in group.attr_list %}
 				{% if group.group_type == 'text' %}
 					{% if forloop.first %}
 						<div>
 							<input type='hidden' class="product-attribute-group-selected" title="{{group.code}}" value="" />
 							<ul>
-							{% endif %}
+					{% endif %}
 								<li><input class="product-attribute-item" data-attribute-id="{{attr.id}}" data-group-code="{{group.code}}" data-product-id="{{product.id}}" type="radio" name="{{group.code}}" value="{{attr.id}}" />{{attr.name}}</li>
-							{% if forloop.last %}
+					{% if forloop.last %}
 							</ul>
 						</div>
 					{% endif %}
 				{% elif group.group_type == 'image' %}
-					{% if forloop.first %}<div><input type='hidden' class="product-attribute-group-selected" title="{{group.code}}" value="" />{% endif %}
-					<img class="product-attribute-item" data-attribute-id="{{attr.id}}" data-group-code="{{group.code}}" data-product-id="{{product.id}}" height='30px' width='30px' src='{{attr.thumb}}' alt='{{attr.name}}' />
-					{% if forloop.last %}</div>{% endif %}
+					{% if forloop.first %}
+						<div>
+							<input type='hidden' class="product-attribute-group-selected" title="{{group.code}}" value="" />
+							<ul class="detail-color">
+								<li>{{group.name}}:</li>
+					{% endif %}
+								<li class="product-color{{forloop.counter}}" onclick="redborder(this);">
+									<img class="product-attribute-item" data-attribute-id="{{attr.id}}" data-group-code="{{group.code}}" data-product-id="{{product.id}}" src='{{attr.thumb}}' alt='{{attr.name}}' />
+								</li>
+					{% if forloop.last %}
+							</ul>
+						</div>
+					{% endif %}
 				{% else%}
 					<p>{{attr.name}}</p>
 				{% endif %}
 			{% endfor %}
 		{% endfor %}
 	</div>
-     <div class="detail-quality">
-        <span>quality</span>
-        <input type="text" class="spinnerEfect" title="Qty" value="1" maxlength="12" id="qty" name="qty"/>
-     </div>
-     <div class="detail-shop-btn"><a href="#" id="addToCartBtn"  class="button btn-cart" data-product-id="{{product.id}}">add to cart</a></div>
-     <p class="detail-attr-lable"><span class=""></span><span class="glyphicon glyphicon-heart"></span><a id="addToWishList" data-product-id="{{product.id}}" class="link-wishlist" href="#">add to wishlist</a></p>
-	 {% include 'cassie/pay_logos.html' %}
-	 {% include 'cassie/share_logos.html' %}
-     <p class="detail-send-friend"><span class="glyphicon glyphicon-envelope"></span>Send to A Friend </p>   
+
+      <img src="{{product.thumb}}" class="cart-move" title="Fly Image">
+      <div class="detail-quality">
+        <input type="text" class="small-quality" id="qty" name="qty" placeholder="30" value="30">
+        <a id="addToCartBtn" data-product-id="{{product.id}}" onClick="addcart(this);" class="detail-add-btn delay">add to cart</a>
+        <a class="glyphicon glyphicon-heart detail-heart delay" id="addToWishList" data-product-id="{{product.id}}"></a>
+        <p class="min-purchase-tips">{{product.get_min_purchase_tips}}</p>
+      </div>
+      <p class="detail-attr-social"></p>
   </div>
+  <div class="container">
+    <div class="row">
+    <div class="detail-des">
+        <h5 class="detail-des-title">Description</h5><h5 class="detail-des-line"></h5>
+        <div class="detail-des-main">
+            {{product.description|safe}}
+        </div>
+    </div>
 </div>
-<div class="container content">
-  <h2><span>More info</span></h2>
-  <div class="content-des">
-	{{product.description|safe}}
-  </div>
+</div>
 </div>
 {% endblock %}
-
 {% block scripts %}
-<script>
+	{% load staticfiles %}
+	<script type="text/javascript" src="{% static 'cassie/js/base.js' %}"></script>
+	<script type="text/javascript" src="{% static 'cassie/js/jquery.jqzoom.js' %}"></script>
 
-</script>
 {% endblock %}
+
