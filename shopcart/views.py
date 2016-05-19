@@ -63,7 +63,7 @@ def add_product(item_number,name,quantity,price,market_price,description,categor
 	image3.save()
 	
 	size_attr_list = [Attribute.objects.get(name='S'),Attribute.objects.get(name='M'),Attribute.objects.get(name='L')]
-	color_attr_list = [Attribute.objects.get(name='Red'),Attribute.objects.get(name='White'),Attribute.objects.get(name='Black')]
+	color_attr_list = [Attribute.objects.get(name='White'),Attribute.objects.get(name='Black')]
 	gender_attr_list = [Attribute.objects.get(name='Male'),Attribute.objects.get(name='Female')]
 	
 	pa_list = []
@@ -141,7 +141,7 @@ def init_database(request):
 	express = Express.objects.create(name='ChinaPost',price_fixed=8.00,price_per_kilogram=2)
 	
 	#"""
-	sys_con = System_Config.objects.create(name='template_name',val='classic')
+	sys_con = System_Config.objects.create(name='template_name',val='cassie')
 	sys_con = System_Config.objects.create(name='site_name',val='iMyCart 小伙伴们的购物车')
 	sys_con = System_Config.objects.create(name='default_welcome_message',val='Hi，欢迎来iMyCart')
 	sys_con = System_Config.objects.create(name='logo_image',val='http://www.imycart.com/images/logo.png')
@@ -153,6 +153,9 @@ def init_database(request):
 	sys_con = System_Config.objects.create(name='service_email',val='info@cassiecomb.com')
 	sys_con = System_Config.objects.create(name='contact_address',val='4578 MARMORA ROAD,GLASGOW D04 89 GR')
 	sys_con = System_Config.objects.create(name='thumb_width',val='128')
+	
+	sys_con = System_Config.objects.create(name='hot_line',val='(+86)186 18 18 18')
+	sys_con = System_Config.objects.create(name='office_phone',val='(+86)86688668')
 	#"""
 
 	ag_size = Attribute_Group.objects.create(name='尺码',group_type='text',code='size')
@@ -164,11 +167,53 @@ def init_database(request):
 	ab_l = Attribute.objects.create(name='L',group=ag_size,position=3)
 
 	ab_white = Attribute.objects.create(name='White',group=ag_color,position=1,thumb='http://120.24.92.125/upload/s1.jpg')
-	ab_red = Attribute.objects.create(name='Red',group=ag_color,position=2,thumb='http://120.24.92.125/upload/s2.jpg')
+	#ab_red = Attribute.objects.create(name='Red',group=ag_color,position=2,thumb='http://120.24.92.125/upload/s2.jpg')
 	ab_black = Attribute.objects.create(name='Black',group=ag_color,position=3,thumb='http://120.24.92.125/upload/s3.jpg')
 	
 	ag_male = Attribute.objects.create(name='Male',group=ag_gender,position=1)
 	ag_female = Attribute.objects.create(name='Female',group=ag_gender,position=2)
+	
+	ag_Color = Attribute_Group.objects.create(name='Color',group_type='image',code='Color')
+	
+	ab_Color_RED =  Attribute.objects.create(name='RED',group=ag_Color,position=0,thumb='http://aws.imycart.com/media/attribute/Color/RED.jpg')
+	ab_Color_GREEN =  Attribute.objects.create(name='GREEN',group=ag_Color,position=1,thumb='http://aws.imycart.com/media/attribute/Color/GREEN.jpg')
+	ab_Color_BLUE =  Attribute.objects.create(name='BLUE',group=ag_Color,position=2,thumb='http://aws.imycart.com/media/attribute/Color/BLUE.jpg')
+	
+	
+	product_brush = Product(item_number='BRUSH001',name='Top-quality no tangle 360° hair brush ball',quantity=500,market_price=14.99,price=9.99,description='',short_desc='Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',static_file_name='')
+	product_brush.description = '<p>This kind hair brush can do many different workmanship, so you can choose what you like. Because its personalized shape and design make it become the most popular hair brush in the world, especially in North America. It is the hottest seller and many surprises wait for you.</p><div>1. Portable, for woman can put it in bag.</div><div>2. The different length of tooth can massage the different surface of hair so can protect your hair from damage and loss.</div><div>3. Can do many cover designs, like figure, scenery and animation.</div><div>4. The unique cone shaped plastic bristles work to separate the hair sideways instead of down, gently unraveling even the toughest tangles</div><div>5. Great for Extensions</div><div>6. Our brush also encourages hair growth. The bristles massage the scalp, which stimulates the capillaries, increasing blood circulation, oxygen and nutrients to the hair follicle.</div>'
+	product_brush.save()
+	product_brush.thumb = 'http://aws.imycart.com/media/product/18/003fee96-1d8b-11e6-b3b0-0ab91c1e4bd1-thumb.jpg'
+	product_brush.image = 'http://aws.imycart.com/media/product/18/003fee96-1d8b-11e6-b3b0-0ab91c1e4bd1.jpg'
+	product_brush.save()
+	
+	image_red = Product_Images()
+	image_red.product = product_brush
+	image_red.thumb = 'http://aws.imycart.com/media/product/18/fce1b180-1d8a-11e6-b3b0-0ab91c1e4bd1-thumb.jpg'
+	image_red.image = 'http://aws.imycart.com/media/product/18/fce1b180-1d8a-11e6-b3b0-0ab91c1e4bd1.jpg'
+	image_red.save()
+	
+	image_black = Product_Images()
+	image_black.product = product_brush
+	image_black.thumb = 'http://aws.imycart.com/media/product/18/003fee96-1d8b-11e6-b3b0-0ab91c1e4bd1-thumb.jpg'
+	image_black.image = 'http://aws.imycart.com/media/product/18/003fee96-1d8b-11e6-b3b0-0ab91c1e4bd1.jpg'
+	image_black.save()
+	
+	pa_red = Product_Attribute.objects.create(product=product_brush,sub_item_number=1,quantity=500,price_adjusment=-0.99,image=image_red)
+	pa_red.attribute.add(ab_Color_RED)
+	pa_red.name = 'RED'
+	pa_red.save()
+	
+	pa_green = Product_Attribute.objects.create(product=product_brush,sub_item_number=2,quantity=420,price_adjusment=1.99,image=image_black)
+	pa_green.attribute.add(ab_Color_GREEN)
+	pa_green.name = 'GREEN'
+	pa_green.save()
+	
+	pa_blue = Product_Attribute.objects.create(product=product_brush,sub_item_number=3,quantity=360,price_adjusment=0,image=image_red)
+	pa_blue.attribute.add(ab_Color_BLUE)
+	pa_blue.name = 'GREEN'
+	pa_blue.save()	
+	
 
 	categorys1 = [cat_son_desktop,cat_grand_son1,cat_grand_son2]
 	categorys2 = [cat_son_laptop,cat_grand_son4]
