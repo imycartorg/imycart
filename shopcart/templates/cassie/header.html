@@ -22,13 +22,34 @@
         <div class="container">
             <div class="row">
                 <div class="top-language">
-                    <ul>
-                        <li><a href="#"><img src="{% static "cassie/images/ico/America.jpg"%}">English<span class="ico-down"></span></a>
-                            <ul>
-                                <li><a href="#"><img src="{% static "cassie/images/ico/Chinese.jpg"%}">chinese</a></li>
-                            </ul>
-                        </li>
-                    </ul>
+					<form id="changeLocaleForm" action="{% url 'set_language' %}" method="post">
+						{% csrf_token %}
+						<input name="next" type="hidden" value="{{ redirect_to }}" />
+						
+						{% get_current_language as LANGUAGE_CODE %}
+						
+						{% if 'zh-hans' == LANGUAGE_CODE %}
+							<input name="language" value="en" type="hidden" />
+							<ul>
+								<li>
+									<a href="#" class="change_locale_btn"><img src="{% static "cassie/images/ico/Chinese.jpg"%}">Chinese<span class="ico-down"></span></a>
+									<ul>
+										<li><a href="#" class="change_locale_btn"><img src="{% static "cassie/images/ico/America.jpg"%}">English</a></li>
+									</ul>
+								</li>
+							</ul>
+						{% else %}
+							<input name="language" value="zh-hans" type="hidden" />
+		                    <ul>
+								<li>
+									<a href="#" class="change_locale_btn"><img src="{% static "cassie/images/ico/America.jpg"%}">English<span class="ico-down"></span></a>
+									<ul>
+										<li><a href="#" class="change_locale_btn"><img src="{% static "cassie/images/ico/Chinese.jpg"%}">chinese</a></li>
+									</ul>
+								</li>
+							</ul>
+						{% endif %}
+					</form>
                 </div>
                 <div class="top-link">
                     <ul>

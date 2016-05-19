@@ -95,6 +95,13 @@ function imycartAjaxCallWithCallback(url,object,callback,triggerControl,extraInf
 	});
 };
 
+//切换语言
+jQuery(".change_locale_btn").click(function(e){
+	event.preventDefault();
+	$("#changeLocaleForm").submit();
+});
+
+
 //加入邮件列表
 jQuery(".add-to-emaillist").click(function(){
 	event.preventDefault();
