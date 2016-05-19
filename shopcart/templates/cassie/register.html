@@ -13,13 +13,13 @@
 								<div class="register-item">
 									<label>First Name<i>*</i></label>
 									<div class="col-lg-6">
-										<input type="text" name="firstName" id="firstName">
+										<input type="text" name="first_name" id="first_name">
 									</div>
 								</div>
 								<div class="register-item">
 									<label>Last Name<i>*</i></label>
 									<div class="col-lg-6">
-										<input type="text" name="lastName" id="lastName">
+										<input type="text" name="last_name" id="last_name">
 									</div>
 								</div>
 								<div class="register-item">
@@ -64,14 +64,14 @@
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            firstName: {
+            first_name: {
                 validators: {
                     notEmpty: {
                         message: 'This is a required field.'
                     }
                 }
             },
-            lastName: {
+            last_name: {
                 validators: {
                     notEmpty: {
                         message: 'This is a required field.'

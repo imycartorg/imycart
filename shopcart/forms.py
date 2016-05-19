@@ -8,7 +8,9 @@ from django.core.exceptions import ValidationError
 
 #只验证captcha字段的form
 class captcha_form(forms.Form):
-	captcha = CaptchaField()
+	#暂时什么都不校验
+	#captcha = CaptchaField()
+	pass
 
 class register_form(forms.ModelForm):
 	#captcha = CaptchaField(),新版暂时不要验证码

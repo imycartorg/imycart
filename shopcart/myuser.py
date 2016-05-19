@@ -27,6 +27,7 @@ def register(request):
 	ctx['system_para'] = get_system_parameters()
 	ctx['page_name'] = 'Regitser'
 	ctx = add_captcha(ctx) #添加验证码
+	logger.debug('Enter register function.')
 	if request.method == 'GET':
 		#GET请求，直接返回页面
 		return render(request,System_Config.get_template_name() + '/register.html',ctx)
@@ -36,6 +37,7 @@ def register(request):
 			myuser = MyUser.objects.create_user(username=None,email=form.cleaned_data['email'].lower(),password=form.cleaned_data['password'],first_name=form.cleaned_data['first_name'],last_name=form.cleaned_data['last_name'])
 			return redirect('/user/login')
 		else:
+			logger.error('form is not valid')
 			ctx['reg_result'] = _('Registration faild.')
 			return render(request,System_Config.get_template_name() + '/register.html',ctx)
 

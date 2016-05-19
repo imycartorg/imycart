@@ -145,7 +145,7 @@ def init_database(request):
 	sys_con = System_Config.objects.create(name='site_name',val='iMyCart 小伙伴们的购物车')
 	sys_con = System_Config.objects.create(name='default_welcome_message',val='Hi，欢迎来iMyCart')
 	sys_con = System_Config.objects.create(name='logo_image',val='http://www.imycart.com/images/logo.png')
-	sys_con = System_Config.objects.create(name='base_url',val='http://nb886.imycart.com')
+	sys_con = System_Config.objects.create(name='base_url',val='http://aws.imycart.com')
 	sys_con = System_Config.objects.create(name='paypal_account',val='shawnzju@163.com')
 	sys_con = System_Config.objects.create(name='default_currency',val='USD')
 	

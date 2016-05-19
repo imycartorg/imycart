@@ -85,7 +85,11 @@
         <input type="text" class="small-quality" id="qty" name="qty" placeholder="30" value="30">
         <a id="addToCartBtn" data-product-id="{{product.id}}" onClick="addcart(this);" class="detail-add-btn delay">add to cart</a>
         <a class="glyphicon glyphicon-heart detail-heart delay" id="addToWishList" data-product-id="{{product.id}}"></a>
-        <p class="min-purchase-tips">{{product.get_min_purchase_tips}}</p>
+        <p class="min-purchase-tips">
+			{% if product.min_order_quantity > 0%}
+				Minimun Order Quantity : {{product.min_order_quantity}}
+			{% endif %}
+		</p>
       </div>
       <p class="detail-attr-social"></p>
   </div>
@@ -105,6 +109,5 @@
 	{% load staticfiles %}
 	<script type="text/javascript" src="{% static 'cassie/js/base.js' %}"></script>
 	<script type="text/javascript" src="{% static 'cassie/js/jquery.jqzoom.js' %}"></script>
-
 {% endblock %}
 
