@@ -52,7 +52,7 @@ $(window).scroll(function(event) {
     }
 })
 //加入购物车飘动效果
-function addcart(obj){
+function addcartFlyEfect(obj){
     var moveimg=$(".cart-move-img").attr("src");
     var ynums=parseInt($(".top-cart-num").text());
     var addnums=parseInt($(".small-quality").val());
@@ -63,7 +63,7 @@ function addcart(obj){
     var headerh=$('.detail-quality').offset().top; //飘移起点top使用detail-quality同高度
     var star=wheight+headerh;
     var endh=$('.top-cart-num').offset().top+10;
-    var nums=ynums+addnums;
+    //var nums=ynums+addnums;
     $(".cart-move").attr("src",moveimg);
     $(".cart-move").show();
     $(".cart-move").animate({
@@ -80,7 +80,7 @@ function addcart(obj){
     }, 600);
     $(".cart-move").hide(200);
 
-    setTimeout(function () {$(".top-cart-num").text(nums);}, 1000);
+    setTimeout(function () {}, 1000);
 }
 //产品颜色色块图片点击加边框
 function redborder(obj){
