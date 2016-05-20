@@ -202,16 +202,19 @@ def init_database(request):
 	pa_red = Product_Attribute.objects.create(product=product_brush,sub_item_number=1,quantity=500,price_adjusment=-0.99,image=image_red)
 	pa_red.attribute.add(ab_Color_RED)
 	pa_red.name = 'RED'
+	pa_red.min_order_quantity = 10
 	pa_red.save()
 	
 	pa_green = Product_Attribute.objects.create(product=product_brush,sub_item_number=2,quantity=420,price_adjusment=1.99,image=image_black)
 	pa_green.attribute.add(ab_Color_GREEN)
 	pa_green.name = 'GREEN'
+	pa_green.min_order_quantity = 0
 	pa_green.save()
 	
 	pa_blue = Product_Attribute.objects.create(product=product_brush,sub_item_number=3,quantity=360,price_adjusment=0,image=image_red)
 	pa_blue.attribute.add(ab_Color_BLUE)
-	pa_blue.name = 'GREEN'
+	pa_blue.name = 'BLUE'
+	pa_blue.min_order_quantity = 5
 	pa_blue.save()	
 	
 
