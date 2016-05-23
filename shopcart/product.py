@@ -152,6 +152,8 @@ def ajax_get_product_info(request):
 				product_extra['quantity'] = pa.quantity
 				product_extra['sub_item_number'] = pa.sub_item_number
 				product_extra['pa_id'] = pa.id
+				#20160523，添加最小购买量
+				product_extra['min_order_quantity'] = pa.min_order_quantity
 				result_dict['message'] = product_extra
 				return JsonResponse(result_dict)
 			else:

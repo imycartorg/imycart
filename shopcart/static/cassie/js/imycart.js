@@ -518,6 +518,7 @@ jQuery(".product-attribute-item").click(function(){
 				success : function(result) {
 						if(result.success==true){
 							$("#product-attribute-id").val(result.message.pa_id);
+							$("#min_order_quantity").text(result.message.min_order_quantity);
 							//确定价格
 							$("#product-price-main").text("$" + result.message.price.toFixed(2));
 						}else{
