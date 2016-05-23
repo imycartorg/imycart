@@ -72,7 +72,7 @@ def add_to_cart(request):
 			quantity = int(product_to_be_add['quantity'])
 			if quantity < min_order_quantity:
 				result_dict['success'] = False
-				result_dict['message'] = _('This product must order more than %s.' % (min_order_quantity))
+				result_dict['message'] = _('The minimun order quantity of the product is %(value)s') % {'value': min_order_quantity}
 				add_result_flag = False
 		
 		if add_result_flag:
@@ -81,11 +81,11 @@ def add_to_cart(request):
 			cart_product.save()
 		
 			result_dict['success'] = True
-			result_dict['message'] = _('Opration successsul.')
+			result_dict['message'] = _('Opration successful.')
 		else:
 			result_dict['success'] = False
 			if not result_dict['message']:
-				result_dict['message'] = _('Unknown Exception.')
+				result_dict['message'] = _('Unknown Exception')
 		
 		#为了将cart_id写到cookie里，不得不用response对象，要不然可以简单的使用上面这句
 		response = HttpResponse()

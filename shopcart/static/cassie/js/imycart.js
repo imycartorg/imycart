@@ -472,7 +472,7 @@ function imycartAddProductToCart(product_id,product_attribute_id,quantity,callba
 
 function imycartAddProductToCartCallBack(result,triggerControl,extraInfo){
 	if (result.success == true){
-		addcartFlyEfect(triggerControl);
+		$.addcartFlyEfect(triggerControl);
 	}else{
 		$("#infoMessage").html(result.message);
 		$("#myModal").modal('toggle');

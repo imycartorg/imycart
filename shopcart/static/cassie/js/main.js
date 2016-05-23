@@ -52,7 +52,7 @@ $(window).scroll(function(event) {
     }
 })
 //加入购物车飘动效果
-function addcartFlyEfect(obj){
+$.addcartFlyEfect = function(obj){
     var moveimg=$(".cart-move-img").attr("src");
     var ynums=parseInt($(".top-cart-num").text());
     var addnums=parseInt($(".small-quality").val());
@@ -79,9 +79,8 @@ function addcartFlyEfect(obj){
         'height': 30
     }, 600);
     $(".cart-move").hide(200);
-
     setTimeout(function () {}, 1000);
-}
+};
 //产品颜色色块图片点击加边框
 function redborder(obj){
     var clas = obj.getAttribute("class");

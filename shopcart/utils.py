@@ -143,19 +143,19 @@ def my_send_mail(useage,ctx,send_to,title):
 		except:
 			pass
 			
-def handle_uploaded_file(f,type='other',id='-1'):
+def handle_uploaded_file(f,type='other',product_sn='-1'):
 	file_name = ""
 
 	file_names = {}
 	
 	if not type.endswith('/'):
 		type += '/'
-	if not id.endswith('/'):
-		id += '/'
+	if not product_sn.endswith('/'):
+		product_sn += '/'
 	
 	destination = None
 	try:
-		path = 'media/' + type + id
+		path = 'media/' + type + product_sn
 		import os
 		if not os.path.exists(path):
 			os.makedirs(path)
