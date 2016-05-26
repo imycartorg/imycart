@@ -16,7 +16,14 @@ class register_form(forms.ModelForm):
 	#captcha = CaptchaField(),新版暂时不要验证码
 	class Meta:
 		model = MyUser
-		fields = ('email','password','first_name','last_name') 
+		fields = ('email','password','first_name','last_name')
+
+class user_info_form(forms.ModelForm):
+	#captcha = CaptchaField(),新版暂时不要验证码
+	password = forms.CharField(required=False)
+	class Meta:
+		model = MyUser
+		fields = ('password','first_name','last_name') 
 		
 class address_form(forms.ModelForm):
 	tel = forms.CharField(required=False)

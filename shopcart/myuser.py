@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.core.context_processors import csrf
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.decorators import login_required
-from shopcart.forms import register_form,captcha_form,address_form
+from shopcart.forms import register_form,captcha_form,address_form,user_info_form
 import json,uuid,datetime
 from django.db import transaction
 import requests
@@ -41,6 +41,7 @@ def register(request):
 			ctx['reg_result'] = _('Registration faild.')
 			return render(request,System_Config.get_template_name() + '/register.html',ctx)
 
+@login_required
 def info(request):
 	ctx = {}
 	ctx.update(csrf(request))
@@ -50,7 +51,22 @@ def info(request):
 		return render(request,System_Config.get_template_name() + '/user_info.html',ctx)
 	else:
 		logger.debug("Modify User Info")
-		pass
+		form = user_info_form(request.POST) # 获取Post表单数据
+		myuser = request.user
+		if form.is_valid():# 验证表单
+			myuser.first_name = form.cleaned_data['first_name']
+			myuser.last_name = form.cleaned_data['last_name']
+			logger.debug(myuser.last_name)
+		else:
+			logger.debug('not validate')
+		if 'changePassword' in request.POST:
+			#需要更改密码
+			myuser.set_password(request.POST['password'])
+		else:
+			#不更改密码
+			logger.debug('not checked')
+		myuser.save()
+		return redirect('/user/info/?success=true')
 
 def login(request):
 	ctx = {}
