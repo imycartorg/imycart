@@ -410,7 +410,7 @@ jQuery(".btn-address-submit").click(function(){
 		//说明是新增
 		url = url + "add/";
 	}else{
-		url = url + "modify/"
+		url = url + "modify/";
 	}
 	
 	$.ajax({

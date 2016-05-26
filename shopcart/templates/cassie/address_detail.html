@@ -18,46 +18,48 @@
                         <div class="add-address-main col-md-6">
 							<form id="address-form">
 								{% csrf_token %}
-									<div class="check-new-address">
-											<input type="hidden" class="input-address-id" name="address_id" value="" />
-											<div class="register-item">
-											<label>First Name<i>*</i></label>
-											<div class="col-xs-12"><input type="text" maxlength="50" name="first_name" id="id_first_name" value="{{address.first_name}}"></div>
+										<div class="form-group">
+											<div class="check-new-address">
+												<input type="hidden" class="input-address-id" name="address_id" value="{{address.id}}" />
+												<div class="register-item">
+												<label>First Name<i>*</i></label>
+												<div class="col-xs-12"><input type="text" maxlength="50" name="first_name" id="id_first_name" value="{{address.first_name}}"></div>
+												</div>
+												<div class="register-item">
+												<label>Last Name<i>*</i></label>
+												<div class="col-xs-12"><input type="text" maxlength="50" name="last_name" id="id_last_name" value="{{address.last_name}}"></div>
+												</div>
+												<div class="register-item">
+												<label>Address1<i>*</i></label>
+												<div class="col-xs-12"><input type="text" id="id_address_line_1" maxlength="100" name="address_line_1" value="{{address.address_line_1}}"></div>
+												</div>
+												<div class="register-item">
+												<label>Address2</label>
+												<div class="col-xs-12"><input type="text" id="id_address_line_2" maxlength="100" name="address_line_2" value="{{address.address_line_2}}"></div>
+												</div>
+												<div class="register-item">
+												<label>City<i>*</i></label>
+												<div class="col-xs-12"><input type="text" id="id_city" maxlength="50" name="city" value="{{address.city}}"></div>
+												</div>
+												<div class="register-item">
+												<label>State/Province</label>
+												<div class="col-xs-12"><input type="text" maxlength="50" name="province" id="id_province" value="{{address.province}}"></div>
+												</div>
+												<div class="register-item">
+												<label>Country<i>*</i></label>
+												<div class="col-xs-12"><input type="text" maxlength="50" name="country" id="id_country" value="{{address.country}}"></div>
+												</div>
+												<div class="register-item">
+												<label>Zip/Postal Code</label>
+												<div class="col-xs-12"><input type="text" id="id_zipcode" maxlength="50" name="zipcode" value="{{address.zipcode}}"></div>
+												</div>
+												<div class="register-item">
+												<label>Telephone<i>*</i></label>
+												<div class="col-xs-12"><input type="text" id="id_tel" name="tel" value="{{address.tel}}"></div>
+												</div>
+												<div class="check-address-submit"><a class="delay btn-address-submit" data-submit-method="close_self">Save</a></div>
 											</div>
-											<div class="register-item">
-											<label>Last Name<i>*</i></label>
-											<div class="col-xs-12"><input type="text" maxlength="50" name="last_name" id="id_last_name" value="{{address.last_name}}"></div>
-											</div>
-											<div class="register-item">
-											<label>Address1<i>*</i></label>
-											<div class="col-xs-12"><input type="text" id="id_address_line_1" maxlength="100" name="address_line_1" value="{{address.address_line_1}}"></div>
-											</div>
-											<div class="register-item">
-											<label>Address2</label>
-											<div class="col-xs-12"><input type="text" id="id_address_line_2" maxlength="100" name="address_line_2" value="{{address.address_line_2}}"></div>
-											</div>
-											<div class="register-item">
-											<label>City<i>*</i></label>
-											<div class="col-xs-12"><input type="text" id="id_city" maxlength="50" name="city" value="{{address.city}}"></div>
-											</div>
-											<div class="register-item">
-											<label>State/Province</label>
-											<div class="col-xs-12"><input type="text" maxlength="50" name="province" id="id_province" value="{{address.province}}"></div>
-											</div>
-											<div class="register-item">
-											<label>Country<i>*</i></label>
-											<div class="col-xs-12"><input type="text" maxlength="50" name="country" id="id_country" value="{{address.country}}"></div>
-											</div>
-											<div class="register-item">
-											<label>Zip/Postal Code</label>
-											<div class="col-xs-12"><input type="text" id="id_zipcode" maxlength="50" name="zipcode" value="{{address.zipcode}}"></div>
-											</div>
-											<div class="register-item">
-											<label>Telephone<i>*</i></label>
-											<div class="col-xs-12"><input type="text" id="id_tel" name="tel" value="{{address.tel}}"></div>
-											</div>
-											<div class="check-address-submit"><a class="delay btn-address-submit" data-submit-method="close_self">Save</a></div>
-									</div>
+										</div>
 							</form>
                         </div>
                     </div>
@@ -69,4 +71,60 @@
 {% endblock %}
 {% block scripts %}
 	{% load staticfiles %}
+	<script type="text/javascript" src="{% static 'cassie/js/bootstrapValidator.js' %}"></script>
+	<script>		
+		$('#address-form').bootstrapValidator({
+//        live: 'disabled',
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            first_name:{
+                validators: {
+                    notEmpty: {
+                        message: 'This is a required field.'
+                    }
+                }
+            },
+            last_name:{
+                validators: {
+                    notEmpty: {
+                        message: 'This is a required field.'
+                    }
+                }
+            },
+			address_line_1:{
+				validators: {
+                    notEmpty: {
+                        message: 'This is a required field.'
+                    }
+                }
+			},
+			city:{
+				validators:{
+                    notEmpty: {
+                        message: 'This is a required field.'
+                    }
+                }
+			},
+			country:{
+				validators:{
+                    notEmpty: {
+                        message: 'This is a required field.'
+                    }
+                }
+			},
+			tel:{
+				validators:{
+                    notEmpty: {
+                        message: 'This is a required field.'
+                    }
+                }
+			},
+        }
+    });
+	</script>
 {% endblock %}
