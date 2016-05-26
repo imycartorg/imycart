@@ -349,6 +349,8 @@ class Order(models.Model):
 	district = models.CharField(max_length = 100,default='',blank=True)
 	address_line_1 = models.CharField(max_length = 254,default='',blank=True)
 	address_line_2 = models.CharField(max_length = 254,default='',blank=True)
+	first_name = models.CharField(max_length = 254,default='',blank=True)
+	last_name = models.CharField(max_length = 254,default='',blank=True)
 	zipcode = models.CharField(max_length = 10,default='',blank=True)
 	tel = models.CharField(max_length = 20,default='',blank=True)
 	mobile = models.CharField(max_length = 20,default='',blank=True)

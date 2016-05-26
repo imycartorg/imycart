@@ -56,7 +56,7 @@ def place_order(request):
 		#生成主订单
 		logger.debug('>>>>>1')
 		order = Order.objects.create(order_number=get_serial_number(),user=request.user,status=Order.ORDER_STATUS_PLACE_ORDER,country=address.country,province=address.province,city=address.city,district=address.district,address_line_1=address.address_line_1,
-			address_line_2=address.address_line_2,zipcode=address.zipcode,tel=address.tel,mobile=address.mobile,email=request.user.email,
+			address_line_2=address.address_line_2,first_name=address.first_name,last_name=address.last_name,zipcode=address.zipcode,tel=address.tel,mobile=address.mobile,email=request.user.email,
 			products_amount = sub_total,shipping_fee=shipping,discount=discount,order_amount=total,to_seller=remark)
 
 		logger.debug('>>>>>2:order.id='+str(order.id))

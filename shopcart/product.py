@@ -94,7 +94,35 @@ def view_list(request):
 			else:
 				product_list = Product.objects.order_by(request.GET['sort_by'])
 		else:
+			logger.debug("all products")
 			product_list = Product.objects.all()
+		
+		logger.debug("no sort_by")
+		if 'page_size' in request.GET:
+			page_size = request.GET['page_size']
+		else:
+			try:
+				page_size = int(System_Config.objects.get(name='product_page_size'))
+			except:
+				page_size = 12
+		
+		product_list, page_range = my_pagination(request=request, queryset=product_list,display_amount=page_size)
+		
+		ctx['product_list'] = product_list
+		ctx['page_range'] = page_range
+		return render(request,System_Config.get_template_name() + '/product_list.html',ctx)
+
+
+def query_product_show(request):
+	ctx = {}
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Product'
+	
+	if request.method =='GET':
+		query_condition = request.GET.get('query','')
+		logger.debug('Query_String is %s ' % query_condition)
+		from django.db.models import Q
+		product_list = Product.objects.filter(Q(name__contains=query_condition))
 		
 		if 'page_size' in request.GET:
 			product_list, page_range = my_pagination(request=request, queryset=product_list,display_amount=request.GET['page_size'])
@@ -104,7 +132,8 @@ def view_list(request):
 		ctx['product_list'] = product_list
 		ctx['page_range'] = page_range
 		return render(request,System_Config.get_template_name() + '/product_list.html',ctx)
-
+		
+		
 def ajax_get_product_info(request):
 	logger.info('Entered the ajax_get_product_info function')
 	product_to_get = json.loads((request.body).decode())

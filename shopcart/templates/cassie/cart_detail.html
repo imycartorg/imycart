@@ -9,6 +9,10 @@
         <div class="container">
             <div class="row">
                 <h1>Shopping Cart</h1>
+				
+				<form id="cart_to_order_form" method="post" action="/cart/check-out">
+				{% csrf_token %}
+								
                 <div class="row">
                     <div class="col-md-9 col-xs-12 col-xy-8">
                        <div class="carts-main">
@@ -20,11 +24,12 @@
                             <div class="carts-goods-sub">{% trans 'SubTotal' %}</div>
                             <div class="carts-goods-move"></div>
                          </div>
-                         <!--购物车产品列表，“carts-item”为每一个产品-->
+                         <!--购物车产品列表，“carts-item”为每一个产品-->	 
                          <div class="carts-list">
 							 <!-- 商品一 -->
 							{% for cart_product in cart.cart_products.all %}
 							<div class="carts-item" id="goods1">
+								<input  name="cart_product_id" type="hidden" value="{{cart_product.id}}" />	
 								<div class="carts-goods-img"><a href="#"><img src="{{cart_product.product.thumb}}" alt="{{cart_product.product.name}}"></a></div>
 								<div class="carts-goods-name"><div><a href="/product/{{cart_product.product.id}}">{{cart_product.product.name}}</a></div>
 									<p>{{cart_product.get_short_product_attr}}</p>
@@ -66,13 +71,24 @@
                                 <span>Grand Total</span>
                                 <span id="totalPrice">${{cart.get_sub_total|floatformat:"2"}}</span>
                             </div>
-                            <div class="carts-checkout"><a class="delay" id="checkOutBtn">{%trans 'Proceed to Checkout'%}</a></div>
+                            <div class="carts-checkout">
+								<input name="products_to_buy" type="hidden" value="{}" />
+								<a class="delay" id="checkOutLink" data-form-id="cart_to_order_form" href="#">{%trans 'Proceed to Checkout'%}</a>
+							</div>
                         </div>
                     </div>
                 </div>
+				
+				</form>
             </div>
         </div>
     </div>
 {% endblock %}
 {% block scripts %}
+<script>
+	$("#checkOutLink").click(function(e){
+		var form_id = $(this).data("form-id");
+		$("#" + form_id).submit();
+	});
+</script>
 {% endblock %}

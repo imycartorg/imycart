@@ -49,6 +49,7 @@ def info(request):
 		#GET请求，直接返回页面
 		return render(request,System_Config.get_template_name() + '/user_info.html',ctx)
 	else:
+		logger.debug("Modify User Info")
 		pass
 
 def login(request):
@@ -96,41 +97,54 @@ def merge_cart(request):
 	cart = None
 	if 'cart_id' in request.COOKIES:
 		try:
+			logger.debug('cart_id in cookie:%s' % (request.COOKIES['cart_id']))
 			cart = Cart.objects.get(id=request.COOKIES['cart_id'])
+			logger.debug('cart exist')
 		except:
+			logger.debug('cart not exist')
 			cart = None
 	
 	mycart = None
 	try:
 		mycart = Cart.objects.get(user=request.user)
+		logger.debug('mycart exist')
 	except:
+		logger.debug('mycart not exist')
 		mycart = None
 	
 	if cart == None and mycart == None:
+		logger.debug('Create new mycart')
 		mycart = Cart.objects.create(user=request.user)
 		return mycart
 	elif cart == None and mycart != None:
+		logger.debug('use the exist mycart')
 		return mycart
 	elif cart != None and mycart == None:
+		logger.debug('use the cart')
 		cart.user = request.user
 		cart.save()
 		return cart
 	else:
 		#两个购物车都不为空，则要合并
-		for p in cart.cart_products.all():
-			has_p = False
-			for mp in mycart.cart_products.all():
-				if mp.product == p.product and mp.product_attribute == p.product_attribute:
-					mp.quantity = mp.quantity + p.quantity
-					mp.save()
-					p.delete()
-					has_p = True
-					break;	
-			if has_p == False:
-				p.cart = mycart
-				p.save()
-		cart.delete()
-		return mycart
+		if cart.id == mycart.id:
+			logger.debug('cart is the mycart!')
+			return mycart
+		else:
+			logger.debug('merge')
+			for p in cart.cart_products.all():
+				has_p = False
+				for mp in mycart.cart_products.all():
+					if mp.product == p.product and mp.product_attribute == p.product_attribute:
+						mp.quantity = mp.quantity + p.quantity
+						mp.save()
+						p.delete()
+						has_p = True
+						break;	
+				if has_p == False:
+					p.cart = mycart
+					p.save()
+			cart.delete()
+			return mycart
 			
 def logout(request):
 	auth.logout(request)
@@ -143,19 +157,21 @@ def forget_password(request):
 	ctx['page_name'] = 'Forget Password'
 	ctx = add_captcha(ctx) #添加验证码
 	if request.method == 'GET':
-		ctx['form_display'] = 'block'
+		ctx['form_display'] = ''
+		ctx['success_display'] = 'display:none;'
 		return render(request,System_Config.get_template_name() + '/forget_password.html',ctx)
 	else:
 		form = captcha_form(request.POST) # 获取Post表单数据
 		if form.is_valid():
-			ctx['form_display'] = 'none'
+			ctx['form_display'] = 'display:none;'
 			ctx.update(csrf(request))
 			s_uuid = str(uuid.uuid4())
 			reset_password = Reset_Password.objects.create(email=request.POST['email'],validate_code=s_uuid,apply_time=datetime.datetime.now(),expirt_time=(datetime.datetime.now() + datetime.timedelta(hours=24)),is_active=True)
 			mail_ctx = {}
 			mail_ctx['reset_url'] =  System_Config.get_base_url() + "/user/reset-password?email=" + reset_password.email + "&validate_code=" + reset_password.validate_code
 			my_send_mail(useage='reset_password',ctx=mail_ctx,send_to=reset_password.email,title=_('You are resetting you password in %(site_name)s .') % {'site_name':System_Config.objects.get(name='site_name').val})
-			ctx['apply_message'] = _('Your password reset apply is succeed.Please check your mail box.')
+			ctx['apply_message'] = _('If there is an account associated with %(email_address)s you will receive an email with a link to reset your password.') % {'email_address':reset_password.email}
+			ctx['success_display'] = ''
 		else:
 			ctx['apply_message'] = _('Please check your verify code.')
 		return render(request,System_Config.get_template_name() + '/forget_password.html',ctx)
@@ -165,6 +181,8 @@ def reset_password(request):
 	ctx['system_para'] = get_system_parameters()
 	ctx['page_name'] = 'Reset Password'
 	if request.method == 'GET':
+		ctx['success_display'] = 'display:none;'
+		ctx['form_display'] = ''
 		try:
 			#日期大小与比较要用 "日期字段名__gt=" 表示大于
 			reset_password = Reset_Password.objects.filter(expirt_time__gt=datetime.datetime.now()).get(email=request.GET['email'],validate_code=request.GET['validate_code'],is_active=True)
@@ -183,16 +201,18 @@ def reset_password(request):
 			reset_password.is_active = False
 			reset_password.save()
 			myuser.save()
-			ctx['form_display'] = 'none'
+			ctx['success_display'] = ''
+			ctx['form_display'] = 'display:none;'
 			ctx['reset_message'] = _('The password has been reseted.')
 		except:
-			ctx['form_display'] = 'none'
+			ctx['success_display'] = ''
+			ctx['form_display'] = 'display:none;'
 			ctx['reset_message'] = _('Opration faild.')		
 		return render(request,System_Config.get_template_name() + '/reset_password.html',ctx)
 		
 @login_required
 @transaction.atomic()
-def address(request,method):
+def address(request,method,id=''):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
 	ctx['page_name'] = 'Address Book'
@@ -204,9 +224,28 @@ def address(request,method):
 		logger.debug('The address id is %s.' % (address_id))
 		#用途的拼装方法
 		useage = request.POST['first_name'] + ' ' + request.POST['last_name'] + '@' + request.POST['city']
+		
+		#20160525,倪肖勇加入地址数量控制,有一个系统参数 common_user_address_limit,用来控制普通用户的地址数量，如果参数没有设置，默认5条
+		address_count = Address.objects.filter(user=request.user).count()
+		logger.debug('The address count of this user is:%s' % (address_count))
+		limit = 5
+		try:
+			limit = int(System_Config.objects.get('common_user_address_limit'))
+		except:
+			logger.info('common_user_address_limit is not setted. use default value 5.')
+		can_add = (True if limit > address_count else False)
+		logger.debug('Address can add ? %s' % (can_add))
+		
 		if method == 'add' or method == 'modify':
 			if not address_id:
-				address = Address.objects.create(user=request.user)
+				if can_add:
+					address = Address.objects.create(user=request.user)
+				else:
+					message = _('Only less than %(address_limit)s addresses will be allowed.') % {'address_limit':limit}
+					result = False
+					result_dict['success'] = result
+					result_dict['message'] = message
+					return JsonResponse(result_dict)
 			else:
 				try:
 					address = Address.objects.get(user=request.user,id=address_id)
@@ -226,8 +265,21 @@ def address(request,method):
 		else:
 			pass
 	else:
-		ctx['form'] = address_form()
-		return render(request,System_Config.get_template_name() + '/test.html',ctx)
+		#ctx['form'] = address_form()
+		if method == 'modify':
+			try:
+				address = Address.objects.get(id=id,user=request.user)
+				ctx['address'] = address
+				ctx['title'] = 'Modify Address'
+				logger.debug('first_name:' + address.first_name)
+			except Exception as err:
+				logger.error("Can not find the address which id is %s" % id)
+				raise Http404
+		elif method == 'add':
+			ctx['title'] = 'Add New Address'
+		else:
+			raise Http404
+		return render(request,System_Config.get_template_name() + '/address_detail.html',ctx)
 	
 	result_dict['success'] = result
 	result_dict['message'] = message

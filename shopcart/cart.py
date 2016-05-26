@@ -1,6 +1,6 @@
 #coding=utf-8
 from django.shortcuts import render,redirect
-from shopcart.models import Cart,Product,Cart_Products,System_Config,Express
+from shopcart.models import Cart,Product,Cart_Products,System_Config,Express,Address
 from django.core.context_processors import csrf
 from django.http import HttpResponse,JsonResponse
 import json,uuid
@@ -209,7 +209,9 @@ def check_out(request):
 		#添加快递选择
 		ctx['express_list'] = Express.objects.all()		
 		
-		prices = get_prices(cart_product_id_list=cart_product_id_list)
+		ctx['default_express'] = Express.objects.all()[0]
+		
+		prices = get_prices(cart_product_id_list=cart_product_id_list,express=ctx['default_express'])
 		
 		ctx['product_list'] = prices['product_list']
 		ctx['sub_total'] =  prices['sub_total']
@@ -219,11 +221,21 @@ def check_out(request):
 		
 		#找出用户的地址簿
 		myuser = request.user
-		ctx['default_address_id'] = '-1'
-		try:
-			ctx['default_address_id'] = myuser.addresses.filter(is_default=True)[0].id
-		except:
-			pass
+		addresses_list = Address.objects.filter(user=myuser)
+		if addresses_list:
+			has_default = False
+			for address in addresses_list:
+				if address.is_default:
+					logger.debug('Find a default address.')
+					ctx['default_address'] = address
+					has_default = True
+					break;
+				
+			if not has_default:
+				#随便给一个
+				logger.debug('Do not a default address.')
+				ctx['default_address'] = addresses_list[0]
+			
 		return render(request,System_Config.get_template_name() + '/check_out.html',ctx)
 	else:
 		return redirect(reverse('cart_view_cart'))

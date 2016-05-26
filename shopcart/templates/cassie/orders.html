@@ -1,0 +1,57 @@
+{% extends "cassie/base.html" %}
+{%block head_extra%}
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'cassie/css/cart.css'%}" type="text/css"/>
+{%endblock%}
+{% block main %}
+{% load i18n %}
+    <div class="order main">
+        <div class="container">
+            <div class="row">
+                <div class="row">
+                    <div class="col-md-3 col-xs-4 col-xy-12">
+						{% include 'cassie/side_nav.html' %}
+                    </div>
+                    <div class="col-md-9 col-xs-8 col-xy-12">
+                       <div class="order-main">
+                          <h2>My Order</h2>
+						  <ul class="order-title">
+							<li>Oder#</li>
+							<li>Date</li>
+							<li>Ship To</li>
+							<li>Order Total</li>
+							<li>Order Status</li>
+							<li></li>
+						  </ul>
+                          <div class="order-list">
+							{% for order in order_list %}
+								<ul class="order-item" title="container_order_{{order.id}}">
+									<li>{{order.order_number}}</li>
+									<li>{{order.create_time|date:"M/d/Y"}}</li>
+									<li>{{order.first_name}} &nbsp; {{order.last_name}}</li>
+									<li>${{order.order_amount|floatformat:"2"}}</li>
+									<li><a>Pay Now</a></li>
+									<li><a>View Order</a></li>
+								</ul>
+							{% endfor %}
+                          </div>
+                          <div class="order-pages">
+                              <a class="prev"></a>
+                              <span>1</span>
+                              <a>2</a>
+                              <a>3</a>
+                              <a>4</a>
+                              <a class="next"></a>
+                          </div>
+                         </div>
+                       </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+	{% load staticfiles %}
+{% endblock %}

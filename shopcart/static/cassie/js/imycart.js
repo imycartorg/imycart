@@ -113,6 +113,7 @@ jQuery(".add-to-emaillist").click(function(){
 
 //快递公司选择
 jQuery(":radio[name='express']").click(function(){
+	//alert("express changed")
 	var url = '/cart/re-calculate-price/';
 	$.ajax({
 		cache: false,
@@ -126,6 +127,7 @@ jQuery(":radio[name='express']").click(function(){
 		success: function(data) {
 			if(data.success==true){
 				//alert(data.message.total);
+				//alert("data.message.total:" + data.message.total);
 				$("#sub_total_amount").text(data.message.sub_total.toFixed(2));
 				$("#total_amount").text(data.message.total.toFixed(2));
 				$("#discount_amount").text(data.message.discount.toFixed(2));
@@ -354,9 +356,55 @@ jQuery(".order-pay-button").click(function(event) {
 	location.href = url;
 }); 
 
+
+//地址选择
+jQuery(".check-choice-address").click(function () {
+	$(".check-address-list").show();
+});
+
+
+//点击某个地址后，收起下拉菜单，并且填充下面的输入框
+//由于动态添加的li，绑定的click事件会失效，因此这里必须用on('click','li>a',function(e))的写法
+jQuery(".check-address-list").on('click','li>a',function(e){
+	var str = new String($(this).text());
+	$(".check-address-list").hide();
+	$("#span_address_selected").text(str);
+	var address_id = $(this).data("address-id");
+	
+	$(".input-address-id").val(address_id);
+	$.updateAddressForm(address_id);
+});
+
+//jQuery(".check-address-list a").click(function (e) {
+	//var str = new String($(this).text());
+	//$(".check-address-list").hide();
+	//$("#span_address_selected").text(str);
+	//var address_id = $(this).data("address-id");
+	
+	//$(".input-address-id").val(address_id);
+	//$.updateAddressForm(address_id);
+//});
+
+
+
 //地址添加与修改
 jQuery(".btn-address-submit").click(function(){
-	var address_id = $("#select_address_id").val();
+	//var address_id = $("#select_address_id").val();
+	var $form = $("#address-form").data('bootstrapValidator'); 
+	$form.validate();
+	var flag = $form.isValid();
+	if(!flag){
+		return;
+	}
+	//alert(flag);
+	
+	
+	var submit_method = "dropdown_list";
+	if (!($(this).data("submit-method") == "" || $(this).data("submit-method") == null)){
+		submit_method = $(this).data("submit-method");
+	}
+	
+	var address_id = $("#input_address_id").val();
 	var url = "/user/address/opration/";
 	if (address_id == ""){
 		//说明是新增
@@ -376,21 +424,47 @@ jQuery(".btn-address-submit").click(function(){
 		},
 		success: function(data) {
 			if(data.success==true){
-				var address_id = data.address.id;
-				var useage = data.address.useage;
-				var changeFlag = false;
-				$("#select_address_id option").each(function(){
-					if($(this).val()==address_id){
-						changeFlag = true;
-						$(this).text(useage);
-						alert("TODO:Opration success");
+				if (submit_method == "dropdown_list"){
+					var address_id = data.address.id;
+					var useage = data.address.useage;
+					var changeFlag = false;
+					$("#ul_address_list li").each(function(){
+						if($(this).find("a").data("address-id")==address_id){
+							changeFlag = true;
+							var html = "<a class='address-option' data-address-id='" + address_id + "'>" + useage + "</a>"
+							$(this).html(html);
+							//alert("TODO:Opration success:" + html);
+						}
+					});
+					$("#span_address_selected").text(useage);
+					
+					//$("#select_address_id option").each(function(){
+						//if($(this).val()==address_id){
+							//changeFlag = true;
+							//$(this).text(useage);
+							//alert("TODO:Opration success");
+						//}
+					//});
+					
+					if (!changeFlag){
+						//新增的
+						//$("#select_address_id").append("<option value='" + address_id + "'>" + useage +  "</option>");
+						//$("#select_address_id").val(address_id);
+						$("#ul_address_list").append("<li><a class='address-option' data-address-id='" + address_id + "'>" + useage + "</a></li>");
+						$("#span_address_selected").text(useage);
+						//alert("TODO:Opration success");
+
 					}
-				});
-				if (!changeFlag){
-					//新增的
-					$("#select_address_id").append("<option value='" + address_id + "'>" + useage +  "</option>");
-					$("#select_address_id").val(address_id);
-					alert("TODO:Opration success");
+				}else if(submit_method=="close_self"){
+					//暂时啥都不干
+					alert("TODO:See what to do next");
+				}
+				
+				
+			}else{
+				if (submit_method == "dropdown_list"){
+					$("#infoMessage").html(data.message);
+					$("#myModal").modal('toggle');
 				}
 			}
 		}
@@ -399,12 +473,24 @@ jQuery(".btn-address-submit").click(function(){
 
 //地址选择的修改
 $("#select_address_id").change(function(e){
+	var address_id = $("#select_address_id").val();
+	$.updateAddressForm(address_id);
+});
+
+$.updateAddressForm = function(address_id){
 	//获取地址的详细信息
 	var url = "/user/address/detail/";
-	var address_id = $("#select_address_id").val();
+	
 	if (address_id == ""){
 		//清空下面的列表
-		$("#address-form")[0].reset(); //重置表单要加个[0],神奇的东东。。。。
+		//$("#address-form")[0].reset(); 
+		//重置表单要加个[0],神奇的东东。。。。
+		//发现reset方法有个问题，如果input中有value="xx",那么只能还原到xx
+		$(':input','#address-form')  
+			.not(':button, :submit, :reset, :hidden')  
+			.val('')  
+			.removeAttr('checked')  
+			.removeAttr('selected'); 
 	}else{
 		url = url + address_id;
 		$.ajax({
@@ -422,9 +508,27 @@ $("#select_address_id").change(function(e){
 						$("#id_" + key).val(data.address[key]); //页面上input必须命名成 "id_字段"的形式
 					}
 				}
+
 			}
 		});
 	}
+	
+	//尝试重置验证状态
+	$("#address-form").data('bootstrapValidator').resetForm();
+};
+
+//下单
+jQuery(".btn-place-order").click(function(e){
+	//检查地址有没有选择
+	var address_id = $("#input_address_id").val();
+	if (address_id>0){
+		$("#place_order_form").submit();
+	}else{
+		$("#infoMessage").html("Please choose a shipping address.");
+		$("#myModal").modal('toggle');
+	}
+	
+	
 });
 
  
@@ -440,6 +544,28 @@ jQuery(".order-cancel-button").click(function(event) {
 	imycartAjaxCallWithCallback(url,object,imycartChangeOrderCallBack,$(this),extraInfo)	
 }); 
 
+
+//用户信息
+jQuery("#changePassword").click(function(){
+    if ($("#changePassword").attr('checked')){
+        $(".change-password").hide();
+        $("#changePassword").removeAttr('checked');
+    }
+    else{
+        $("#changePassword").attr('checked','true');
+        $(".change-password").show();
+    }
+});
+
+
+jQuery(".btn-userinfo-submit").click(function(e){
+	var $form = $("#userInfoForm").data("bootstrapValidator");
+	$form.validate();
+	if ($form.isValid()){
+		$("#userInfoForm").data("bootstrapValidator").defaultSubmit();
+	}
+	
+});
 
 function imycartChangeOrderCallBack(result,triggerControl,extraInfo){
 	if(extraInfo.method=='cancel'){

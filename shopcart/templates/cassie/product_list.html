@@ -1,118 +1,56 @@
-﻿{% extends "cassie/base.html" %}
+{% extends "cassie/base.html" %}	
 {% block breadcrumbs %}
-  <!-- Breadcrumbs -->
-  <div class="breadcrumbs bounceInUp animated">
+<div class="crumb">
     <div class="container">
-      <div class="row">
-        <div class="col-xs-12">
-          <ul>
-            <li class="home"> <a title="Go to Home Page" href="index.html">Home</a><span>» </span></li>
-            <li class=""> <a title="Go to Home Page" href="grid.html">Women</a><span>» </span></li>
-            <li class="category13"><strong>Tops & Tees</strong></li>
-          </ul>
+        <div class="row">
+           <a href="/">Home</a> &gt; {{category}}
         </div>
-      </div>
     </div>
-  </div>
-{% endblock %}
-  <!-- Breadcrumbs End --> 
+</div>
+{% endblock%}
 {% block main %}
-<!-- Main Container -->
-<section class="main-container col2-left-layout bounceInUp animated">
-<div class="page-header"><div class="container"><div class="row">
-  <div class="col-xs-12">
-              <h2>Tops & Tees</h2></div></div></div>
-            </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-main col-sm-9 col-sm-push-3">
-        <article class="col-main">
-          <div class="toolbar">
-            <div class="sorter">
-                <div class="view-mode"> <a href="grid.html" title="Grid" class="button button-grid">&nbsp;</a>&nbsp; <span title="List" class="button button-active button-list">&nbsp;</span>&nbsp; </div>
-              </div>
-            <div id="sort-by">
-              <label class="left">Sort By: </label>
-              <ul>
-                <li><a title="orderBy" data-column="on_sale_date" href="#">On sale<span class="right-arrow"></span></a>
-                  <ul>
-                    <li><a title="orderBy" data-column="shopPrice" href="#">Price</a></li>
-                  </ul>
-                </li>
-              </ul>
-              <a class="button-asc left" href="#" title="Set Descending Direction" id="sordDirection"><span id="sortArrow" class="glyphicon glyphicon-arrow-down"></span></a> </div>
-            <div class="pager">
-              <div id="limiter">
-                <label>View: </label>
-                <ul>
-                  <li><a title="pageSize" href="#">15<span class="right-arrow"></span></a>
-                    <ul>
-                      <li><a title="pageSize" href="#">20</a></li>
-                      <li><a title="pageSize" href="#">30</a></li>
-                      <li><a title="pageSize" href="#">35</a></li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-				<div class="pages">
-					<label>Page:</label>
-					<ul class="pagination">
-						{% if wish_list.has_previous %}
-						<li><a name="pageChange" data-tag="Previous" href="?page={{ wish_list.previous_page_number }}">&laquo;</a></li>
-						{% else %}
-						<li class="active"><a>&laquo;</a></li>
-						{% endif %}
-
-						{% for p in page_range %}
-						  {% ifequal p objects.number %}
-						  <li class="active"><a>{{p}}</a></li>
-						  {% else %}
-						  <li><a href="?page={{p}}" title="第{{p}}页">{{p}}</a><li>
-						  {% endifequal %}
-						{% endfor %}
-
-						{% if wish_list.has_next %}
-						<li><a name="pageChange" data-tag="Next" href="?page={{ wish_list.next_page_number }}">&raquo;</a></li>
-						{% else %}
-						<li class="active"> <a>&raquo;</a></li>
-						{% endif %}
-					</ul>
-				</div>
-            </div>
-          </div>
-          <div class="category-products">
-          <!-- 商品陈列开始 -->
-          <ol class="products-list" id="products-list">
+{% load i18n %}
+<div class="products main">
+    <div class="container">
+        <div class="row">
+          <h1>Better Hairbrush</h1>
+          <p class="products-des">Make a chance for your hair as well as your pocket</p>
+          <div class="row products-main">
 			{% for product in product_list %}
-	          <li class="item">
-	            <div class="product-image"> <a href="/product/{{product.id}}" title="{{product.name}}"> <img class="small-image" src="{{product.image}}" alt="{{product.name}}"> </a> </div>
-	            <div class="product-shop">
-	              <h2 class="product-name"><a href="/product/{{product.id}}" title="{{product.name}}">{{product.name}}</a></h2>
-	              <div class="desc std">
-	                <p>{{product.short_desc}} <a class="link-learn" title="" href="#">Learn More</a> </p>
-	              </div>
-	              <div class="price-box">
-	                <p class="old-price"> <span class="price-label"></span> <span id="old-price-212" class="price"> ${{product.marketPrice}} </span> </p>
-	                <p class="special-price"> <span class="price-label"></span> <span id="product-price-212" class="price"> ${{product.price}}</span> </p>
-	              </div>
-	              <div class="actions">
-	                <button class="button btn-cart ajx-cart" title="Add to Cart" type="button" name="addToCart" data-productid="{{product.id}}"><span>Add to Cart</span></button>
-	                <span class="add-to-links"> <a title="Add to Wishlist" class="button link-wishlist" href="#" name="addToWishList" data-productid="{{product.id}}"><span>Add to Wishlist</span></a></span> </div>
-	            </div>
-	          </li>
-	         {% empty %}
-				<li class="item"> There is no product ay all. </li>
-			 {% endfor %}
-        	</ol>
-          <!-- 商品陈列结束 -->
+				<div class="col-md-3 col-xs-6">
+					<a href="/product/{{product.id}}"><img src="{{product.image}}" alt="{{product.name}"></a>
+						<h2><a href="/product/{{product.id}}">{{product.name}}</a></h2>
+						<p>${{product.price}}</p>
+				</div>
+			{% endfor %}
+
+			<div class="artical-pages">
+				{% if product_list.has_previous %}
+					<a name="pageChange" data-tag="Previous" class="pageChage prev" data-page="{{ product_list.previous_page_number }}"></a>
+				{% else %}
+					<a class="prev"></a>
+				{% endif %}
+				
+				
+				 {% for p in page_range %}
+					{% ifequal p objects.number %}
+						<span>{{p}}</span>
+					{% else %}
+					  <a class="pageChage"  data-page = "{{p}}" href="#" title="{{p}}">{{p}}</a>
+					{% endifequal %}
+				 {% endfor %}
+				 {% if product_list.has_next %}
+					<a name="pageChange" class="pageChage next" data-page = "{{p}}" data-page-range="{{page_range}}" data-tag="Next"></a>
+				 {% else %}
+					<a class="next"></a>
+				 {% endif %}
+            </div>
           </div>
-        </article>
-        <!--	///*///======    End article  ========= //*/// --> 
-      </div>
+        </div>
     </div>
-  </div>
-</section>
-<!-- Main Container End --> 
+</div>
 {% endblock %}
 {% block scripts %}
+	{% load staticfiles %}
 {% endblock %}
+
