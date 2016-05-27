@@ -54,6 +54,12 @@ def view_blog_list(request):
 	ctx['system_para'] = get_system_parameters()
 	ctx['page_name'] = 'Blog'
 	
+	try:
+		blog_list_page_size = System_Config.objects.get('blog_list_page_size')
+	except:
+		logger.debug('blog_list_page_size is not defined,use the default value 12.')
+		blog_list_page_size = 12
+	
 	if request.method =='GET':
 		product_list = None
 		if 'sort_by' in request.GET:
@@ -68,9 +74,10 @@ def view_blog_list(request):
 			article_list = Article.objects.filter(category=Article.ARTICLE_CATEGORY_BLOG)
 		
 		if 'page_size' in request.GET:
+			logger.debug('the page_size has been detacted')
 			article_list, page_range = my_pagination(request=request, queryset=article_list,display_amount=request.GET['page_size'])
 		else:
-			article_list, page_range = my_pagination(request=request, queryset=article_list)
+			article_list, page_range = my_pagination(request=request, queryset=article_list,display_amount=blog_list_page_size)
 		
 		ctx['article_list'] = article_list
 		ctx['page_range'] = page_range

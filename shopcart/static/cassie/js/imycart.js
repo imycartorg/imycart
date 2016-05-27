@@ -609,14 +609,26 @@ function imycartAddProductToCartCallBack(result,triggerControl,extraInfo){
 jQuery("#addToWishList").click(
 	function() {
 		event.preventDefault();
-		imycartAddProductToWishlist($(this).data("product-id"));
+		imycartAddProductToWishlist($(this).data("product-id"),$(this),null);
 	}
 );
-function imycartAddProductToWishlist(product_id) {
+function imycartAddProductToWishlist(product_id,triggerControl,extraInfo) {
 	var url = "/wishlist/add";
 	var wish = new Object();
 	wish.product_id = product_id;
-	imycartAjaxCall(url,wish,true,null);
+	imycartAjaxCallWithCallback(url,wish,imycartAddProductToWishlistCallBack,triggerControl,extraInfo);
+};
+
+function imycartAddProductToWishlistCallBack(result,triggerControl,extraInfo){
+	if(result.success==true){
+		$(".detail-heart").addClass("detail-heart-click");
+		$("#infoMessage").html(result.message);
+		$("#myModal").modal('toggle');
+	}else{
+		if(result.message=="needLogin"){
+			location.href = "/user/login/?next=" + result.next;
+		}
+	}
 };
 
 //选择了商品某个额外属性

@@ -3,8 +3,8 @@
 .carts-main,.carts-sidbar{width:100%; display: inline-block; border:1px solid #ddd;}
 .carts-main{padding:25px 20px;margin-bottom: 100px;}
 .carts-item,.carts-title{width:100%; display: inline-block;float:left;border-bottom: 1px solid #ddd;}
-.carts-goods-price,.carts-goods-pricet,.carts-goods-sub,.carts-goods-name,.carts-goods-move,.carts-goods-pricet{float:left;text-align:left;}
-.carts-goods-img,.carts-goods-qty,.carts-goods-subt{ float:left; text-align: center;}
+.carts-goods-price,.carts-goods-pricet,.carts-goods-sub,.carts-goods-name,.carts-goods-move,.carts-goods-pricet,.carts-goods-subt{float:left;text-align:left;}
+.carts-goods-img,.carts-goods-qty{ float:left; text-align: center;}
 .check-out .carts-goods-sub{ text-align: center;}
 .carts-goods-img img{width:100%;}
 .carts-goods-name a{color:#666;}
@@ -22,7 +22,7 @@
 .carts-checkout a{width:100%; padding:9px 0; display: block; background: #f7931d;border:1px solid #f7931d; color:#fff;font-size: 16px;}
 .carts-checkout a:hover{ text-decoration: none;color:#666;border:1px solid #ccc; background: #fff;}
 .carts-end{width:100%; display: inline-block;float:left;height:36px; margin:28px 0 22px 0;}
-.carts-end div a{padding:5px 18px; border:1px solid #ccc;margin-left:15px;display: block;color:#666;}
+.carts-end div a{padding:6px 18px; border:1px solid #ccc;margin-left:15px;display: block;color:#666;}
 .carts-end div a:hover{background: #f7931d; color:#fff; border:1px solid #f7931d; text-decoration: none;}
 .carts-end div:first-child{float:left;}
 .carts-end div:nth-child(2),.carts-end div:nth-child(3){float:right;}
@@ -38,9 +38,9 @@
 .check-out .carts-sidbar,.check-out .carts-main{border:none;padding:0; background: #fff;}
 .check-new-address p{float:left;text-align: left;color:#ff0000;line-height:18px;padding:12px 0 0 0}
 .check-new-address label{margin-top:10px;}
-.check-address-submit{font-size: 14px;float: right; line-height: 40px;margin-top:15px;}
-.check-address-submit a{color:#fff; text-decoration: none;padding: 0 18px;background: #f7931d;border:1px solid #f7931d; display: block;}
-.check-address-submit a:hover{text-decoration: none;color:#666;border:1px solid #ccc; background: #fff;}
+.check-address-submit{font-size: 14px;float: right; line-height:38px;margin-top:15px;}
+.check-address-submit button{color:#fff; text-decoration: none;padding: 0 17px;background: #f7931d;border:1px solid #f7931d; display: block;}
+.check-address-submit button:hover{text-decoration: none;color:#666;border:1px solid #ccc; background: #fff;}
 .check-address{position:relative;}
 .check-new-address{width:100%; display: inline-block; padding-bottom:60px;}
 .check-choice-address{font-size:13px; color:#666;line-height: 24px;padding: 8px 10px;border: 1px solid #ccc;float: left; display: block; width:100%;position:relative; z-index: 1;}
@@ -92,7 +92,7 @@
 .address-main{width:100%; display: inline-block;padding-bottom:90px; padding-left:10px;}
 .address-main h3 {font-size: 20px; line-height: 26px; padding: 24px 0 40px 0;width: 100%;display: inline-block;}
 .address-main h3 span{float:left;}
-.address-main h3 a{float:right; color:#fff; font-size: 16px; background: #f7931d ;padding:7px 28px;}
+.address-main h3 a{float:right; color:#fff; font-size: 16px; background: #f7931d ;padding:6px 27px;border:1px solid #f7931d;}
 .default{border:2px solid #f7931d !important;margin-bottom:16px !important;}
 .address-item ul{padding:15px 35px 8px 35px;border:1px solid #efefef;margin-bottom:18px;}
 .address-item{ float:left;}
@@ -101,8 +101,8 @@
 .address-item:nth-child(even){padding-left:0px !important;padding-right:0px !important;}
 .address-item:nth-child(odd) ul{width: 98%;margin-left: 1.8%;}
 .address-item:nth-child(even) ul{width: 98%;margin-right:1.8%;}
-.address-item a{font-size: 12px; color:#fff; background:#f7931d; padding:3px 18px;margin-left:10px; float:right;}
-.address-item a:hover{color:#fff; text-decoration: none;}
+.address-item a{font-size: 12px; color:#fff; background:#f7931d;border:1px solid #f7931d; padding:2px 17px;margin-left:10px; float:right;}
+.address-item a:hover,.address-main h3 a:hover{text-decoration: none;color:#666;border:1px solid #ccc; background: #fff;}
 /*user info*/
 .edit-account{padding: 30px 50px;}
 .edit-account p{padding:9px 0 9px 30px; line-height: 22px;margin-bottom:0;}

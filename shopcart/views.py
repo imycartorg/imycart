@@ -156,6 +156,12 @@ def init_database(request):
 	
 	sys_con = System_Config.objects.create(name='hot_line',val='(+86)186 18 18 18')
 	sys_con = System_Config.objects.create(name='office_phone',val='(+86)86688668')
+	
+	
+	sys_con = System_Config.objects.create(name='product_page_size',val=12)
+	sys_con = System_Config.objects.create(name='common_user_address_limit',val=4)
+	sys_con = System_Config.objects.create(name='order_list_page_size',val=10)
+	sys_con = System_Config.objects.create(name='blog_list_page_size',val=12)
 	#"""
 
 	ag_size = Attribute_Group.objects.create(name='尺码',group_type='text',code='size')

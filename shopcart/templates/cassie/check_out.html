@@ -28,7 +28,7 @@
 													<li><a class="address-option" data-address-id="{{address.id}}">{{address.useage}}</a></li>
 												{%endfor%}
 										</ul>
-										<input id="input_address_id" type="hidden" class="input-address-id" name="address_id" value="{{default_address_id}}" />
+										<input id="input_address_id" type="hidden" class="input-address-id" name="address_id" value="{{default_address.id}}" />
 									</div>
 									<div class="form-group">
 										<div class="check-new-address">
@@ -70,7 +70,7 @@
 											  <label>Telephone<i>*</i></label>
 											  <div class="col-xs-12"><input type="text" id="id_tel" name="tel" value="{{default_address.tel}}"></div>
 										  </div>
-										  <div class="check-address-submit"><a class="delay btn-address-submit">Save Address</a></div>
+										  <div class="check-address-submit"><button type="submit" class="btn-address-submit">Save Address</button></div>
 									</div>
 									</div>
 							</form>
@@ -79,7 +79,7 @@
 					
 					<form id="place_order_form" method="post" action="/cart/place-order">
 					{% csrf_token %}
-						<input type="hidden" class="input-address-id" name="address_id" value="{{default_address_id}}" />
+						<input type="hidden" class="input-address-id" name="address_id" value="{{default_address.id}}" />
 						<div class="col-md-8 col-xs-12 col-xy-8">
 						<h2>Products</h2>
 						<div class="carts-main">

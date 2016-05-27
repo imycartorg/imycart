@@ -9,6 +9,8 @@ label{margin-bottom: 0!important;}
 li, ul{ list-style-type:none;}
 .color{color:#f7931d}
 .none{display: none;}
+button{border-radius:0;border-bottom-left-radius:0;border-bottom-right-radius:0; border-top-left-radius:0; border-top-right-radius:0;-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
+button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-radius:0; border-top-left-radius:0; border-top-right-radius:0;-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
 .delay,.delay:hover{-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
 .ico-down{width:10px; height:10px; background: url("../images/ico/down.jpg"); display: inline-block;}
 /*top*/
@@ -60,9 +62,9 @@ li, ul{ list-style-type:none;}
 .footer-ico-empty{padding-left:20px !important;line-height:24px !important;padding-top:0px !important;padding-bottom:8px !important;color:#666 !important;}
 .footer-letter label{font-weight: normal; line-height: 48px; padding-top:15px;}
 .footer-form{width:100%;position: relative;}
-.footer-form input{width:70%;height:35px; padding:10px 16px; line-height: 16px;border:1px solid #ddd;border-top-left-radius:4px;border-bottom-left-radius:4px;border-top-right-radius:0;border-bottom-right-radius:0;}
-.footer-form button{font-size:14px;position: absolute;left:70%;top:0;height: 35px;color:#fff; background:#f7931d;width:30%;border:1px solid #f7931d;border-left:none;border-top-right-radius:4px;border-bottom-right-radius:4px;}
-.footer-form button:hover{color:#666; background:#fff;border:1px solid #ddd;border-left:none;-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
+.footer-form input{width:70%;height:35px; padding:10px 16px; line-height: 16px;border:1px solid #ddd;}
+.footer-form button{font-size:14px;position: absolute;left:70%;top:0;height: 35px;color:#fff; background:#f7931d;width:30%;border:1px solid #f7931d;border-left:none;}
+.footer-form button:hover{color:#666; background:#fff;border:1px solid #ddd;border-left:none;}
 .copy{width:100%; display: inline-block; background: #fff;}
 .copy p{width:37%;float:right; text-align:right; font-size:13px; line-height:72px;padding-bottom:3px;}
 .copy-media{width:23%; float:left; display: inline-block;}
@@ -81,7 +83,8 @@ li, ul{ list-style-type:none;}
 .copy-media a{-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
 /*login register*/
 .login-left{width:50%;float:left;padding-right:50px; position: relative; height:385px;z-index:1;}
-.login-left div a{position:absolute;bottom:12px;right:56px;font-size: 14px;padding:8px 18px; background: #f7931d;color:#fff;}
+.login-left div a{position:absolute;bottom:12px;right:56px;font-size: 14px;padding:7px 18px; background: #f7931d;color:#fff;border:1px solid #f7931d;}
+.login-left div a:hover{color:#666;border:1px solid #ccc; background: #fff;}
 .login-right{width:50%;float:left;}
 .login h2,.register h2,.forget h2,.reset-password h2{font-size: 18px; line-height:26px;padding:12px 0;}
 .login h1,.register h1,.forget h1,.reset-password h1{font-size: 20px; line-height: 26px;padding:24px 0 18px 0;width:100%;color:#f7931d;}
@@ -92,17 +95,19 @@ li, ul{ list-style-type:none;}
 .login i,.forget i,.reset-password i,.register i,.check-out i{color:#ff0000;}
 .login-right input{line-height: 24px; padding:7px 10px; border:1px solid #ccc;width:100%;}
 .login-right span{color:#ff0000; line-height:24px;padding:13px 0; margin-bottom:20px; text-align: right; width:100%;display: inline-block; }
-.login-submit{width:100%; display: inline-block; line-height:40px;}
+.login-submit{width:100%; display: inline-block; line-height:38px;}
 .login-submit a{color:#f7931d;font-size: 13px;float:left;}
-.login-submit button{font-size: 14px; color:#fff; float:right; background: #f7931d; border:none;width:66px;line-height: 40px;}
+.login-submit button{font-size: 14px; color:#fff; float:right; background: #f7931d; border:none;width:66px;line-height: 38px;border:1px solid #f7931d;}
+.login-submit button:hover{color:#666;border:1px solid #ccc; background: #fff;}
 .forget-item input,.reset-password input,.register-item input{line-height: 24px; padding:7px 10px; border:1px solid #ccc;width:100%;float:left;}
 .register-item div, .forget-item div, .reset-password-item div,.login-right div{padding-left:0 !important;padding-right:0 !important;}
 .register p,.forget p,.reset-password p{float:left;text-align: left;color:#ff0000;line-height:18px;padding:12px 0 10px 30px !important;font-size: 13px;}
 .forget-item label,.reset-password-item label,.register-item label{line-height: 36px; padding-top:4px; font-size: 14px;width:100%;}
 .register-item,.forget-item,.reset-password-item{ display: inline-block; float: left;width:100%;}
-.register-submit,.forget-submit,.reset-password-submit{width:50%; float:left;margin-top:40px;padding-bottom:15px; line-height: 40px;}
+.register-submit,.forget-submit,.reset-password-submit{width:50%; float:left;margin-top:40px;padding-bottom:15px; line-height: 38px;}
 .register-submit a,.forget-submit a,.reset-password-submit a,.register-submit a:hover,.forget-submit a:hover,.reset-password-submit a:hover{color:#f7931d;font-size: 13px;float:left;}
-.register-submit button,.forget-submit button,.reset-password-submit button{font-size: 14px; color:#fff; float:right; background: #f7931d;padding:0 18px; border:none;}
+.register-submit button,.forget-submit button,.reset-password-submit button{font-size: 14px; color:#fff; float:right; background: #f7931d;padding:0 18px;border:1px solid #f7931d}
+.register-submit button:hover,.forget-submit button:hover,.reset-password-submit button:hover{color:#666;border:1px solid #ccc; background: #fff;}
 .forget h3,.reset-password h3{font-size:13px; width:100%; line-height:24px; padding:12px 0 25px 0;}
 .forget-main,.reset-password-mian{padding-bottom:48px;}
 
@@ -175,7 +180,9 @@ li, ul{ list-style-type:none;}
 .detail-des-title{width:114px;color:#f7931d; font-size: 14px; height:36px;line-height: 33px; text-align: center;border-top:2px solid #f7931d; border-right:1px solid #ddd;float:left;}
 .detail-des-line{width:1054px;height: 36px;border-bottom:1px solid #ddd;float:left;}
 .redborder img{border-color:#ff0000 !important;}
-
+.imycart-modal{box-shadow: 0 3px 10px rgba(200,200,200,.5) !important;border: 1px solid rgba(200,200,200,.3) !important;border-top: 3px solid #f7931d !important;}
+.imycart-modal,.modal-footer .btn{ background: #f7931d; border-color:#f7931d; color:#fff;}
+.imycart-modal,.modal-footer .btn:hover,.imycart-modal,.modal-footer .btn:focus{color:#666;border:1px solid #ccc; background: #fff;}
 /*artical list*/
 .artical{padding-top:30px;}
 .artical-sidbar{padding-left:35px !important;}

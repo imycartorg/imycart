@@ -48,7 +48,7 @@ def detail(request,id):
 			for wish in wish_list:
 				if product == wish.product:
 					logger.debug('The product which id is %s has been added to user\'s wishlist.' % (product.id))
-					ctx['is_wished'] = True
+					ctx['is_my_wish'] = True
 		return render(request,System_Config.get_template_name() + '/product_detail.html', ctx)
 	elif request.method == 'POST':#通过ajax访问，生成静态文件
 		content = render_to_string(System_Config.get_template_name() + '/product_detail.html', ctx)

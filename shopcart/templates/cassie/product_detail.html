@@ -84,7 +84,7 @@
       <div class="detail-quality">
         <input type="text" class="small-quality" id="qty" name="qty" placeholder="1" value="1">
         <a id="addToCartBtn" data-product-id="{{product.id}}" class="detail-add-btn delay">add to cart</a>
-        <a class="glyphicon glyphicon-heart detail-heart delay" id="addToWishList" data-product-id="{{product.id}}"></a>
+        <a class="glyphicon glyphicon-heart detail-heart delay  {{is_my_wish|yesno:"detail-heart-click,,"}}" id="addToWishList" data-product-id="{{product.id}}"></a>
         <p id="min_order_quantity_tips" class="min-purchase-tips">
 				Minimun Order Quantity : <span id="min_order_quantity">{{product.min_order_quantity}}</span>
 		</p>

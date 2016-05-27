@@ -30,7 +30,9 @@ def add_to_wishlist(request):
 		else:
 			#还没登陆
 			result_dict['success'] = False
-			result_dict['message'] = 'needLogin'		
+			result_dict['message'] = 'needLogin'
+			result_dict['next'] = '/product/%s' % (product_to_be_add['product_id'])
+			
 		
 		return JsonResponse(result_dict)
 
