@@ -32,7 +32,7 @@
 									<li>${{order.order_amount|floatformat:"2"}}</li>
 									<li>
 										{% if order.status == '0' %}
-												<a>Pay Now</a> 
+												<a href="/cart/payment/{{order.id}}">Pay Now</a> 
 										{% elif order.status == '10' %}
 												<span>Pending</span>
 										{% elif order.status == '20'%}

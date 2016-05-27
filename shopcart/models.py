@@ -167,6 +167,7 @@ class Product(models.Model):
 	static_file_name = models.CharField(max_length = 254,null=True,blank=True,verbose_name='静态文件名(不包含路径，以html结尾)')
 	categorys = models.ManyToManyField(Category,verbose_name='商品分类')
 	min_order_quantity = models.IntegerField(default=0,verbose_name='最小下单数量')
+	is_publish = models.BooleanField(default=False,verbose_name='上架')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 

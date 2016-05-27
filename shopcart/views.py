@@ -164,20 +164,20 @@ def init_database(request):
 	sys_con = System_Config.objects.create(name='blog_list_page_size',val=12)
 	#"""
 
-	ag_size = Attribute_Group.objects.create(name='尺码',group_type='text',code='size')
-	ag_color = Attribute_Group.objects.create(name='颜色',group_type='image',code='color')
-	ag_gender = Attribute_Group.objects.create(name='适用性别',group_type='text',code='gender')
+	#ag_size = Attribute_Group.objects.create(name='尺码',group_type='text',code='size')
+	#ag_color = Attribute_Group.objects.create(name='颜色',group_type='image',code='color')
+	#ag_gender = Attribute_Group.objects.create(name='适用性别',group_type='text',code='gender')
 
-	ab_s = Attribute.objects.create(name='S',group=ag_size,position=1)
-	ab_m = Attribute.objects.create(name='M',group=ag_size,position=2)
-	ab_l = Attribute.objects.create(name='L',group=ag_size,position=3)
+	#ab_s = Attribute.objects.create(name='S',group=ag_size,position=1)
+	#ab_m = Attribute.objects.create(name='M',group=ag_size,position=2)
+	#ab_l = Attribute.objects.create(name='L',group=ag_size,position=3)
 
-	ab_white = Attribute.objects.create(name='White',group=ag_color,position=1,thumb='http://120.24.92.125/upload/s1.jpg')
+	#ab_white = Attribute.objects.create(name='White',group=ag_color,position=1,thumb='http://120.24.92.125/upload/s1.jpg')
 	#ab_red = Attribute.objects.create(name='Red',group=ag_color,position=2,thumb='http://120.24.92.125/upload/s2.jpg')
-	ab_black = Attribute.objects.create(name='Black',group=ag_color,position=3,thumb='http://120.24.92.125/upload/s3.jpg')
+	#ab_black = Attribute.objects.create(name='Black',group=ag_color,position=3,thumb='http://120.24.92.125/upload/s3.jpg')
 	
-	ag_male = Attribute.objects.create(name='Male',group=ag_gender,position=1)
-	ag_female = Attribute.objects.create(name='Female',group=ag_gender,position=2)
+	#ag_male = Attribute.objects.create(name='Male',group=ag_gender,position=1)
+	#ag_female = Attribute.objects.create(name='Female',group=ag_gender,position=2)
 	
 	ag_Color = Attribute_Group.objects.create(name='Color',group_type='image',code='Color')
 	
@@ -186,7 +186,7 @@ def init_database(request):
 	ab_Color_BLUE =  Attribute.objects.create(name='BLUE',group=ag_Color,position=2,thumb='http://aws.imycart.com/media/attribute/Color/BLUE.jpg')
 	
 	
-	product_brush = Product(item_number='BRUSH001',name='Top-quality no tangle 360° hair brush ball',quantity=500,market_price=14.99,price=9.99,description='',short_desc='Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',static_file_name='')
+	product_brush = Product(item_number='BRUSH001',name='Top-quality no tangle 360° hair brush ball',quantity=500,market_price=14.99,price=9.99,description='',short_desc='Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.',static_file_name='',is_publish=True)
 	product_brush.description = '<p>This kind hair brush can do many different workmanship, so you can choose what you like. Because its personalized shape and design make it become the most popular hair brush in the world, especially in North America. It is the hottest seller and many surprises wait for you.</p><div>1. Portable, for woman can put it in bag.</div><div>2. The different length of tooth can massage the different surface of hair so can protect your hair from damage and loss.</div><div>3. Can do many cover designs, like figure, scenery and animation.</div><div>4. The unique cone shaped plastic bristles work to separate the hair sideways instead of down, gently unraveling even the toughest tangles</div><div>5. Great for Extensions</div><div>6. Our brush also encourages hair growth. The bristles massage the scalp, which stimulates the capillaries, increasing blood circulation, oxygen and nutrients to the hair follicle.</div>'
 	product_brush.save()
 	product_brush.thumb = 'http://aws.imycart.com/media/product/18/003fee96-1d8b-11e6-b3b0-0ab91c1e4bd1-thumb.jpg'
@@ -226,6 +226,7 @@ def init_database(request):
 
 	categorys1 = [cat_son_desktop,cat_grand_son1,cat_grand_son2]
 	categorys2 = [cat_son_laptop,cat_grand_son4]
+	"""
 	p = add_product(item_number='SN1699',name='Apple iPhone 6s Plus (A1699) 64G 玫瑰金色 移动联通电信4G手机',quantity = 999,price = 6388.00,market_price = 7999.00,description='这东西很好',categorys=categorys1,short_desc='苹果手机就是好',is_need_gender_attr=True,static_file_name='apple-iphone-6s-plus-64G.html')
 	add_product(item_number='SN1700',name='Samsung S7 Edge 32G 深空灰 4G手机',quantity = 200,price = 4288.00,market_price = 4999.00,description='最新的三星手机',categorys=categorys1,short_desc='三星黑科技，流弊！',is_need_attr=False,static_file_name='samsung-s7-edge-32G.html')
 	add_product(item_number='SN1699',name='荣耀7i (ATH-AL00) 3GB+32GB内存版 沙滩金 移动联通电信4G手机',quantity = 999,price = 1999.00,market_price = 2388.00,description='不能同时支持两张CDMA卡；当存在电信卡时，另一张卡只能使用非电信2Ｇ语音业务；如需使用另一张卡的4G/3G业务，需要禁用电信卡，如果两张都是电信卡，只有一张电信卡可以使用。',categorys=categorys2,short_desc='华为手机，国产手机的骄傲。',is_need_attr=False,static_file_name='honor-7i-32G.html')
@@ -243,7 +244,7 @@ def init_database(request):
 	add_product(item_number='SN1687',name='摩托罗拉 moto x 极( XT1581) 64GB 玛雅黑 移动联通电信4G手机',quantity = 439,price = 5288.00,market_price = 5688.00,description='实力防碎屏！高通骁龙810处理器！64位真8核！3GB+64GB流畅运行！3760mAH大容量电池！想你所想！【最后一波福利】金箍棒长长长，套餐费降降降！新年猴赛雷，4G套餐享半价！更多惊喜，点击下方【去看看】开抢',categorys=categorys1,short_desc='Hello MOTO，曾经的王者。',static_file_name='moto-x-xt1581-64G.html')
 	add_product(item_number='SN1686',name='LG G4（H818）闪耀金 国际版 移动联通双4G手机 双卡双待',quantity = 257,price = 2799.00,market_price = 3298.00,description='5.5英寸2K屏2560×1440，骁龙六核，3G+32G，1600万+800万，大光圈，NFC，OTG，轻敲解码',categorys=categorys1,short_desc='老公牌手机，你好我也好。',static_file_name='lg-g4-h818.html')
 	add_product(item_number='SN1685',name='LG V10（LG H968）玫金白 国际版 移动联通双4G手机 双卡双待',quantity = 128,price = 4888.00,market_price = 5020.00,description='坚固：双层玻璃、不锈钢构造、有机硅壳；后1600万，前双500万双摄像头！2K屏，电池可更换。',categorys=categorys1,short_desc='LG，韩国的国民手机，韩国手机的巅峰之作！',static_file_name='lg-v10-h968.html')
-	
+	"""
 
 	myuser = MyUser.objects.create_superuser(email='super@imycart.com',password='imycart',username='Super',gender='1')
 	myuser.is_superuser = True
@@ -255,10 +256,8 @@ def init_database(request):
 	
 	email = Email.objects.create(useage='register',email_address='service@imycart.com',smtp_host='smtp.mxhichina.com',username='service@imycart.com',password='Imycart2015',template='register_email.html')
 	email = Email.objects.create(useage='reset_password',email_address='service@imycart.com',smtp_host='smtp.mxhichina.com',username='service@imycart.com',password='Imycart2015',template='reset_password.html')
-	reset_password = Reset_Password.objects.create(email='zjuoliver@163.com',validate_code='X3B7',apply_time=datetime.datetime.now(),expirt_time=(datetime.datetime.now() + datetime.timedelta(hours=24)))
 	
 	article = Article.objects.create(user=myuser,title='About us',folder='about_us',static_file_name='about-us.html',content=read_file('test_data/about-us.txt'),breadcrumbs=read_file('test_data/about-us-breadcrumbs.txt'))
-	
 	
 	
 	return HttpResponse('成功.尝试产生几个流水号：' + get_serial_number() + "||" + get_serial_number() + "||" + get_serial_number())
