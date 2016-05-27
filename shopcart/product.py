@@ -86,16 +86,16 @@ def view_list(request):
 		if 'sort_by' in request.GET:
 			if 'direction' in request.GET:
 				if 'desc' == request.GET['direction']:
-					product_list = Product.objects.order_by(request.GET['sort_by']).reverse()
+					product_list = Product.objects.filter(is_publish=True).order_by(request.GET['sort_by']).reverse()
 				else:
-					product_list = Product.objects.order_by(request.GET['sort_by'])
+					product_list = Product.objects.filter(is_publish=True).order_by(request.GET['sort_by'])
 				
 				ctx['direction'] = request.GET['direction']
 			else:
-				product_list = Product.objects.order_by(request.GET['sort_by'])
+				product_list = Product.objects.filter(is_publish=True).order_by(request.GET['sort_by'])
 		else:
 			logger.debug("all products")
-			product_list = Product.objects.all()
+			product_list = Product.objects.filter(is_publish=True)
 		
 		logger.debug("no sort_by")
 		if 'page_size' in request.GET:
