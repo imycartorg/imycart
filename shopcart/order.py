@@ -163,7 +163,13 @@ def show_order(request):
 	ctx['page_name'] = 'My Orders'
 	if request.method == 'GET':
 		order_list = Order.objects.filter(user=request.user)
-		order_list, page_range = my_pagination(request, order_list,display_amount=5)
+		
+		try:
+			order_list_page_size = System_Config.objects.get('order_list_page_size')
+		except:
+			logger.debug('order_list_page_size is not defined,use the default value 10.')
+			order_list_page_size = 10
+		order_list, page_range = my_pagination(request, order_list,display_amount=order_list_page_size)
 		ctx['order_list'] = order_list
 		ctx['page_range'] = page_range
 		return render(request,System_Config.get_template_name() + '/orders.html',ctx)	
