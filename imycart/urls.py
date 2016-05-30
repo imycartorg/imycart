@@ -59,7 +59,7 @@ urlpatterns = patterns("",
 	url(r'^query/product/$', 'shopcart.product.query_product_show',name='product_query_product_show'),
 	#url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
 	url('^admin/ckediter/(.+)/(.+)/$', 'shopcart.admin_views.ckediter',name='admin_ckediter'),
-	url('^admin/product/report/$', 'shopcart.admin_views.product_report',name='admin_product_report'),
+	url('^admin/product/make-static/$', 'shopcart.admin_views.product_make_static',name='admin_product_make_static'),
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^i18n/', include('django.conf.urls.i18n')),
 	#下面是测试方法

@@ -82,8 +82,8 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 .copy-media a{ display: inline-block;float:left;margin:21px 4px; cursor: pointer;border-radius: 50%;-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
 .copy-media a{-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
 /*login register*/
-.login-left{width:50%;float:left;padding-right:50px; position: relative; height:385px;z-index:1;}
-.login-left div a{position:absolute;bottom:12px;right:56px;font-size: 14px;padding:7px 18px; background: #f7931d;color:#fff;border:1px solid #f7931d;}
+.login-left{width:50%;float:left;padding-right:50px; position: relative; height:360px;z-index:1;}
+.login-left div a{position:absolute;bottom:6px;right:56px;font-size: 14px;padding:7px 18px; background: #f7931d;color:#fff;border:1px solid #f7931d;}
 .login-left div a:hover{color:#666;border:1px solid #ccc; background: #fff;}
 .login-right{width:50%;float:left;}
 .login h2,.register h2,.forget h2,.reset-password h2{font-size: 18px; line-height:26px;padding:12px 0;}
@@ -106,7 +106,7 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 .register-item,.forget-item,.reset-password-item{ display: inline-block; float: left;width:100%;}
 .register-submit,.forget-submit,.reset-password-submit{width:50%; float:left;margin-top:40px;padding-bottom:15px; line-height: 38px;}
 .register-submit a,.forget-submit a,.reset-password-submit a,.register-submit a:hover,.forget-submit a:hover,.reset-password-submit a:hover{color:#f7931d;font-size: 13px;float:left;}
-.register-submit button,.forget-submit button,.reset-password-submit button{font-size: 14px; color:#fff; float:right; background: #f7931d;padding:0 18px;border:1px solid #f7931d}
+.register-submit button,.forget-submit button,.reset-password-submit button{font-size: 14px; color:#fff; float:right; background: #f7931d;padding:0 18px;border:1px solid #f7931d;}
 .register-submit button:hover,.forget-submit button:hover,.reset-password-submit button:hover{color:#666;border:1px solid #ccc; background: #fff;}
 .forget h3,.reset-password h3{font-size:13px; width:100%; line-height:24px; padding:12px 0 25px 0;}
 .forget-main,.reset-password-mian{padding-bottom:48px;}
@@ -337,7 +337,13 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
     .artical-content{padding-bottom:40px;}
     .login-right span {text-align:left;}
     .detail{ margin: 20px auto;}
-    }
+	.login-creat a {width: 100%;display: block;text-align: center;}
+	.login-submit a {width: 100%;display: block;}
+    .login-submit button{width:100%;}
+	.register-submit button, .forget-submit button, .reset-password-submit button{width: 100%;display: block;}
+	.register-submit a, .forget-submit a, .reset-password-submit a, .register-submit a:hover, .forget-submit a:hover, .reset-password-submit a:hover {
+    width: 100%;}
+
 }
 @media (max-width:400px) {
     .spec-scroll .items{height:75px;}

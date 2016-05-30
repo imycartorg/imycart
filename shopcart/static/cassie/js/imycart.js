@@ -56,17 +56,17 @@ function imycartAjaxCall(url,object,is_show_message_box,message){
 				if(result.success==true){
 					if(is_show_message_box){
 						if(message==null){
-							message = "Your opration is success."
+							message = "Your opration is success.";
 						}else if(message=='showservermessage'){
-								message = result.message
+								message = result.message;
 						}
 						$("#infoMessage").html(message);
 					}
 				}else{
 					if(message==null){
-							message = "Your opration is failed."
+							message = "Your opration is failed.";
 					}else if(message=='showservermessage'){
-							message = result.message
+							message = result.message;
 					}
 					$("#infoMessage").html(message);
 				}
@@ -87,7 +87,7 @@ function imycartAjaxCallWithCallback(url,object,callback,triggerControl,extraInf
 			url : url,
 			data : encodedata,
 			success : function(result) {
-				callback(result,triggerControl,extraInfo)
+				callback(result,triggerControl,extraInfo);
 			},
 			error : function(result) {
 				alert(result.success);

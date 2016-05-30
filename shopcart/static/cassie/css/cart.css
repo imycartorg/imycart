@@ -73,8 +73,9 @@
 .order-title,.order-item{width:100%; display: inline-block;float:left;}
 .order-title{ background: #f7f7f7; border-left:1px solid #efefef;}
 .order-title li,.order-item li{float:left; text-align: center; line-height: 54px;height:54px;border-bottom:1px solid #efefef; border-right:1px solid #efefef;display: block;}
-.order-item li:nth-child(5) a{padding:5px 10px; background: #f7931d;color:#fff;}
-.order-item li:nth-child(5) a:hover{color:#fff; text-decoration: none;}
+.order-item li{font-size:13px;}
+.order-item li:nth-child(5) a{padding:5px 10px; background: #f7931d;color:#fff;border:1px solid #f7931d;-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
+.order-item li:nth-child(5) a:hover{color:#666; text-decoration: none;background: #fff;border:1px solid #ccc;-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
 .order-item li:nth-child(6) a:hover,.order-item li:nth-child(6) a{color:#f7931d; text-decoration: none;}
 .order-item{border-left:1px solid #efefef;}
 .order-pages{width: 100%;display: inline-block;float: left;text-align: center;margin:80px 0;}
@@ -114,9 +115,10 @@
 
 
 @media (min-width:1200px) {
-    .order-title li:nth-child(1),.order-item li:nth-child(1),.order-title li:nth-child(4),.order-item li:nth-child(4){width:18%;}
-    .order-title li:nth-child(2),.order-item li:nth-child(2),.order-title li:nth-child(5),.order-item li:nth-child(5),.order-title li:nth-child(6),.order-item li:nth-child(6){width:12%;}
-    .order-title li:nth-child(3),.order-item li:nth-child(3){width:28%;}
+    .order-title li:nth-child(1),.order-item li:nth-child(1),.order-title li:nth-child(4),.order-item li:nth-child(4){width:17%;}
+    .order-title li:nth-child(2),.order-item li:nth-child(2),.order-title li:nth-child(6),.order-item li:nth-child(6){width:12%;}
+	.order-title li:nth-child(5),.order-item li:nth-child(5){width:20%;}
+    .order-title li:nth-child(3),.order-item li:nth-child(3){width:22%;}
     .carts-goods-price,.carts-goods-pricet,.carts-goods-sub,.carts-goods-subt,.carts-goods-name{padding-left:20px;}
     .carts-goods-name{width:294px;padding-right:15px;}
     .check-out .carts-goods-name{width:260px;padding-right:15px;}
@@ -223,6 +225,7 @@
     .address-item ul{padding:15px 18px 8px 18px}
     .address-item a {padding: 3px 10px;}
     .address-main h3 a {font-size: 14px;padding: 3px 12px;}
+	
 }
 
 @media (max-width:400px) {

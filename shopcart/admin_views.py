@@ -10,10 +10,10 @@ import logging
 logger = logging.getLogger('imycart.shopcart')
 
 @staff_member_required
-def product_report(request):
+def product_make_static(request):
 	ctx = {}
 	ctx['product_list'] = Product.objects.all()
-	return render(request,'admin/product/report.html',ctx)
+	return render(request,'admin/product/make_static.html',ctx)
 	
 @staff_member_required
 @csrf_exempt

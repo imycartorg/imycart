@@ -32,7 +32,7 @@ def detail(request,id):
 		try:
 			import codecs,os
 			#先获取商品所属分类，作为目录
-			dir = 'static/' + article.folder
+			dir = 'media/' + article.folder
 			if not os.path.exists(dir):
 				os.makedirs(dir)
 			f = codecs.open(dir + article.static_file_name ,'w','utf-8')
