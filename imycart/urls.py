@@ -64,6 +64,7 @@ urlpatterns = patterns("",
 	url(r'^i18n/', include('django.conf.urls.i18n')),
 	#第三方登录
 	url('^third-party-login/weixin/$', 'shopcart.openplatform.weixin_login',name='openplatform_weixin_login'),
+	url('^weixin/$', 'shopcart.openplatform.weixin_call_back',name='openplatform_weixin_call_back'),
 	#下面是测试方法
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
 	url(r'^add-product/$', 'shopcart.views.add_product_manual',name='add_product_manual'),

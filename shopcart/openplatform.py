@@ -35,3 +35,7 @@ def weixin_login(request):
 			return HttpResponse(echostr)
 		else:
 			return HttpResponse('Not Auth')
+			
+@csrf_exempt
+def weixin_call_back(request):
+	return HttpResponse('OK')
