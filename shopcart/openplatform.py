@@ -72,6 +72,7 @@ def weixin_call_back(request):
 	app_id = 'wx3a86e89b09a7c875'
 	code = request.GET.get('code','')
 	logger.debug('获得的code:%s' % (code))
+	secret = ''
 	import http.client
 	httpClient = None	
 	try:
