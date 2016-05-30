@@ -77,7 +77,7 @@ def weixin_call_back(request):
 	httpClient = None	
 	try:
 		httpClient = http.client.HTTPConnection('api.weixin.qq.com', 80, timeout=30)
-		url = '/sns/oauth2/access_token?appid=%(app_id)s&secret=%(secret)s&code=%(code)s&grant_type=authorization_code' % {'app_is':app_id,'secret':secret,'code':code}
+		url = '/sns/oauth2/access_token?appid=%(app_id)s&secret=%(secret)s&code=%(code)s&grant_type=authorization_code' % {'app_id':app_id,'secret':secret,'code':code}
 		logger.debug('url:%s' % (url))
 		httpClient.request('GET', url)
 	
