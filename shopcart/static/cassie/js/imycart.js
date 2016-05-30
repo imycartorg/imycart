@@ -452,6 +452,7 @@ jQuery(".btn-address-submit").click(function(){
 						//$("#select_address_id").val(address_id);
 						$("#ul_address_list").append("<li><a class='address-option' data-address-id='" + address_id + "'>" + useage + "</a></li>");
 						$("#span_address_selected").text(useage);
+						$(".input-address-id").val(address_id);
 						//alert("TODO:Opration success");
 
 					}

@@ -28,7 +28,8 @@
 							<label>Password<i>*</i></label>
 							<input type="password" name="password" id="password" required>
 							<span>{{login_result}}</span>
-
+							
+							<div class="login-creat"><a href="/user/register">Create an Account</a></div>
 							<div class="login-submit">
 								<a class="forgot-word" href="/user/forget-password">{% trans 'Forgot Your Password' %}?</a>
 								<input type="hidden" name="next" value="{{ next }}" /> 
