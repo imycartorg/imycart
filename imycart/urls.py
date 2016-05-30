@@ -62,6 +62,8 @@ urlpatterns = patterns("",
 	url('^admin/product/make-static/$', 'shopcart.admin_views.product_make_static',name='admin_product_make_static'),
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^i18n/', include('django.conf.urls.i18n')),
+	#第三方登录
+	url('^third-party-login/weixin/$', 'shopcart.openplatform.weixin_login',name='openplatform_weixin_login'),
 	#下面是测试方法
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
 	url(r'^add-product/$', 'shopcart.views.add_product_manual',name='add_product_manual'),

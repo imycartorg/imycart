@@ -13,3 +13,6 @@ sudo pip3 install Pillow==2.9.0
 # django-comments:http://django-contrib-comments.readthedocs.org/en/latest/porting.html
 
 # xmltodict:  pip install xmltodict
+
+# pip install pycrypto
+# pip install wechat 
