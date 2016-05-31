@@ -438,32 +438,23 @@ jQuery(".btn-address-submit").click(function(){
 					});
 					$("#span_address_selected").text(useage);
 					
-					//$("#select_address_id option").each(function(){
-						//if($(this).val()==address_id){
-							//changeFlag = true;
-							//$(this).text(useage);
-							//alert("TODO:Opration success");
-						//}
-					//});
-					
 					if (!changeFlag){
 						//新增的
-						//$("#select_address_id").append("<option value='" + address_id + "'>" + useage +  "</option>");
-						//$("#select_address_id").val(address_id);
+
 						$("#ul_address_list").append("<li><a class='address-option' data-address-id='" + address_id + "'>" + useage + "</a></li>");
 						$("#span_address_selected").text(useage);
 						$(".input-address-id").val(address_id);
-						//alert("TODO:Opration success");
+
 
 					}
 				}else if(submit_method=="close_self"){
 					//暂时啥都不干
-					alert("TODO:See what to do next");
+					location.href = "/user/address/show/"
 				}
 				
 				
 			}else{
-				if (submit_method == "dropdown_list"){
+				if (submit_method == "dropdown_list" || submit_method == "close_self" ){
 					$("#infoMessage").html(data.message);
 					$("#myModal").modal('toggle');
 				}

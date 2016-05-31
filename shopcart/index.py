@@ -6,6 +6,7 @@ from shopcart.forms import register_form
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.http import HttpResponse
+from shopcart.openplatform import signature
 import json
 from django.utils.translation import ugettext as _
 from django.http import Http404
@@ -32,6 +33,19 @@ def view_index(request):
 	ctx['value'] = 2980.0
 	ctx['show_const'] = Order.ORDER_STATUS_PAYED_UNCONFIRMED
 	logger.info('i18n_text:' + ctx['i18n_text'])
+	
+	
+	#测试下微信的分享功能
+	token = System_config.objects.get(name='weixin_token')
+	nonce = 'jDZLZ9xJl277grT1'
+	import time
+	timestamp = str(int(time.time()))
+	signature_str = signature(nonce,timestamp,token)
+	ctx['token'] = token
+	ctx['nonce'] = nonce
+	ctx['timestamp'] = timestamp
+	ctx['signature'] = signature_str
+	
 	return render(request,System_Config.get_template_name() + '/index.html',ctx)
 	
 	

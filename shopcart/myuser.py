@@ -293,6 +293,22 @@ def address(request,method,id=''):
 				raise Http404
 		elif method == 'add':
 			ctx['title'] = 'Add New Address'
+		elif method == 'delete':
+			address = Address.objects.get(id=id,user=request.user)
+			address.delete()
+			return redirect('/user/address/show/')
+		elif method == 'default':
+			address_list = Address.objects.filter(user=request.user)
+			for address in address_list:
+				logger.debug('id:%s' % (id))
+				logger.debug('address_id:%s' % (address.id))
+				if address.id == int(id):
+					address.is_default = True
+					address.save()
+				else:
+					address.is_default = False
+					address.save()
+			return redirect('/user/address/show/')
 		else:
 			raise Http404
 		return render(request,System_Config.get_template_name() + '/address_detail.html',ctx)
@@ -304,6 +320,19 @@ def address(request,method,id=''):
 	ret_add['id'] = address.id
 	result_dict['address'] = ret_add
 	return JsonResponse(result_dict)
+
+@login_required
+def address_list(request):
+	ctx = {}
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Address Book'
+	if request.method=='GET':
+		myuser = request.user
+		address_list = Address.objects.filter(user=myuser)
+		ctx['address_list'] = address_list
+		return render(request,System_Config.get_template_name() + '/address.html',ctx)
+	else:
+		raise Http404
 	
 #@login_required
 def address_detail(request,address_id):
