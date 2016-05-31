@@ -36,7 +36,7 @@ def view_index(request):
 	
 	
 	#测试下微信的分享功能
-	token = System_config.objects.get(name='weixin_token')
+	token = System_Config.objects.get(name='weixin_token')
 	nonce = 'jDZLZ9xJl277grT1'
 	import time
 	timestamp = str(int(time.time()))
