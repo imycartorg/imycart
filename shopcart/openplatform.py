@@ -23,7 +23,7 @@ def weixin_login(request):
 		logger.debug('nonce:%s' %(nonce))
 		logger.debug('echostr:%s' %(echostr))
 		
-		token = System_Config.objects.get(name='weixin_token')
+		token = System_Config.objects.get(name='weixin_token').val
 		tmp_str = signature(nonce,timestamp,token)
 		
 		if tmp_str == signature:
@@ -48,10 +48,10 @@ def weixin_call_back(request):
 	#用code换取access_tokon
 	#https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code
 	
-	app_id = System_Config.objects.get(name='weixin_appid')
+	app_id = System_Config.objects.get(name='weixin_appid').val
 	code = request.GET.get('code','')
 	logger.debug('获得的code:%s' % (code))
-	secret = System_Config.objects.get(name='weixin_app_secret')
+	secret = System_Config.objects.get(name='weixin_app_secret').val
 	import http.client
 	httpClient = None	
 	try:
