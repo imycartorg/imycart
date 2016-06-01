@@ -114,42 +114,42 @@ from paypal.standard.ipn.signals import valid_ipn_received
 from django.dispatch import receiver
 @receiver(valid_ipn_received)
 def paypal_notify(sender, **kwargs):
-	logger.info(str('进入paypal通知处理程序'))
+	logger.debug(str('进入paypal通知处理程序'))
 	ipn_obj = sender
-	logger.info(str('STEP_0:找出订单，检查状态，避免重复处理'))
+	logger.debug(str('STEP_0:找出订单，检查状态，避免重复处理'))
 	order = None
 	try:
 		order = Order.objects.get(order_number=ipn_obj.custom)
 	except Exception as e:
-		logger.error('订单未找到：' + str(ipn_obj.custom))
+		logger.debug('订单未找到：' + str(ipn_obj.custom))
 		return
 	
-	logger.info(str('STEP_1:校验总金额是否正确'))
+	logger.debug(str('STEP_1:校验总金额是否正确'))
 	if abs(float(ipn_obj.mc_gross)-order.order_amount) > 0.01:
-		logger.info(str('总金额校验不正确。订单编号[%s]的总金额为[%s],实际支付金额为[%s]' % [order.order_number,order.order_amount,ipn_obj.mc_gross]))
+		logger.debug(str('总金额校验不正确。订单编号[%s]的总金额为[%s],实际支付金额为[%s]' % [order.order_number,order.order_amount,ipn_obj.mc_gross]))
 		reason = 'amount not equal'
 		detail = str('总金额校验不正确。订单ID[%s]的总金额为[%s],实际支付金额为[%s]' % [order.id,order.order_amount,ipn_obj.mc_gross])
-		logger.info(detail)
-		logger.info(str('记录到异常订单中，可能存在金额被篡改的情况'))
+		logger.debug(detail)
+		logger.debug(str('记录到异常订单中，可能存在金额被篡改的情况'))
 		abnormal_order = Abnormal_Order.create(order=order,reason=reason,detail=detail)
 		order.status = Order.ORDER_STATUS_ERROR
 		order.pay_status = 'Payment amount not equal'
 		order.save()
 		return
-	logger.info(str('STEP_3:校验收款账户是否是配置的账户'))
+	logger.debug(str('STEP_3:校验收款账户是否是配置的账户'))
 	paypal_account = System_Config.objects.get(name='paypal_account').val
 	if ipn_obj.receiver_email != paypal_account:
-		logger.info(str('收款账户不正确。订单编号[%s]的实际收款账户为[%s]，配置的收款账户为：[%s]' % [order.order_number,ipn_obj.receiver_email,paypal_account]))
+		logger.debug(str('收款账户不正确。订单编号[%s]的实际收款账户为[%s]，配置的收款账户为：[%s]' % [order.order_number,ipn_obj.receiver_email,paypal_account]))
 		reason = 'receiver not correct'
 		detail = str('收款账户不正确。订单ID[%s]的实际收款账户为[%s]，配置的收款账户为：[%s]' % [ipn_obj.receiver_email,paypal_account])
-		logger.info(detail)
+		logger.debug(detail)
 		abnormal_order = Abnormal_Order.create(order=order,reason=reason,detail=detail)
 		order.status = Order.ORDER_STATUS_ERROR
 		order.pay_status = 'Payment receiver not correct'
 		order.save()
 		return
 
-	logger.info(str('STEP_4:校验通过，修改订单状态为支付成功'))
+	logger.debug(str('STEP_4:校验通过，修改订单状态为支付成功'))
 	order.status = Order.ORDER_STATUS_PAYED_SUCCESS
 	order.pay_status = 'Paid Successfully'
 	order.save()
