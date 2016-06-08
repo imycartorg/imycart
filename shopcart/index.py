@@ -7,7 +7,7 @@ from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.http import HttpResponse
 from shopcart.sign import Sign
-from shopcart.openplatform import WechatJSSDKSign
+from shopcart.openplatform.wechat import WechatJSSDKSign
 import json
 from django.utils.translation import ugettext as _
 from django.http import Http404
