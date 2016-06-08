@@ -95,15 +95,20 @@ class System_Para:
 	
 	@staticmethod	
 	def get_default_system_parameters():
+		hashMap={'site_name':'','default_welcome_message':'','logo_image':'','base_url':'','contact_address':'','thumb_width':'','service_email':'','copyright':''}
+		list= System_Config.objects.all()
+		for item in list:
+			hashMap[item.name]=item.val
+			
 		return System_Para(
-			_site_name = System_Config.objects.get(name='site_name').val,
-			_default_welcome_message = System_Config.objects.get(name='default_welcome_message').val,
-			_logo_image = System_Config.objects.get(name='logo_image').val,
-			_base_url = System_Config.objects.get(name='base_url').val,
-			_contact_address = System_Config.objects.get(name='contact_address').val,
-			_thumb_width = System_Config.objects.get(name='thumb_width').val,
-			_service_email = System_Config.objects.get(name='service_email').val,
-			_copyright = System_Config.objects.get(name='copyright').val
+ 			_site_name = hashMap['site_name'],
+ 			_default_welcome_message = hashMap['default_welcome_message'],
+ 			_logo_image = hashMap['logo_image'],
+ 			_base_url = hashMap['base_url'],
+ 			_contact_address = hashMap['contact_address'],
+ 			_thumb_width = hashMap['thumb_width'],
+ 			_service_email = hashMap['service_email'],
+ 			_copyright = hashMap['copyright']
 		)
 
 def get_system_parameters():
