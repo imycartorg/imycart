@@ -6,7 +6,8 @@ from shopcart.forms import register_form
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
 from django.http import HttpResponse
-from shopcart.openplatform import signature
+from shopcart.sign import Sign
+from shopcart.openplatform import WechatJSSDKSign
 import json
 from django.utils.translation import ugettext as _
 from django.http import Http404
@@ -36,15 +37,12 @@ def view_index(request):
 	
 	
 	#测试下微信的分享功能
-	token = System_Config.objects.get(name='weixin_token').val
-	nonce = 'jDZLZ9xJl277grT1'
-	import time
-	timestamp = str(int(time.time()))
-	signature_str = signature(nonce,timestamp,token)
-	ctx['token'] = token
-	ctx['nonce'] = nonce
-	ctx['timestamp'] = timestamp
-	ctx['signature'] = signature_str
+
+	
+	#要注意最后的那个 /  ！！！！！妈的，搞了两天，一直不行，就因为这个/
+	jssdk_sign = WechatJSSDKSign('http://aws.imycart.com/')
+	jssdk_config = jssdk_sign.sign()
+	ctx['wechat_config'] = jssdk_config
 	
 	return render(request,System_Config.get_template_name() + '/index.html',ctx)
 	

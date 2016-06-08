@@ -61,11 +61,12 @@ urlpatterns = patterns("",
 	#url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
 	url('^admin/ckediter/(.+)/(.+)/$', 'shopcart.admin_views.ckediter',name='admin_ckediter'),
 	url('^admin/product/make-static/$', 'shopcart.admin_views.product_make_static',name='admin_product_make_static'),
+	url('^wechat-pay/(.+)$', 'shopcart.openplatform.wechat_pay',name='openplatform_wechat_pay'),
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^i18n/', include('django.conf.urls.i18n')),
-	#第三方登录
-	url('^third-party-login/weixin/$', 'shopcart.openplatform.weixin_login',name='openplatform_weixin_login'),
-	url('^weixin/$', 'shopcart.openplatform.weixin_call_back',name='openplatform_weixin_call_back'),
+	#第三方开放平台
+	url('^openplatform/wechat/check/$', 'shopcart.openplatform.wechat_check',name='openplatform_wechat_check'),
+	url('^openplatform/wechat/login/$', 'shopcart.openplatform.wechat_login',name='openplatform_wechat_login'),
 	#下面是测试方法
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
 	url(r'^add-product/$', 'shopcart.views.add_product_manual',name='add_product_manual'),
