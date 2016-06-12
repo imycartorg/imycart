@@ -7,12 +7,8 @@
 # Captcha : http://django-simple-captcha.readthedocs.org/en/latest/usage.html
 在ubuntu下使用captcha时，先手动安装2.9.0版本的Pilow，不然会报错，无法安装
 sudo pip3 install Pillow==2.9.0
-
 # django-paypal:http://django-paypal.readthedocs.org/en/stable/install.html
-
 # django-comments:http://django-contrib-comments.readthedocs.org/en/latest/porting.html
-
 # xmltodict:  pip install xmltodict
-
 # pip install pycrypto
-# pip install wechat 
+# 这里是Alpha分支
