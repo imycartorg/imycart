@@ -97,10 +97,6 @@ def init_database(request):
 	pa_blue.save()	
 	
 
-	categorys1 = [cat_son_desktop,cat_grand_son1,cat_grand_son2]
-	categorys2 = [cat_son_laptop,cat_grand_son4]
-
-
 	myuser = MyUser.objects.create_superuser(email='super@imycart.com',password='imycart',username='Super',gender='1')
 	myuser.is_superuser = True
 	myuser.save()
