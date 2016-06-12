@@ -104,6 +104,4 @@ def init_database(request):
 	email = Email.objects.create(useage='register',email_address='service@imycart.com',smtp_host='smtp.mxhichina.com',username='service@imycart.com',password='Imycart2015',template='register_email.html')
 	email = Email.objects.create(useage='reset_password',email_address='service@imycart.com',smtp_host='smtp.mxhichina.com',username='service@imycart.com',password='Imycart2015',template='reset_password.html')
 	
-	article = Article.objects.create(user=myuser,title='About us',folder='about_us',static_file_name='about-us.html',content=read_file('test_data/about-us.txt'),breadcrumbs=read_file('test_data/about-us-breadcrumbs.txt'))
-	
 	return HttpResponse('成功.尝试产生几个流水号：' + get_serial_number() + "||" + get_serial_number() + "||" + get_serial_number())
