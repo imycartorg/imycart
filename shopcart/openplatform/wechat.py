@@ -27,8 +27,8 @@ class WechatCheckSign:
 			'echostr':echostr,
 			'token':System_Config.objects.get(name='wechat_token').val,
 			'signature':signature,
-			'wechat_api_url':System_Config.get(name='wechat_api_url').val,
-			'wechat_api_port':System_Config.get(name='wechat_api_port').val
+			'wechat_api_url':System_Config.objects.get(name='wechat_api_url').val,
+			'wechat_api_port':System_Config.objects.get(name='wechat_api_port').val
 		}
 		
 	
@@ -38,6 +38,7 @@ class WechatCheckSign:
 		tmp_str = "%s%s%s" % tuple(tmp_list)
 	
 		tmp_str = hashlib.sha1(tmp_str.encode('utf8')).hexdigest()
+		logger.debug('Our signature:' %s (tmp_str))
 		if tmp_str == self.ret['signature']:
 			return True
 		else:
@@ -49,7 +50,9 @@ class WechatLoginSign:
 		self.ret={
 			'app_id':System_Config.objects.get(name='wechat_app_id').val,
 			'code':code,
-			'secret':System_Config.objects.get(name='wechat_app_secret').val
+			'secret':System_Config.objects.get(name='wechat_app_secret').val,
+			'wechat_api_url':System_Config.objects.get(name='wechat_api_url').val,
+			'wechat_api_port':System_Config.objects.get(name='wechat_api_port').val
 		}
 			
 	def login(self):
@@ -84,7 +87,121 @@ class WechatLoginSign:
 		self.ret['wechat_head_img_url'] = user_info['headimgurl']
 		return True
 			
+class WechatOrderSign:
+	"""
+	微信统一下单接口类
+	"""
+	def __init__(self, pbody='',open_id='',out_trade_no='',spbill_create_ip='',total_fee=0,attach=''):
+		#self.ret = {
+		#	'nonce_str': self.__create_nonce_str(),
+		#	'appid': System_Config.objects.get(name='wechat_app_id').val,
+		#	'mch_id': System_Config.objects.get(name='wechat_mch_id').val,
+		#	'body': body,
+		#	'device_info':'WEB'
+		#}
+		logger.debug('1111:')
+		pbody = '赋值了'
+		pbody = 'my pbody'
+		logger.debug(pbody)
+		
+		self.ret = {
+			'nonce_str': self.__create_nonce_str(),
+			'appid': System_Config.objects.get(name='wechat_app_id').val,
+			'mch_id': System_Config.objects.get(name='wechat_mch_id').val,
+			'body': '',
+			'device_info':'WEB'
+		}
+		
+		self.app = 'ni ge mai ti'
 
+		logger.debug('self.ret:%s' % (self.ret))
+		
+		logger.debug('self.app:%s' % (self.app))
+		
+		self.other_parameters = {
+			'attach':attach,
+			'notify_url':System_Config.objects.get(name='wechat_notify_url').val,
+			'open_id':open_id,
+			'out_trade_no':out_trade_no,
+			'spbill_create_ip':spbill_create_ip,
+			'total_fee':total_fee,
+			'trade_type':'JSAPI',
+			'sign':''
+		}
+		
+		logger.debug('self.other_parameters:' % (self.other_parameters))
+
+		
+	def __create_nonce_str(self):
+		return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15))
+
+	def make_xml_parameters(self):
+		xml = '<xml>'
+		for key in self.ret:
+			xml += '<' + key + '>' + str(self.ret[key]) + '</' + key + '>'
+		for key in self.other_parameters:
+			xml += '<' + key + '>' + str(self.other_parameters[key]) + '</' + key + '>'
+		xml += '</xml>'
+		logger.debug('xml:%s' % (xml))
+		return xml		
+		
+	def sign(self):
+		logger.debug('Enter sign...')
+		
+		
+		logger.debug('self.ret:%s' % (self.ret))
+		
+		#string = '&'.join(['%s=%s' % (key.lower(), self.ret[key]) for key in sorted(self.ret)])
+		#string = 'appid=%s&body=%s&device_info=%s&mch_id=%s&nonce_str=%s' % (self.ret['appid'],self.ret['body'],self.ret['device_info'],self.ret['mch_id'],self.ret['nonce_str'])
+		string = 'nima'
+		logger.debug('string:' + str(string))
+		logger.debug('string:%s' % (string))
+		
+		
+		mch_key = System_Config.objects.get(name='wechat_mch_key').val
+		logger.debug('mch_key:%s' %(mch_key))
+		#stringSignTemp=  '%s&key=%s' % (string,mch_key)
+		#logger.debug('stringSignTemp:%s' % (stringSignTemp))
+		
+		#signature = hashlib.sha1(string.encode('utf8')).hexdigest()
+		#signature = hashlib.md5(stringSignTemp.encode('utf8')).hexdigest().upper()
+		#self.other_parameters['sign'] = signature
+		#logger.debug('signature:%s' % (signature))
+		#return signature
+
+	
+	def order(self):
+		#https://api.mch.weixin.qq.com/pay/unifiedorder
+		logger.debug('start to get sign...')
+		self.sign()
+		#param = self.make_xml_parameters()
+		#logger.debug('param:' + str(param))
+		
+		"""
+		httpClient = None
+		try:
+			host = 'api.mch.weixin.qq.com'
+			port = 443
+			httpClient = http.client.HTTPSConnection(host, port, timeout=30)
+			
+			header = {"Content-type": "text/xml", }
+			httpClient.request("POST", '/pay/unifiedorder', param.encode('utf8'), header)
+			#httpClient.request('POST', url)
+			response = httpClient.getresponse()
+			logger.debug('response.status:%s' %(response.status))
+			logger.debug('response.reason:%s' %(response.reason))
+			response_body = response.read()
+			logger.debug('response.read():%s' %(response_body))
+			
+		except Exception as err:
+			logger.error('Make Https Call to %s %s faild.' % (host,port))
+			logger.error(str(err))
+		finally:
+			if httpClient:
+				httpClient.close()
+		"""
+			
+			
 	
 class WechatJSSDKSign:
 	"""
@@ -97,13 +214,15 @@ class WechatJSSDKSign:
 			'nonceStr': self.__create_nonce_str(),
 			'jsapi_ticket': '',
 			'timestamp': self.__create_timestamp(),
-			'app_id':System_Config.objects.get(name='wechat_app_id').val,
-			'secret':System_Config.objects.get(name='wechat_app_secret').val,
-			'url': url,
-			'wechat_api_url':System_Config.objects.get(name='wechat_api_url').val,
-			'wechat_api_port':System_Config.objects.get(name='wechat_api_port').val
+			'url': url
 		}
+		self.app_id = System_Config.objects.get(name='wechat_app_id').val
+		logger.debug('self.app_id：' + str(self.app_id))
+		self.secret = System_Config.objects.get(name='wechat_app_secret').val
+		self.wechat_api_url = System_Config.objects.get(name='wechat_api_url').val
+		self.wechat_api_port = System_Config.objects.get(name='wechat_api_port').val
 
+		logger.debug('JSSDK self.ret:%s' % (self.ret))
 	def __create_nonce_str(self):
 		return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15))
 
@@ -111,12 +230,9 @@ class WechatJSSDKSign:
 		return int(time.time())
 
 	def get_ticket(self):
-		app_id = self.ret['app_id']
-		secret = self.ret['secret']
-		
-		url = '/cgi-bin/token?grant_type=client_credential&appid=%(app_id)s&secret=%(secret)s' % {'app_id':app_id,'secret':secret}
+		url = '/cgi-bin/token?grant_type=client_credential&appid=%(app_id)s&secret=%(secret)s' % {'app_id':self.app_id,'secret':self.secret}
 		logger.debug('url:%s' % (url))
-		token_info = make_https_get_call(host=self.ret['wechat_api_url'],port=self.ret['wechat_api_port'],url=url,timeout=30)
+		token_info = make_https_get_call(host=self.wechat_api_url,port=self.wechat_api_port,url=url,timeout=30)
 			
 		if not token_info:
 			return ''
@@ -124,21 +240,21 @@ class WechatJSSDKSign:
 		url = '/cgi-bin/ticket/getticket?access_token=%(token)s&type=jsapi' % {'token':token_info['access_token']}
 		logger.debug('url:%s' %(url))
 			
-		ticket_info = make_https_get_call(host=self.ret['wechat_api_url'],port=self.ret['wechat_api_port'],url=url,timeout=30)
+		ticket_info = make_https_get_call(host=self.wechat_api_url,port=self.wechat_api_port,url=url,timeout=30)
 		logger.debug('ticket:%s' % (ticket_info))
 		
 		if not ticket_info:
 			return ''
 		
+		self.ret['jsapi_ticket'] = ticket_info['ticket']
 		return ticket_info['ticket']
 
 	def make_wechat_config(self):
-		config_str = 'wx.config({debug:%(debug)s,appId:"%(appid)s",timestamp:%(timestamp)s,nonceStr:"%(nonce)s",signature:"%(signature)s",jsApiList:["checkJsApi","chooseWXPay","onMenuShareAppMessage","onMenuShareTimeline"]});' % {'debug':'true','appid':self.ret['app_id'],'timestamp':self.ret['timestamp'],'nonce':self.ret['nonceStr'],'signature':self.ret['signature']}
+		config_str = 'wx.config({debug:%(debug)s,appId:"%(appid)s",timestamp:%(timestamp)s,nonceStr:"%(nonce)s",signature:"%(signature)s",jsApiList:["checkJsApi","chooseWXPay","onMenuShareAppMessage","onMenuShareTimeline"]});' % {'debug':'true','appid':self.app_id,'timestamp':self.ret['timestamp'],'nonce':self.ret['nonceStr'],'signature':self.ret['signature']}
 		return config_str 
 		
 	def sign(self):
 		ticket = self.get_ticket()
-		self.ret['jsapi_ticket'] = ticket	
 		string = '&'.join(['%s=%s' % (key.lower(), self.ret[key]) for key in sorted(self.ret)])
 		logger.debug('string:%s' % (string))
 		signature = hashlib.sha1(string.encode('utf8')).hexdigest()
@@ -147,34 +263,6 @@ class WechatJSSDKSign:
 		return self.make_wechat_config()
 		
 		
-class WechatOrderSign:
-	"""
-	微信统一下单接口加密类
-	"""
-	def __init__(self, app_id, mch_id, body, device_info):
-		self.ret = {
-			'nonce_str': self.__create_nonce_str(),
-			'appid': app_id,
-			'mch_id': mch_id,
-			'body': body,
-			'device_info':device_info
-		}
-
-	def __create_nonce_str(self):
-		return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(15))
-
-	def sign(self):
-		string = '&'.join(['%s=%s' % (key.lower(), self.ret[key]) for key in sorted(self.ret)])
-		logger.debug('string:%s' % (string))
-		mch_key = System_Config.objects.get(name='wechat_mch_key').val
-		stringSignTemp=  '%s&key=%s' % (string,mch_key)
-		logger.debug('stringSignTemp:%s' % (stringSignTemp))
-		
-		#signature = hashlib.sha1(string.encode('utf8')).hexdigest()
-		signature = hashlib.md5(stringSignTemp.encode('utf8')).hexdigest().upper()
-		self.ret['signature'] = signature
-		logger.debug('signature:%s' % (signature))
-		return self.ret
 
 		
 class WechatPaySign:
@@ -219,26 +307,25 @@ def wechat_check(request):
 		logger.debug('nonce:%s' %(nonce))
 		logger.debug('echostr:%s' %(echostr))
 		
-		app_id = System_Config.objects.get(name='wechat_app_id').val
+		check_sign = WechatCheckSign(timestamp=timestamp,nonce=nonce,echostr=echostr,signature=signature)
 		
-		login_sign = WechatLoginSign(app_id=app_id,timestamp=timestamp,nonce=nonce,echostr=echostr,signature=signature)
-		
-		if login_sign.is_valid:
-			return HttpResponse(login_sign.ret['echostr'])
+		if check_sign.is_valid:
+			return HttpResponse(check_sign.ret['echostr'])
 		else:
 			return HttpResponse('Not Auth')
 	else:
 		raise Http404
 
 
-def wechat_pay(request,id=''):
-	mch_id = System_Config.objects.get(name='wechat_mch_id').val
-	app_id = System_Config.objects.get(name='wechat_app_id').val
+def wechat_pay(request,id=''):	
+	#1、通过统一下单接口下单
+	logger.debug('id:%s' % (id))
+	order = WechatOrderSign(pbody='这里是Body', attach='这里是Attach',open_id='oL-pIwLztIl8kJjk63Ky-e_Inekg',out_trade_no='OrderNo is 20160608',spbill_create_ip='127.0.0.1',total_fee=1)					
+	order.order()
+	return HttpResponse('OK')
+
+
 	
-	#第一步，调用统一下单接口，先向微信下单
-	#https://api.mch.weixin.qq.com/pay/unifiedorder
-						
-			
 @csrf_exempt
 def wechat_login(request):
 	code = request.GET.get('code','')
@@ -260,7 +347,7 @@ def	make_https_get_call(host,port,url,timeout,return_type='json'):
 	"""
 	httpClient = None
 	try:
-		httpClient = http.client.HTTPSConnection(self.ret['wechat_api_url'], self.ret['wechat_api_port'], timeout=30)
+		httpClient = http.client.HTTPSConnection(host, port, timeout=30)
 		httpClient.request('GET', url)
 		response = httpClient.getresponse()
 		logger.debug('response.status:%s' %(response.status))

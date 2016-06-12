@@ -107,6 +107,17 @@ def payment(request,order_id):
 	ctx['charset'] = 'utf-8'
 	ctx['rm'] = '1'
 	
+	
+	paypal_env = 'sandbox'
+	try:
+		paypal_env = System_Config.objects.get(name='paypal_env').val
+	except:
+		logger.info('"paypal_env" is not definded,use default value : "sandbox".Please set the system parameter paypal_env = live if you want to use the paypal live service.')
+	if paypal_env == 'live':
+		ctx['paypal_action_url'] = 'https://www.paypal.com/cgi-bin/websc'
+	else:
+		ctx['paypal_action_url'] = 'https://www.sandbox.paypal.com/cgi-bin/websc'
+	
 	return render(request,System_Config.get_template_name() + '/payment.html',ctx)		
 
 	

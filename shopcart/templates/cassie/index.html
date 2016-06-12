@@ -4,7 +4,10 @@
 {% load staticfiles %}
     <div class="home main">
         <div class="container">
-			<div class="row"><a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3a86e89b09a7c875&redirect_uri=http%3A%2F%2Faws.imycart.com%2Fweixin%2F&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect">微信登陆</a></div>
+			<div class="row"><a href="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx3a86e89b09a7c875&redirect_uri=http%3A%2F%2Faws.imycart.com%2Fopenplatform%2Fwechat%2Flogin%2F&response_type=code&scope=snsapi_userinfo&state=123#wechat_redirect">微信登陆</a></div>
+			
+			<div class="row"><a href="/openplatform/wechat/pay/1">统一下单</a></div>
+			
             <div class="row">
                 <div class="sliders"><img src="{% static "cassie/images/banner.jpg"%}" alt="banner"></div>
             </div>
@@ -80,6 +83,26 @@
 					alert('share cancel');
 				}
 			});
+			
+			wx.onMenuShareAppMessage({
+					title: 'imycart', // 分享标题
+					desc: '这是一篇好玩的文章', // 分享描述
+					link: 'http://aws/imycart.com', // 分享链接
+					imgUrl: 'http://aws.imycart.com/static/cassie/images/logo.jpg', // 分享图标
+					type: 'link', // 分享类型,music、video或link，不填默认为link
+					dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+					success: function () { 
+						// 用户确认分享后执行的回调函数
+						alert('share success');
+					},
+					cancel: function () { 
+						// 用户取消分享后执行的回调函数
+						alert('share canceled');
+					}
+			});
+			
+
+			
 		});
 		
 	</script>
