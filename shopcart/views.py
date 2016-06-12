@@ -36,6 +36,7 @@ def init_database(request):
 	sys_con = System_Config.objects.create(name='base_url',val='http://aws.imycart.com')
 	sys_con = System_Config.objects.create(name='paypal_account',val='demo@imycart.com')
 	sys_con = System_Config.objects.create(name='default_currency',val='USD')
+	sys_con = System_Config.objects.create(name='paypal_env',val='sandbox')
 	
 	sys_con = System_Config.objects.create(name='copyright',val='Copyright © cassiecomb.com All Rights Reserved. Designed by iMyCart')
 	sys_con = System_Config.objects.create(name='service_email',val='info@cassiecomb.com')
