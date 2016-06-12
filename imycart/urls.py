@@ -58,19 +58,12 @@ urlpatterns = patterns("",
 	url(r'^file-delete/(.+)/(.+)/(.+)/$', 'shopcart.admin_views.file_delete',name='admin_file_delete'),
 	url(r'^email-list/add/$', 'shopcart.emaillist.add_to_email_list',name='emaillist_add_to_email_list'),
 	url(r'^query/product/$', 'shopcart.product.query_product_show',name='product_query_product_show'),
-	#url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
+
 	url('^admin/ckediter/(.+)/(.+)/$', 'shopcart.admin_views.ckediter',name='admin_ckediter'),
 	url('^admin/product/make-static/$', 'shopcart.admin_views.product_make_static',name='admin_product_make_static'),
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^i18n/', include('django.conf.urls.i18n')),
-	#第三方开放平台
-	url('^openplatform/wechat/check/$', 'shopcart.openplatform.wechat.wechat_check',name='openplatform_wechat_wechat_check'),
-	url('^openplatform/wechat/login/$', 'shopcart.openplatform.wechat.wechat_login',name='openplatform_wechat_wechat_login'),
-	url('^openplatform/wechat/pay/(.+)$', 'shopcart.openplatform.wechat.wechat_pay',name='openplatform_wechat_wechat_pay'),
-	#下面是测试方法
+
+	#下面是初始化方法
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
-	url(r'^add-product/$', 'shopcart.views.add_product_manual',name='add_product_manual'),
-	url(r'^send-mail/$', 'shopcart.views.send_mail',name='send_mail'),
-	url(r'^product/edit/(\d+)$', 'shopcart.admin_views.product_edit',name='admin_product_edit'),
-	url(r'^upload/$', 'shopcart.index.upload_file',name='upload_file'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
