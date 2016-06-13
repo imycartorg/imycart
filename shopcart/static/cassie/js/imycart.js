@@ -390,7 +390,7 @@ jQuery(".check-address-list").on('click','li>a',function(e){
 //地址添加与修改
 jQuery(".btn-address-submit").click(function(){
 	//将按钮设置为不可用
-	//$(this).attr('disabled',true);
+	$(this).attr('disabled',true);
 	
 	//var address_id = $("#select_address_id").val();
 	var $form = $("#address-form").data('bootstrapValidator'); 
@@ -455,13 +455,13 @@ jQuery(".btn-address-submit").click(function(){
 					location.href = "/user/address/show/"
 				}
 			
-			
+			$(this).attr('disabled',false);
 			}else{
+				$(this).attr('disabled',false);
 				if (submit_method == "dropdown_list" || submit_method == "close_self" ){
 					$("#infoMessage").html(data.message);
 					$("#myModal").modal('toggle');
 				}
-				
 			}
 			
 		}
