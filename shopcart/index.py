@@ -24,6 +24,7 @@ def view_index(request):
 	imgage_url = captcha_image_url(hashkey)
 	ctx = {}
 	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['page_name'] = 'Home'
 	ctx['hashkey'] = hashkey
 	ctx['imgage_url'] = imgage_url
 	#ctx['i18n_text'] = _('Welcome to %(site_name)s.') % {'site_name':'imycart.com 小伙伴的购物车'}
