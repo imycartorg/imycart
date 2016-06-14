@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from shopcart.models import System_Config,MyUser,Order,Address,Product,Order_Products,Cart_Products,Cart,Product_Attribute
 from shopcart.utils import System_Para,my_pagination,get_serial_number,get_system_parameters
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse,JsonResponse,Http404
 import logging,json
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
@@ -75,6 +75,21 @@ def place_order(request):
 			op = Order_Products.objects.create(product_id=cp.product.id,product_attribute=cp.product_attribute,order=order,name=cp.product.name,short_desc=cp.product.short_desc,price=cp.get_product_price(),
 				thumb=cp.product.thumb,image=cp.product.image,quantity=cp.quantity)
 			logger.debug('>>>>>6:op.id='+str(op.id))
+			# 20160614，考拉，加入了扣减库存的逻辑
+			if cp.product_attribute:
+				product_attribute = cp.product_attribute
+				product_attribute.quantity = product_attribute.quantity - cp.quantity
+				if product_attribute.quantity < 0:
+					raise Exception('QUANTITY_INVALID|The product is sold out.')
+				product_attribute.save()
+			else:
+				product = cp.product
+				product.quantity = product.quantity - cp.quantity
+				if product.quantity < 0:
+					raise Exception('QUANTITY_INVALID|The product is sold out.')
+				product.save()
+			
+			
 			#删除购物车中商品
 			cp.delete()
 			logger.debug('>>>>>8:cp.delete')
@@ -183,4 +198,25 @@ def show_order(request):
 		order_list, page_range = my_pagination(request, order_list,display_amount=order_list_page_size)
 		ctx['order_list'] = order_list
 		ctx['page_range'] = page_range
-		return render(request,System_Config.get_template_name() + '/orders.html',ctx)	
+		return render(request,System_Config.get_template_name() + '/orders.html',ctx)
+		
+		
+@login_required()
+def order_detail(request,id):
+	ctx = {}
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'My Orders'
+	if request.method == 'GET':
+		try:
+			order = Order.objects.get(id=id)
+		except Exception as err:
+			logger.error('Can not find order %s' % (id))
+			raise Http404
+
+		ctx['order'] = order
+		return render(request,System_Config.get_template_name() + '/order_view.html',ctx)
+		
+
+
+
+	

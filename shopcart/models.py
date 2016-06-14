@@ -406,6 +406,13 @@ class Order_Products(models.Model):
 	
 	def __str__(self):
 		return self.name
+		
+	def get_short_product_attr(self):
+		attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
+		ret_str = ''
+		for attr in attr_list:
+			ret_str = ret_str + ' [' + attr.group.name + ':' + attr.name + ']'
+		return ret_str
 	
 	class Meta:
 		verbose_name = '订单商品'
