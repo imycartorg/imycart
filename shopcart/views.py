@@ -8,11 +8,19 @@ from django.db import transaction
 from django.utils.translation import ugettext as _
 import datetime
 import requests
+from shopcart.utils import get_system_parameters
 # import the logging library
 import logging
 # Get an instance of a logger
 logger = logging.getLogger('imycart.shopcart')
 
+
+def contact_page(request):
+	ctx = {}
+	ctx['system_para'] = get_system_parameters()
+	ctx['page_name'] = 'Contact us'
+	
+	return render(request,System_Config.get_template_name() + '/contact.html',ctx)
 
 @transaction.atomic()
 def init_database(request):

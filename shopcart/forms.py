@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from django import forms
-from shopcart.models import MyUser,Address,Product
+from shopcart.models import MyUser,Address,Product,Inquiry
 from captcha.fields import CaptchaField
 from django.utils.translation import ugettext as _
 from django.core.exceptions import ValidationError 	
@@ -38,3 +38,9 @@ class product_add_form(forms.ModelForm):
 	class Meta:
 		model = Product
 		fields = ('item_number','name')
+		
+class inquiry_form(forms.ModelForm):
+	company = forms.CharField(required=False)
+	class Meta:
+		model = Inquiry
+		fields = ('name','company','email','message')

@@ -60,6 +60,8 @@ urlpatterns = patterns("",
 	url(r'^email-list/add/$', 'shopcart.emaillist.add_to_email_list',name='emaillist_add_to_email_list'),
 	url(r'^query/product/$', 'shopcart.product.query_product_show',name='product_query_product_show'),
 
+	url(r'^contact/show/$', 'shopcart.views.contact_page',name='views_contact_page'),
+	url(r'^inquiry/add/$', 'shopcart.inquiry.add',name='inquiry.add'),
 	url('^admin/ckediter/(.+)/(.+)/$', 'shopcart.admin_views.ckediter',name='admin_ckediter'),
 	url('^admin/product/make-static/$', 'shopcart.admin_views.product_make_static',name='admin_product_make_static'),
 	url('^admin/product/(.+)/(\d+)/$', 'shopcart.admin_views.product_opration',name='admin_product_opration'),
