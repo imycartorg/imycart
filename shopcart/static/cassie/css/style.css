@@ -60,7 +60,9 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 .footer-item ul li i{width:18px;height:23px;margin-right:3px; }
 .footer-item li{line-height:22px;padding:4px 0;}
 .list-allow-left{padding:8px 7px; background: url(../images/ico/list-arrow-left.jpg);}
-.footer-contact li{line-height:22px;padding:4px 0 0 0; color:#444;}
+.footer li{line-height:22px;padding:4px 0 0 0; color:#444;}
+.footer li a{color:#444;}
+.footer li a:hover{color:#f7931d}
 .footer-ico-empty{padding-left:20px !important;line-height:24px !important;padding-top:0px !important;padding-bottom:8px !important;color:#666 !important;}
 .footer-letter label{font-weight: normal; line-height: 48px; padding-top:15px;}
 .footer-form{width:100%;position: relative;}

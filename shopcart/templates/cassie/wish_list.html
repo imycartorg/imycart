@@ -35,6 +35,27 @@
 								</div>
 							 {% endfor %}
                          </div>
+						 
+						 <div class="order-pages">
+								{% if wish_list.has_previous %}
+									<a name="pageChange" data-tag="Previous" class="pageChage prev" data-page="{{ wish_list.previous_page_number }}"></a>
+								{% else %}
+									<a class="prev"></a>
+								{% endif %}
+																
+								{% for p in page_range %}
+									{% ifequal p objects.number %}
+										<span>{{p}}</span>
+									{% else %}
+									<a class="pageChage"  data-page = "{{p}}" href="#" title="{{p}}">{{p}}</a>
+									{% endifequal %}
+								{% endfor %}
+								{% if wish_list.has_next %}
+									<a name="pageChange" class="pageChage next" data-page = "{{p}}" data-page-range="{{page_range}}" data-tag="Next"></a>
+								{% else %}
+									<a class="next"></a>
+								{% endif %}
+                         </div>
                        </div>
                     </div>
                 </div>

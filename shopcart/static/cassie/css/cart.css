@@ -100,6 +100,7 @@
 /*wish list*/
 .wish-list h2{color:#f7931d;}
 .wish-list-update{float:right !important;}
+.wish-list .order-pages{margin:50px 0 40px 0;}
 /*Add New Address*/
 .add-address-border{ border-top:#f7931d solid 3px;box-shadow: 0 1px 2px #ddd;display: inline-block;margin-bottom:60px;}
 .add-address-main{padding:30px 50px!important;}
