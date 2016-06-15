@@ -69,6 +69,7 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Product,ProductAdmin)
 
 class ProductAttributeAdmin(admin.ModelAdmin):
+	list_display = ('product','name','sub_item_number', 'quantity','price_adjusment','create_time','update_time')
 	list_filter = ('create_time',)
 	#自然是排序所用了，减号代表降序排列
 	ordering = ('-create_time',)

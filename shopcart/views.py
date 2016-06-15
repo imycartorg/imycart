@@ -54,6 +54,7 @@ def init_database(request):
 	sys_con = System_Config.objects.create(name='hot_line',val='(+86)186 18 18 18')
 	sys_con = System_Config.objects.create(name='office_phone',val='(+86)86688668')
 	
+	sys_con = System_Config.objects.create(name='workday',val='Mon - Sun / 9:00AM - 8:00PM(BeiJing Time)')
 	
 	sys_con = System_Config.objects.create(name='product_page_size',val=12)
 	sys_con = System_Config.objects.create(name='common_user_address_limit',val=4)

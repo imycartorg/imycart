@@ -79,14 +79,14 @@ def place_order(request):
 			if cp.product_attribute:
 				product_attribute = cp.product_attribute
 				product_attribute.quantity = product_attribute.quantity - cp.quantity
-				if product_attribute.quantity < 0:
-					raise Exception('QUANTITY_INVALID|The product is sold out.')
+				#if product_attribute.quantity < 0:
+				#	raise Exception('QUANTITY_INVALID|The product is sold out.')
 				product_attribute.save()
 			else:
 				product = cp.product
 				product.quantity = product.quantity - cp.quantity
-				if product.quantity < 0:
-					raise Exception('QUANTITY_INVALID|The product is sold out.')
+				#if product.quantity < 0:
+				#	raise Exception('QUANTITY_INVALID|The product is sold out.')
 				product.save()
 			
 			
