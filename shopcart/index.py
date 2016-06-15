@@ -24,6 +24,7 @@ def view_index(request):
 	imgage_url = captcha_image_url(hashkey)
 	ctx = {}
 	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['page_name'] = 'Home'
 	ctx['hashkey'] = hashkey
 	ctx['imgage_url'] = imgage_url
 	#ctx['i18n_text'] = _('Welcome to %(site_name)s.') % {'site_name':'imycart.com 小伙伴的购物车'}
@@ -33,17 +34,6 @@ def view_index(request):
 	ctx['i18n_text_example'] = _('Today is %(month)s %(day)s.') % {'month': 9, 'day': 6}
 	ctx['value'] = 2980.0
 	ctx['show_const'] = Order.ORDER_STATUS_PAYED_UNCONFIRMED
-	logger.info('i18n_text:' + ctx['i18n_text'])
-	
-	
-	#测试下微信的分享功能
-
-	
-	#要注意最后的那个 /  ！！！！！妈的，搞了两天，一直不行，就因为这个/
-	jssdk_sign = WechatJSSDKSign('http://aws.imycart.com/')
-	jssdk_config = jssdk_sign.sign()
-	ctx['wechat_config'] = jssdk_config
-	
 	return render(request,System_Config.get_template_name() + '/index.html',ctx)
 	
 	
