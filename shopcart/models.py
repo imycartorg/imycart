@@ -406,6 +406,13 @@ class Order_Products(models.Model):
 	
 	def __str__(self):
 		return self.name
+		
+	def get_short_product_attr(self):
+		attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
+		ret_str = ''
+		for attr in attr_list:
+			ret_str = ret_str + ' [' + attr.group.name + ':' + attr.name + ']'
+		return ret_str
 	
 	class Meta:
 		verbose_name = '订单商品'
@@ -506,3 +513,19 @@ class Express(models.Model):
 	class Meta:
 		verbose_name = '快递'
 		verbose_name_plural = '快递'
+		
+@python_2_unicode_compatible		
+class Inquiry(models.Model):
+	name = models.CharField(max_length=100,null=True,verbose_name = '对方称呼')
+	company = models.CharField(max_length=200,null=True,verbose_name = '对方公司')
+	email = models.EmailField(max_length=254,null=True,verbose_name = '电子邮件')
+	message = models.TextField(blank=True,verbose_name='询盘信息')
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
+	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
+	
+	def __str__(self):
+		return self.name
+	
+	class Meta:
+		verbose_name = '询盘信息'
+		verbose_name_plural = '询盘信息'
