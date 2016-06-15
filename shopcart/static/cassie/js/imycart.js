@@ -95,6 +95,31 @@ function imycartAjaxCallWithCallback(url,object,callback,triggerControl,extraInf
 	});
 };
 
+
+//提交询盘问题
+jQuery("#inquiry-submit").click(function(e){
+	event.preventDefault();
+	url = '/inquiry/add/'
+	
+	$.ajax({
+		cache: false,
+		type: "POST",
+		url:url,
+		data:$('#inquiryForm').serialize(),
+		async: false,
+		error: function(request) {
+			alert("System error");
+		},
+		success: function(result){
+			$("#infoMessage").html(result.message);
+			$("#myModal").modal('toggle');
+		}
+	});
+});
+
+
+
+
 //切换语言
 jQuery(".change_locale_btn").click(function(e){
 	event.preventDefault();
