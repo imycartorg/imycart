@@ -5,9 +5,10 @@
 body {font-family: opensan, Arial, Helvetica;font-size: 14px;line-height: 24px;color: #666;overflow-x:hidden;}
 a:hover,a,a:focus{text-decoration: none;cursor: pointer;}
 *{margin:0; padding:0;outline: none !important;}
+label i{color:#ff0000;}
 label{margin-bottom: 0!important;}
 li, ul{ list-style-type:none;}
-.color{color:#f7931d}
+.color{color:#f7931d !important;}
 .none{display: none;}
 button{border-radius:0;border-bottom-left-radius:0;border-bottom-right-radius:0; border-top-left-radius:0; border-top-right-radius:0;-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
 button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-radius:0; border-top-left-radius:0; border-top-right-radius:0;-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
@@ -39,6 +40,7 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 .top-phone{ display: inline-block;}
 .top-cart{ display: inline-block;}
 .top-cart-num{width:41px; height:41px; display: block; text-align:center; background: url(../images/ico/cart-top.png);color:#fff;}
+.top-cart-num a{padding:20px;}
 .top-phone span:first-child{font-size: 12px;padding-right:8px;}
 /*menu*/
 .menu{width: 100%;display: inline-block;}
@@ -58,7 +60,9 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 .footer-item ul li i{width:18px;height:23px;margin-right:3px; }
 .footer-item li{line-height:22px;padding:4px 0;}
 .list-allow-left{padding:8px 7px; background: url(../images/ico/list-arrow-left.jpg);}
-.footer-contact li{line-height:22px;padding:4px 0 0 0; color:#444;}
+.footer li{line-height:22px;padding:4px 0 0 0; color:#444;}
+.footer li a{color:#444;}
+.footer li a:hover{color:#f7931d}
 .footer-ico-empty{padding-left:20px !important;line-height:24px !important;padding-top:0px !important;padding-bottom:8px !important;color:#666 !important;}
 .footer-letter label{font-weight: normal; line-height: 48px; padding-top:15px;}
 .footer-form{width:100%;position: relative;}
@@ -83,7 +87,7 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 .copy-media a{-webkit-transition:0.4s; -moz-transition: 0.4s;-o-transition: 0.4s;transition: 0.4s;}
 /*login register*/
 .login-left{width:50%;float:left;padding-right:50px; position: relative; height:360px;z-index:1;}
-.login-left div a{position:absolute;bottom:6px;right:56px;font-size: 14px;padding:7px 18px; background: #f7931d;color:#fff;border:1px solid #f7931d;}
+.login-left div a{position:absolute;bottom:7px;right:56px;font-size: 14px;padding:7px 18px; background: #f7931d;color:#fff;border:1px solid #f7931d;}
 .login-left div a:hover{color:#666;border:1px solid #ccc; background: #fff;}
 .login-right{width:50%;float:left;}
 .login h2,.register h2,.forget h2,.reset-password h2{font-size: 18px; line-height:26px;padding:12px 0;}
@@ -212,6 +216,19 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 .single-main{min-height: 300px;}
 .single-main img{max-width: 100%;}
 .single-main h1{font-size: 20px;color:#f7931d;}
+/*Contact*/
+.contact h1,.contact h2{font-size: 20px;  line-height: 26px; padding: 24px 0 18px 0;color: #f7931d;}
+.contact h2{margin-bottom:5px;}
+.contact-info div{width:100%; line-height: 24px;font-size: 13px;}
+.contact-info div:nth-child(odd){padding-top: 8px;font-weight: bold}
+.contact-info div:nth-child(even){ padding-bottom: 8px;}
+.contact-form{width:100%;}
+.contact-form div div{width:100%;float: left;}
+.contact-form div input{ line-height: 24px; padding: 7px 10px;border: 1px solid #ccc; width: 100%;}
+.contact-form div button{color: #fff; padding: 0 17px;background: #f7931d;border: 1px solid #f7931d;display: block; line-height: 38px; margin-top: 24px; margin-bottom:90px;}
+.contact-form div button:hover{color: #666;  border: 1px solid #ccc;background: #fff;}
+.contact-form div label{line-height: 32px; padding-top: 18px;font-size: 14px;width: 100%;}
+.contact-form div textarea{line-height: 24px; padding: 7px 10px;border: 1px solid #ccc; width: 100%; min-height: 220px;}
 
 
 @media (max-width:1200px) {
@@ -236,6 +253,7 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 .detail-des-line{width:635px;}
 .register p, .forget p, .reset-password p{padding: 12px 0 10px 0px !important;}
 .register-submit, .forget-submit, .reset-password-submit{width:100%;}
+.contact-form div textarea{min-height: 150px;}
 }
 
 @media (max-width:992px) and (min-width:600px){
@@ -278,6 +296,7 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
     .login-main, .register-main, .forget-main, .reset-password-main {padding: 20px 15px 35px 15px;}
     .login-creat{display: inline-block;width:100%;margin-bottom:40px;text-align: right;}
     .login-creat a{font-size: 14px;padding: 8px 18px;background: #f7931d;   color: #fff;}
+	.login-creat a:hover{color:#666;border:1px solid #ccc; background: #fff;}
     .login-right span{margin-bottom:30px; line-height:20px;padding-top:10px;}
     .login p{padding-bottom:15px;}
     .login-left { width:100%;padding:0px;height: auto;position:unset;}
@@ -324,6 +343,7 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 }
 @media (max-width:500px) {
     .spec-scroll .items{height:100px;}
+    .contact-form div button{margin-bottom:50px;}
 }
 @media (max-width:480px) {
     .spec-scroll .items{height:90px;}

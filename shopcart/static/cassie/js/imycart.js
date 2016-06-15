@@ -390,7 +390,7 @@ jQuery(".check-address-list").on('click','li>a',function(e){
 //地址添加与修改
 jQuery(".btn-address-submit").click(function(){
 	//将按钮设置为不可用
-	//$(this).attr('disabled',true);
+	$(this).attr('disabled',true);
 	
 	//var address_id = $("#select_address_id").val();
 	var $form = $("#address-form").data('bootstrapValidator'); 
@@ -455,13 +455,13 @@ jQuery(".btn-address-submit").click(function(){
 					location.href = "/user/address/show/"
 				}
 			
-			
+			$(this).attr('disabled',false);
 			}else{
+				$(this).attr('disabled',false);
 				if (submit_method == "dropdown_list" || submit_method == "close_self" ){
 					$("#infoMessage").html(data.message);
 					$("#myModal").modal('toggle');
 				}
-				
 			}
 			
 		}
@@ -627,6 +627,34 @@ function imycartAddProductToWishlistCallBack(result,triggerControl,extraInfo){
 		}
 	}
 };
+
+//把商品从愿望清单删除
+jQuery(".remove-from-wishlist").click(
+	function() {
+		event.preventDefault();
+		var extraInfo = new Object();
+		extraInfo.topDivId = $(this).data("top-div-id");
+		imycartRemoveProductFromWishlist($(this).data("wishlistid"),$(this),extraInfo);
+	}
+);
+
+function imycartRemoveProductFromWishlist(wish_id,triggerControl,extraInfo){
+			var url = "/wishlist/remove";
+			var wish = new Object();
+			wish.id = wish_id;
+			var encodedata = $.toJSON(wish);
+			imycartAjaxCallWithCallback(url,wish,imycartRemoveProductFromWishlistCallBack,triggerControl,extraInfo);
+};
+
+function imycartRemoveProductFromWishlistCallBack(result,triggerControl,extraInfo){
+	if(result.success==true){
+		$("#" + extraInfo.topDivId ).remove();
+	}else{
+		$("#infoMessage").html(result.message);
+		$("#myModal").modal('toggle');
+	}
+};	
+
 
 //选择了商品某个额外属性
 jQuery(".product-attribute-item").click(function(){
