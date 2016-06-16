@@ -5,7 +5,20 @@
 		<p>文件上传</p>
 		<form enctype="multipart/form-data" method="POST" action="{{action_url}}"> 
 			{% csrf_token %}
-			<input type="file" name="upload" />
+			选择文件：<input type="file" name="upload" /><br>
+			文件名生成方式：
+			<select name="filename_type">
+				<option value="origin">原文件名</option>
+				<option value="random">随机</option>
+				<option value="manual">自由输入</option>
+			</select>
+			<br/>
+			自由输入文件名：（不要后缀）<input type="text" name="manual_name"/></br>
+			重名文件处理方式：
+			<select name="same_name_handle">
+				<option value="reject">拒绝</option>
+				<option value="rewrite">覆盖</option>
+			</select>
 			<br /> 
 			<input type="submit" value="上传文件" /> 
 		</form>
