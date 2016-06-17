@@ -45,7 +45,7 @@ def register(request):
 def info(request):
 	ctx = {}
 	ctx.update(csrf(request))
-	ctx['system_para'] = System_Para.get_default_system_parameters()	
+	ctx['system_para'] = get_system_parameters()
 	if request.method == 'GET':
 		#GET请求，直接返回页面
 		return render(request,System_Config.get_template_name() + '/user_info.html',ctx)

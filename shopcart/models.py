@@ -6,6 +6,9 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,Permiss
 from django.utils.translation import ugettext as _
 from django.utils.encoding import python_2_unicode_compatible
 
+import logging
+logger = logging.getLogger('imycart.shopcart')
+
 # Create your models here.
 class MyUserManager(BaseUserManager):
 	def _create_user(self, username, email, password, **extra_fields):
@@ -279,6 +282,7 @@ class Cart_Products(models.Model):
 		return self.quantity * self.get_product_price()
 		
 	def get_short_product_attr(self):
+		logger.debug('product_attribute: %s' % self.product_attribute)
 		attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
 		ret_str = ''
 		for attr in attr_list:
