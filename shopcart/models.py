@@ -283,7 +283,9 @@ class Cart_Products(models.Model):
 		
 	def get_short_product_attr(self):
 		logger.debug('product_attribute: %s' % self.product_attribute)
-		attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
+		attr_list = []
+		if self.product_attribute:
+			attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
 		ret_str = ''
 		for attr in attr_list:
 			ret_str = ret_str + ' [' + attr.group.name + ':' + attr.name + ']'
@@ -412,7 +414,9 @@ class Order_Products(models.Model):
 		return self.name
 		
 	def get_short_product_attr(self):
-		attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
+		attr_list = []
+		if self.product_attribute:
+			attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
 		ret_str = ''
 		for attr in attr_list:
 			ret_str = ret_str + ' [' + attr.group.name + ':' + attr.name + ']'
