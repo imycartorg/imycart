@@ -8,6 +8,7 @@ from django.db import transaction
 from shopcart.utils import System_Para,get_system_parameters
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
+from shopcart.functions.product_util_func import get_menu_products
 from django.utils.translation import ugettext as _
 from django.http import Http404
 # import the logging library
@@ -181,6 +182,7 @@ def set_cart_product_quantity(quantity,cart_exist,result_dict):
 def view_cart(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'My Cart'
 	if request.method =='GET':
 		if 'cart_id' in request.COOKIES:
@@ -200,6 +202,7 @@ def view_cart(request):
 def check_out(request): 
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Check Out'
 	
 	if request.method == 'POST':

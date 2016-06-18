@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.utils.translation import ugettext as _
 from django.http import Http404
 from django.http import HttpResponse
+from shopcart.functions.product_util_func import get_menu_products
 # import the logging library
 import logging
 # Get an instance of a logger
@@ -17,6 +18,7 @@ logger = logging.getLogger('imycart.shopcart')
 def detail(request,id):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Product'
 	try:
 		product = Product.objects.get(id=id)
@@ -80,6 +82,7 @@ def detail(request,id):
 def view_list(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Product'
 	
 	if request.method =='GET':
@@ -117,6 +120,7 @@ def view_list(request):
 def query_product_show(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Product'
 	
 	if request.method =='GET':

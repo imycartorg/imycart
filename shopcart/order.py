@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,JsonResponse,Http404
 import logging,json
 from django.contrib.auth.decorators import login_required
+from shopcart.functions.product_util_func import get_menu_products
 from django.utils.translation import ugettext as _
 from django.db import transaction
 # Get an instance of a logger
@@ -36,6 +37,7 @@ def place_order(request):
 	logger.info('Start to place order.')
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Place Order'
 	if request.method == 'POST':
 		logger.debug('address_id:' + str(request.POST['address_id']))
@@ -106,6 +108,7 @@ def place_order(request):
 def payment(request,order_id):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Payment'
 	
 	order = Order.objects.get(id=order_id)
@@ -186,6 +189,7 @@ def show_order(request):
 	logger.info('Start to show order.')
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'My Orders'
 	if request.method == 'GET':
 		order_list = Order.objects.filter(user=request.user)
@@ -205,6 +209,7 @@ def show_order(request):
 def order_detail(request,id):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'My Orders'
 	if request.method == 'GET':
 		try:

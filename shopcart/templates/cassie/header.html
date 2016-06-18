@@ -8,9 +8,9 @@
         <li><a href="/product/">products</a>
             <span class="glyphicon glyphicon-plus menu-phone-plus" data="phone-plus1" status="close"></span>
             <ul class="menu-low-one" id="phone-plus1">
-                <li><a href="#"><i></i>products1</a></li>
-                <li><a href="#"><i></i>products2</a></li>
-                <li><a href="#"><i></i>products3</a></li>
+				{% for product in menu_products%}
+					<li><a href="/product/{{product.id}}"><i></i>{{product.name}}</a></li>
+				{% endfor %}
             </ul>
         </li>
     </ul>
@@ -105,11 +105,11 @@
                     <li><a href="/">home</a></li>
                     <li><a href="#">about</a></li>
                     <li><a href="/product/">products <img src="{% static "cassie/images/ico/menu-arrow.jpg"%}"></a>
-                        <ul class="menu-low">
-                            <li><a href="#">products1</a></li>
-                            <li><a href="#">products2</a></li>
-                            <li><a href="#">products3</a></li>
-                        </ul>
+							<ul class="menu-low-one" id="phone-plus1">
+								{% for product in menu_products%}
+									<li><a href="/product/{{product.id}}"><i></i>{{product.name}}</a></li>
+								{% endfor %}
+							</ul>
                     </li>
                 </ul>
             </div>

@@ -10,6 +10,7 @@ from shopcart.sign import Sign
 from shopcart.openplatform.wechat import WechatJSSDKSign
 import json
 from django.utils.translation import ugettext as _
+from shopcart.functions.product_util_func import get_menu_products
 from django.http import Http404
 # import the logging library
 import logging
@@ -24,6 +25,8 @@ def view_index(request):
 	imgage_url = captcha_image_url(hashkey)
 	ctx = {}
 	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['menu_products'] = get_menu_products()
+	
 	ctx['page_name'] = 'Home'
 	ctx['hashkey'] = hashkey
 	ctx['imgage_url'] = imgage_url

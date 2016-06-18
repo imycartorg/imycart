@@ -225,7 +225,8 @@ class Attribute_Group(models.Model):
 @python_2_unicode_compatible
 class Attribute(models.Model):
 	group = models.ForeignKey(Attribute_Group,related_name='attributes',null=True)
-	name = models.CharField(max_length = 100,default='')
+	name = models.CharField(max_length = 100,default='',verbose_name='外部名称')
+	code = models.CharField(max_length = 100,default='',verbose_name='内部代码')
 	position = models.IntegerField(default=0)
 	thumb = models.URLField(null=True,default=None)
 	create_time = models.DateTimeField(auto_now_add = True)

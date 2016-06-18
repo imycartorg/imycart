@@ -117,7 +117,7 @@ def get_system_parameters():
 	for parameter in parameter_list:
 		dict[parameter.name] = parameter.val
 	return dict
-		
+	
 	
 def my_send_mail(useage,ctx,send_to,title):
 	logger.info('准备发送邮件： %s ' % [send_to,])

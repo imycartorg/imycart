@@ -6,6 +6,7 @@ from shopcart.utils import System_Para,my_pagination,get_system_parameters
 import json,os
 from django.http import JsonResponse
 from django.http import Http404
+from shopcart.functions.product_util_func import get_menu_products
 from django.utils.translation import ugettext as _
 # import the logging library
 import logging
@@ -16,6 +17,7 @@ logger = logging.getLogger('imycart.shopcart')
 def detail(request,id):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Blog'
 	try:
 		article = Article.objects.get(id=id)
@@ -52,6 +54,7 @@ def detail(request,id):
 def view_blog_list(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Blog'
 	
 	try:
