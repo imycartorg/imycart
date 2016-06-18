@@ -10,7 +10,7 @@ import logging
 logger = logging.getLogger('imycart.shopcart')
 
 def get_menu_products():
-	product_list = Product.objects.all()
+	product_list = Product.objects.filter(is_publish=True)
 	return product_list
 
 
