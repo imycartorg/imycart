@@ -13,3 +13,4 @@ sudo pip3 install Pillow==2.9.0
 # pip install pycrypto
 # 这里是Alpha分支
 # 迁移到了imycartorg了
+# 海螺海购
