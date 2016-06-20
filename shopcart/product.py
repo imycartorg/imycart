@@ -65,7 +65,8 @@ def detail(request,id):
 			f = None
 			dir = ''
 			for cat in category_list:
-				dir = 'media/' + cat.get_dirs()
+				dir = 'www/' + cat.get_dirs()
+				dir_http = cat.get_dirs()
 				if not os.path.exists(dir):
 					os.makedirs(dir)
 				f = codecs.open(dir + product.static_file_name ,'w','utf-8')
@@ -73,7 +74,7 @@ def detail(request,id):
 				f.close()
 			result_dict['success'] = True
 			result_dict['message'] = _('File already generated.')
-			result_dict['static_url'] = dir + product.static_file_name
+			result_dict['static_url'] = dir_http + product.static_file_name
 		except Exception as err:
 			logger.error('写文件失败。' + str(err))
 			result_dict['success'] = False
