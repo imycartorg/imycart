@@ -4,3 +4,5 @@ migrations
 /media
 *.log
 /static
+/.project
+/.settings
