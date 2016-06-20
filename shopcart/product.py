@@ -60,6 +60,7 @@ def detail(request,id):
 			#先获取商品所属分类，作为目录
 			category_list = product.categorys.all()
 			f = None
+			dir = ''
 			for cat in category_list:
 				dir = 'media/' + cat.get_dirs()
 				if not os.path.exists(dir):
