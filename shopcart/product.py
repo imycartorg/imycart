@@ -27,6 +27,8 @@ def detail(request,id):
 		raise Http404
 	#由于存在外键关系，只需要查出product对象，product所关联的images可以在模板中用product.images.all获得。
 	ctx['product'] = product
+	ctx['page_key_words'] = product.keywords
+	
 	price_min = product.price
 	price_max = product.price
 	for attribut in product.attributes.all():
