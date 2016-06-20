@@ -33,12 +33,14 @@ admin.site.register(Article,ArticleAdmin)
 
 class Attribute_GroupAdmin(admin.ModelAdmin):
 	list_filter = ('create_time',)
+	list_display = ('name', 'code','group_type','create_time','update_time') 
 	#自然是排序所用了，减号代表降序排列
 	ordering = ('-create_time',)
 admin.site.register(Attribute_Group,Attribute_GroupAdmin)
 
 class AttributeAdmin(admin.ModelAdmin):
 	list_filter = ('create_time',)
+	list_display = ('name', 'code','group','create_time','update_time') 
 	#自然是排序所用了，减号代表降序排列
 	ordering = ('-create_time',)
 admin.site.register(Attribute,AttributeAdmin)

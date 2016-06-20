@@ -16,7 +16,7 @@
   <div class="detail-main">
    <div id="preview" class="spec-preview">
       <span class="jqzoom">
-        <img jqimg="{{product.image}}" alt="" src="{{product.image}}" class="cart-move-img"/>      </span>
+        <img id="product-big-image" jqimg="{{product.image}}" alt="" src="{{product.image}}" class="cart-move-img"/>      </span>
    </div>
    <div class="spec-scroll">
           <div class="items">
@@ -107,5 +107,12 @@
 	{% load staticfiles %}
 	<script type="text/javascript" src="{% static 'cassie/js/base.js' %}"></script>
 	<script type="text/javascript" src="{% static 'cassie/js/jquery.jqzoom.js' %}"></script>
+	
+	<script>
+		$("#test").click(function(e){
+			$("#product-big-image").attr("jqimg","http://i.imycart.com/media/product/2/Plastic-Wet-Green-Hair-Brush-Back-View.jpg");
+			$("#product-big-image").attr("src","http://i.imycart.com/media/product/2/Plastic-Wet-Green-Hair-Brush-Back-View.jpg");
+		});
+	</script>
 {% endblock %}
 
