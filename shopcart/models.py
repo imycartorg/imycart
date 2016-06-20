@@ -233,7 +233,7 @@ class Attribute(models.Model):
 	update_time = models.DateTimeField(auto_now = True)
 	
 	def __str__(self):
-		return self.code + '|' + self.name
+		return self.code
 	
 	class Meta:
 		verbose_name = '商品属性定义'
