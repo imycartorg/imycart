@@ -20,23 +20,10 @@ logger = logging.getLogger('imycart.shopcart')
 
 # Create your views here.
 def view_index(request): 
-	logger.info('开始展示首页')
-	hashkey = CaptchaStore.generate_key()  
-	imgage_url = captcha_image_url(hashkey)
 	ctx = {}
-	ctx['system_para'] = System_Para.get_default_system_parameters()
+	ctx['system_para'] = get_system_parameters()
 	ctx['menu_products'] = get_menu_products()
-	
 	ctx['page_name'] = 'Home'
-	ctx['hashkey'] = hashkey
-	ctx['imgage_url'] = imgage_url
-	#ctx['i18n_text'] = _('Welcome to %(site_name)s.') % {'site_name':'imycart.com 小伙伴的购物车'}
-	ctx['i18n_text'] = _('You are resetting you password in %(sitename)s .') % {'sitename':System_Config.objects.get(name='site_name').val}
-	ctx['i18n_text_test'] = _('Today is %(sitename)s.') % {'sitename': 9}
-	ctx['i18n_text_near_example'] = _('Today is %(month)s.') % {'month': 9}
-	ctx['i18n_text_example'] = _('Today is %(month)s %(day)s.') % {'month': 9, 'day': 6}
-	ctx['value'] = 2980.0
-	ctx['show_const'] = Order.ORDER_STATUS_PAYED_UNCONFIRMED
 	return render(request,System_Config.get_template_name() + '/index.html',ctx)
 	
 	
