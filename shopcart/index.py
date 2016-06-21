@@ -8,6 +8,7 @@ from captcha.helpers import captcha_image_url
 from django.http import HttpResponse
 from shopcart.sign import Sign
 from shopcart.openplatform.wechat import WechatJSSDKSign
+from shopcart.utils import System_Para,my_pagination,get_system_parameters
 import json
 from django.utils.translation import ugettext as _
 from shopcart.functions.product_util_func import get_menu_products
