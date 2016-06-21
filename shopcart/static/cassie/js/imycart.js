@@ -710,6 +710,12 @@ jQuery(".product-attribute-item").click(function(){
 							$("#min_order_quantity").text(result.message.min_order_quantity);
 							//确定价格
 							$("#product-price-main").text("$" + result.message.price.toFixed(2));
+							
+							//更新显示的大图
+							if (result.message.show_image==true){
+								$("#product-big-image").attr("jqimg",result.message.image_url);
+								$("#product-big-image").attr("src",result.message.image_url);
+							}
 						}else{
 							//设定可以选择的属性列表
 							//alert('Attributs avaliable to select are:' + result.message)
