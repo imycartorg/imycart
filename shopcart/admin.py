@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute,Express,Inquiry
+from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute,Express,Inquiry,Product_Images
 
 # Register your models here.
 class InquiryAdmin(admin.ModelAdmin):
@@ -69,6 +69,15 @@ class ProductAdmin(admin.ModelAdmin):
 	list_filter = ('create_time',)
 	ordering = ('-create_time',)	
 admin.site.register(Product,ProductAdmin)
+
+
+class Product_ImagesAdmin(admin.ModelAdmin):
+	list_display = ('product', 'is_show_in_product_detail', 'sort','thumb','create_time','update_time')
+	search_fields = ('item_number', 'name')
+	list_filter = ('create_time',)
+	ordering = ('-create_time',)	
+admin.site.register(Product_Images,Product_ImagesAdmin)
+
 
 class ProductAttributeAdmin(admin.ModelAdmin):
 	list_display = ('product','name','sub_item_number', 'quantity','price_adjusment','create_time','update_time')

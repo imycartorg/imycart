@@ -185,6 +185,9 @@ class Product(models.Model):
 			ag.attr_list.sort(key=lambda x:x.position)
 		
 		return attribute_group_list
+		
+	def get_product_detail_images(self):
+		return self.images.filter(is_show_in_product_detail=True).order_by('sort')
 	
 	def __str__(self):
 		return self.name
@@ -198,12 +201,18 @@ class Product_Images(models.Model):
 	#product_id = models.IntegerField(default=0)
 	thumb = models.URLField(null=True)
 	image = models.URLField(null=True)
-	product = models.ForeignKey(Product,default=None,related_name='images')
+	product = models.ForeignKey(Product,default=None,related_name='images',verbose_name='关联的商品')
+	is_show_in_product_detail = models.BooleanField(default=False,verbose_name='是否在商品详情中展示')
+	sort = models.IntegerField(default=0,verbose_name='排序序号')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 	
 	def __str__(self):
 		return str(self.id) + ' ' + self.thumb
+	
+	class Meta:
+		verbose_name = '商品相册'
+		verbose_name_plural = '商品相册'
 
 	
 @python_2_unicode_compatible

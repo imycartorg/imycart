@@ -81,8 +81,11 @@ def file_upload(request,item_type,item_id):
 				return HttpResponse(filenames['upload_error_msg'])
 				
 			#加入到对象的图片列表中去
+			sort = request.POST.get('sort','0')
+			is_show = request.POST.get('is_show_in_product_detail',False)
+			
 			if item_type == 'product':
-				pi = Product_Images.objects.create(image=filenames['image_url'],thumb=filenames['thumb_url'],product=item)
+				pi = Product_Images.objects.create(image=filenames['image_url'],thumb=filenames['thumb_url'],product=item,sort=sort,is_show_in_product_detail=is_show)
 			else:
 				ai = Album.objects.create(image=filenames['image_url'],thumb=filenames['thumb_url'],item_type=item_type,item_id=item.id)
 		elif item_type == 'article':
