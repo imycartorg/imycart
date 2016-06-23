@@ -97,10 +97,10 @@ class OrderAdmin(admin.ModelAdmin):
 	#编辑页
 	#fields = ['order_number', 'user','status','shipping_status']
 	fieldsets = [
-		('订单基本信息',{'fields':['order_number', 'user','status','shipping_status']}),
+		('订单基本信息',{'fields':['order_number', 'user','status','shipper_name','shpping_no','order_amount','country','province','city','address_line_1','address_line_2','first_name','last_name','zipcode','tel']}),
 	]
-	inlines = [Order_ProductsInline]
-
+	inlines = [Order_ProductsInline]	
+	
 	#列表页，列表顶部显示的字段名称
 	list_display = ('order_number', 'user', 'status','shipping_status','create_time','update_time','get_human_status') 
 	#列表页出现搜索框，参数是搜索的域
