@@ -6,6 +6,9 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser,Permiss
 from django.utils.translation import ugettext as _
 from django.utils.encoding import python_2_unicode_compatible
 
+import logging
+logger = logging.getLogger('imycart.shopcart')
+
 # Create your models here.
 class MyUserManager(BaseUserManager):
 	def _create_user(self, username, email, password, **extra_fields):
@@ -182,6 +185,9 @@ class Product(models.Model):
 			ag.attr_list.sort(key=lambda x:x.position)
 		
 		return attribute_group_list
+		
+	def get_product_detail_images(self):
+		return self.images.filter(is_show_in_product_detail=True).order_by('sort')
 	
 	def __str__(self):
 		return self.name
@@ -195,12 +201,18 @@ class Product_Images(models.Model):
 	#product_id = models.IntegerField(default=0)
 	thumb = models.URLField(null=True)
 	image = models.URLField(null=True)
-	product = models.ForeignKey(Product,default=None,related_name='images')
+	product = models.ForeignKey(Product,default=None,related_name='images',verbose_name='关联的商品')
+	is_show_in_product_detail = models.BooleanField(default=False,verbose_name='是否在商品详情中展示')
+	sort = models.IntegerField(default=0,verbose_name='排序序号')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 	
 	def __str__(self):
 		return str(self.id) + ' ' + self.thumb
+	
+	class Meta:
+		verbose_name = '商品相册'
+		verbose_name_plural = '商品相册'
 
 	
 @python_2_unicode_compatible
@@ -222,14 +234,15 @@ class Attribute_Group(models.Model):
 @python_2_unicode_compatible
 class Attribute(models.Model):
 	group = models.ForeignKey(Attribute_Group,related_name='attributes',null=True)
-	name = models.CharField(max_length = 100,default='')
+	name = models.CharField(max_length = 100,default='',verbose_name='外部名称')
+	code = models.CharField(max_length = 100,default='',verbose_name='内部代码')
 	position = models.IntegerField(default=0)
 	thumb = models.URLField(null=True,default=None)
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 	
 	def __str__(self):
-		return self.name
+		return self.code
 	
 	class Meta:
 		verbose_name = '商品属性定义'
@@ -279,7 +292,10 @@ class Cart_Products(models.Model):
 		return self.quantity * self.get_product_price()
 		
 	def get_short_product_attr(self):
-		attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
+		logger.debug('product_attribute: %s' % self.product_attribute)
+		attr_list = []
+		if self.product_attribute:
+			attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
 		ret_str = ''
 		for attr in attr_list:
 			ret_str = ret_str + ' [' + attr.group.name + ':' + attr.name + ']'
@@ -344,26 +360,26 @@ class Order(models.Model):
 	status = models.CharField(max_length = 32,default='0',verbose_name='订单状态',choices=ORDER_STATUS_CHOICES)
 	shipping_status = models.CharField(max_length = 100,default='not yet',blank=True,verbose_name='发货状态')
 	pay_status = models.CharField(max_length = 100,default='wait for payment',blank=True)
-	country = models.CharField(max_length = 100,default='',blank=True)
-	province = models.CharField(max_length = 100,default='',blank=True)
-	city = models.CharField(max_length = 100,default='',blank=True)
-	district = models.CharField(max_length = 100,default='',blank=True)
-	address_line_1 = models.CharField(max_length = 254,default='',blank=True)
-	address_line_2 = models.CharField(max_length = 254,default='',blank=True)
-	first_name = models.CharField(max_length = 254,default='',blank=True)
-	last_name = models.CharField(max_length = 254,default='',blank=True)
-	zipcode = models.CharField(max_length = 10,default='',blank=True)
-	tel = models.CharField(max_length = 20,default='',blank=True)
+	country = models.CharField(max_length = 100,default='',blank=True,verbose_name='国家')
+	province = models.CharField(max_length = 100,default='',blank=True,verbose_name='省/州')
+	city = models.CharField(max_length = 100,default='',blank=True,verbose_name='市')
+	district = models.CharField(max_length = 100,default='',blank=True,verbose_name='区')
+	address_line_1 = models.CharField(max_length = 254,default='',blank=True,verbose_name='地址 1')
+	address_line_2 = models.CharField(max_length = 254,default='',blank=True,verbose_name='地址 2')
+	first_name = models.CharField(max_length = 254,default='',blank=True,verbose_name='名')
+	last_name = models.CharField(max_length = 254,default='',blank=True,verbose_name='姓')
+	zipcode = models.CharField(max_length = 10,default='',blank=True,verbose_name='邮编')
+	tel = models.CharField(max_length = 20,default='',blank=True,verbose_name='电话')
 	mobile = models.CharField(max_length = 20,default='',blank=True)
 	email = models.CharField(max_length = 100,default='',blank=True)
-	shipper_name = models.CharField(max_length = 100,default='',blank=True)
-	shpping_no = models.CharField(max_length = 100,default='',blank=True)
+	shipper_name = models.CharField(max_length = 100,default='',blank=True,verbose_name='快递名称')
+	shpping_no = models.CharField(max_length = 100,default='',blank=True,verbose_name='快递单号')
 	pay_id = models.CharField(max_length = 100,default='',blank=True)
 	pay_name = models.CharField(max_length = 100,default='',blank=True)
 	products_amount = models.FloatField(default=0.00)
 	shipping_fee = models.FloatField(default=0.00)
 	discount = models.FloatField(default=0.00)
-	order_amount = models.FloatField(default=0.00)
+	order_amount = models.FloatField(default=0.00,verbose_name='订单总价')
 	money_paid = models.FloatField(default=0.00)
 	refer = models.CharField(max_length = 10,default='',blank=True)
 	pay_time = models.DateTimeField(null=True)
@@ -408,7 +424,9 @@ class Order_Products(models.Model):
 		return self.name
 		
 	def get_short_product_attr(self):
-		attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
+		attr_list = []
+		if self.product_attribute:
+			attr_list = Attribute.objects.filter(product_attribute=self.product_attribute).distinct()
 		ret_str = ''
 		for attr in attr_list:
 			ret_str = ret_str + ' [' + attr.group.name + ':' + attr.name + ']'

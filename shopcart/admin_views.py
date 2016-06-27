@@ -72,10 +72,20 @@ def file_upload(request,item_type,item_id):
 				item = Product.objects.get(id=item_id)
 			except:
 				raise Http404
-			filenames = handle_uploaded_file(request.FILES['upload'],item_type,item_id)
+				
+			manual_name = request.POST.get('manual_name','noname')	
+			same_name_handle = request.POST.get('same_name_handle','reject')
+						
+			filenames = handle_uploaded_file(request.FILES['upload'],item_type,item_id,request.POST['filename_type'],manual_name,same_name_handle)
+			if filenames['upload_result'] == False:
+				return HttpResponse(filenames['upload_error_msg'])
+				
 			#加入到对象的图片列表中去
+			sort = request.POST.get('sort','0')
+			is_show = request.POST.get('is_show_in_product_detail',False)
+			
 			if item_type == 'product':
-				pi = Product_Images.objects.create(image=filenames['image_url'],thumb=filenames['thumb_url'],product=item)
+				pi = Product_Images.objects.create(image=filenames['image_url'],thumb=filenames['thumb_url'],product=item,sort=sort,is_show_in_product_detail=is_show)
 			else:
 				ai = Album.objects.create(image=filenames['image_url'],thumb=filenames['thumb_url'],item_type=item_type,item_id=item.id)
 		elif item_type == 'article':
@@ -83,7 +93,10 @@ def file_upload(request,item_type,item_id):
 				item = Article.objects.get(id=item_id)
 			except:
 				raise Http404
-			filenames = handle_uploaded_file(request.FILES['upload'],item_type,item_id)
+			filenames = handle_uploaded_file(request.FILES['upload'],item_type,item_id,request.POST['filename_type'],manual_name,same_name_handle)
+			if filenames['upload_result'] == False:
+				return HttpResponse(filenames['upload_error_msg'])			
+		
 			ai = Album.objects.create(image=filenames['image_url'],thumb=filenames['thumb_url'],item_type=item_type,item_id=item.id)
 		else:
 			raise Http404

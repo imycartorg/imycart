@@ -110,7 +110,8 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 #TIME_ZONE = 'Asia/Shanghai'
 
-USE_I18N = True
+USE_I18N = False
+#梳子网站不启用中文
 
 USE_L10N = True
 

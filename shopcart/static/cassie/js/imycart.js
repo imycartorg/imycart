@@ -95,6 +95,31 @@ function imycartAjaxCallWithCallback(url,object,callback,triggerControl,extraInf
 	});
 };
 
+
+//提交询盘问题
+jQuery("#inquiry-submit").click(function(e){
+	event.preventDefault();
+	url = '/inquiry/add/'
+	
+	$.ajax({
+		cache: false,
+		type: "POST",
+		url:url,
+		data:$('#inquiryForm').serialize(),
+		async: false,
+		error: function(request) {
+			alert("System error");
+		},
+		success: function(result){
+			$("#infoMessage").html(result.message);
+			$("#myModal").modal('toggle');
+		}
+	});
+});
+
+
+
+
 //切换语言
 jQuery(".change_locale_btn").click(function(e){
 	event.preventDefault();
@@ -595,7 +620,8 @@ function imycartAddProductToCart(product_id,product_attribute_id,quantity,callba
 
 function imycartAddProductToCartCallBack(result,triggerControl,extraInfo){
 	if (result.success == true){
-		$.addcartFlyEfect(triggerControl);
+		location.href = "/cart/show/";
+		//$.addcartFlyEfect(triggerControl);
 	}else{
 		$("#infoMessage").html(result.message);
 		$("#myModal").modal('toggle');
@@ -684,6 +710,12 @@ jQuery(".product-attribute-item").click(function(){
 							$("#min_order_quantity").text(result.message.min_order_quantity);
 							//确定价格
 							$("#product-price-main").text("$" + result.message.price.toFixed(2));
+							
+							//更新显示的大图
+							if (result.message.show_image==true){
+								$("#product-big-image").attr("jqimg",result.message.image_url);
+								$("#product-big-image").attr("src",result.message.image_url);
+							}
 						}else{
 							//设定可以选择的属性列表
 							//alert('Attributs avaliable to select are:' + result.message)

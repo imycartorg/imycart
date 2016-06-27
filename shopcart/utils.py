@@ -117,7 +117,7 @@ def get_system_parameters():
 	for parameter in parameter_list:
 		dict[parameter.name] = parameter.val
 	return dict
-		
+	
 	
 def my_send_mail(useage,ctx,send_to,title):
 	logger.info('准备发送邮件： %s ' % [send_to,])
@@ -148,7 +148,7 @@ def my_send_mail(useage,ctx,send_to,title):
 		except:
 			pass
 			
-def handle_uploaded_file(f,type='other',product_sn='-1'):
+def handle_uploaded_file(f,type='other',product_sn='-1',file_name_type='random',manual_name='noname',same_name_handle='reject'):
 	file_name = ""
 
 	file_names = {}
@@ -166,6 +166,7 @@ def handle_uploaded_file(f,type='other',product_sn='-1'):
 			os.makedirs(path)
 			
 		ext = f.name.split('.')[-1]
+		logger.debug('filename origin:' + str(f.name))
 		logger.debug(str(ext))
 		
 		#允许上传的类型
@@ -173,10 +174,35 @@ def handle_uploaded_file(f,type='other',product_sn='-1'):
 		if ext.upper() not in file_allow:
 			raise Exception('%s File type is not allowed to upload.' % [ext])
 		
-		random_name = str(uuid.uuid1())
+		#20160616,koala加入对文件名生成的生成规则
+		if file_name_type == 'random':
+			random_name = str(uuid.uuid1())
+			file_name = path + random_name + '.' + ext
+			file_thumb_name = path + random_name + '-thumb' + '.' + ext
+		elif file_name_type == 'origin':
+			file_name = path + f.name
+			name_list_tmp = f.name.split('.')
+			length = len(name_list_tmp)
+			name_list_tmp[length-2] = name_list_tmp[length-2] + '-thumb'
+			file_thumb_name = path + '.'.join(name_list_tmp)
+		elif file_name_type == 'manual':
+			file_name = path + manual_name + '.' + ext
+			file_thumb_name = path + manual_name + '-thumb' + '.' + ext
+			logger.debug('file_name is : %s' % file_name)
+		else:
+			raise Exception('file upload failed')
 		
-		file_name = path + random_name + '.' + ext
-		file_thumb_name = path + random_name + '-thumb' + '.' + ext
+		# 判断文件是否已经存在
+		if os.path.exists(file_name):
+			if same_name_handle == 'reject':
+				file_names['upload_result'] = False
+				file_names['upload_error_msg'] = 'File already exists.'
+				raise Exception('File already exists.')
+			elif same_name_handle == 'rewrite':
+				#覆盖，无需处理
+				pass
+			else:
+				raise Exception('No such method: %s' % same_name_handle)
 		
 		destination = open(file_name, 'wb+')
 		logger.debug('file_name: %s' % file_name)
@@ -186,8 +212,11 @@ def handle_uploaded_file(f,type='other',product_sn='-1'):
 		
 		result = thumbnail(file_name,file_thumb_name)
 		if not result:
-			raise Exception('thumbnail failed.')
+			file_names['upload_result'] = False
+			file_names['upload_error_msg'] = 'Thumbnail failed.'
+			raise Exception('Thumbnail failed.')
 		else:
+			file_names['upload_result'] = True
 			file_names['image'] = file_name
 			file_names['thumb'] = file_thumb_name
 			file_names['image_url'] = System_Config.get_base_url() + '/' + file_name
@@ -199,7 +228,8 @@ def handle_uploaded_file(f,type='other',product_sn='-1'):
 		if destination:
 			destination.close()
 	return file_names
-
+	
+	
 def thumbnail(file_name,file_thumb_name):
 	#生成缩略图
 	from PIL import Image
@@ -208,6 +238,7 @@ def thumbnail(file_name,file_thumb_name):
 		width = int(System_Config.objects.get(name='thumb_width').val)
 		logger.debug('系统参数thumb_width:%s' % [width])
 		img.thumbnail((width,width),Image.ANTIALIAS)#对图片进行等比缩放
+		logger.debug('thumb_file:%s' %file_thumb_name)
 		img.save(file_thumb_name)#保存图片
 		return True		
 	except Exception as err:

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute,Express,Inquiry
+from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute,Express,Inquiry,Product_Images
 
 # Register your models here.
 class InquiryAdmin(admin.ModelAdmin):
@@ -33,12 +33,14 @@ admin.site.register(Article,ArticleAdmin)
 
 class Attribute_GroupAdmin(admin.ModelAdmin):
 	list_filter = ('create_time',)
+	list_display = ('name', 'code','group_type','create_time','update_time') 
 	#自然是排序所用了，减号代表降序排列
 	ordering = ('-create_time',)
 admin.site.register(Attribute_Group,Attribute_GroupAdmin)
 
 class AttributeAdmin(admin.ModelAdmin):
 	list_filter = ('create_time',)
+	list_display = ('name', 'code','group','create_time','update_time') 
 	#自然是排序所用了，减号代表降序排列
 	ordering = ('-create_time',)
 admin.site.register(Attribute,AttributeAdmin)
@@ -68,6 +70,15 @@ class ProductAdmin(admin.ModelAdmin):
 	ordering = ('-create_time',)	
 admin.site.register(Product,ProductAdmin)
 
+
+class Product_ImagesAdmin(admin.ModelAdmin):
+	list_display = ('product', 'is_show_in_product_detail', 'sort','thumb','create_time','update_time')
+	search_fields = ('item_number', 'name')
+	list_filter = ('create_time',)
+	ordering = ('-create_time',)	
+admin.site.register(Product_Images,Product_ImagesAdmin)
+
+
 class ProductAttributeAdmin(admin.ModelAdmin):
 	list_display = ('product','name','sub_item_number', 'quantity','price_adjusment','create_time','update_time')
 	list_filter = ('create_time',)
@@ -86,10 +97,10 @@ class OrderAdmin(admin.ModelAdmin):
 	#编辑页
 	#fields = ['order_number', 'user','status','shipping_status']
 	fieldsets = [
-		('订单基本信息',{'fields':['order_number', 'user','status','shipping_status']}),
+		('订单基本信息',{'fields':['order_number', 'user','status','shipper_name','shpping_no','order_amount','country','province','city','address_line_1','address_line_2','first_name','last_name','zipcode','tel']}),
 	]
-	inlines = [Order_ProductsInline]
-
+	inlines = [Order_ProductsInline]	
+	
 	#列表页，列表顶部显示的字段名称
 	list_display = ('order_number', 'user', 'status','shipping_status','create_time','update_time','get_human_status') 
 	#列表页出现搜索框，参数是搜索的域

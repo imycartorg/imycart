@@ -9,6 +9,7 @@ from django.utils.translation import ugettext as _
 import datetime
 import requests
 from shopcart.utils import get_system_parameters
+from shopcart.functions.product_util_func import get_menu_products
 # import the logging library
 import logging
 # Get an instance of a logger
@@ -18,6 +19,7 @@ logger = logging.getLogger('imycart.shopcart')
 def contact_page(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Contact us'
 	
 	return render(request,System_Config.get_template_name() + '/contact.html',ctx)

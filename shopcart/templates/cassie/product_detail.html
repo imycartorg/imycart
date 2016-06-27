@@ -1,6 +1,6 @@
 {% extends "cassie/base.html" %}	
 {% block breadcrumbs %}
-<div class="crumb">
+<div class="crumb main">
     <div class="container">
         <div class="row">
            <a href="/">Home</a> &gt; {{product.name}}
@@ -12,16 +12,16 @@
 {% load i18n %}
 
 <!--产品幻灯开始-->
-<div class="detail main">
+<div class="detail">
   <div class="detail-main">
    <div id="preview" class="spec-preview">
       <span class="jqzoom">
-        <img jqimg="{{product.image}}" alt="" src="{{product.image}}" class="cart-move-img"/>      </span>
+        <img id="product-big-image" jqimg="{{product.image}}" alt="" src="{{product.image}}" class="cart-move-img"/>      </span>
    </div>
    <div class="spec-scroll">
           <div class="items">
               <ul>
-				 {% for image in product.images.all %}
+				 {% for image in product.get_product_detail_images %}
 					<li><img alt="" bimg="{{image.image}}" src="{{image.image}}" onMouseMove="preview(this);"></li>
 				{% endfor %}
               </ul>
@@ -67,7 +67,7 @@
 								<li>{{group.name}}:</li>
 					{% endif %}
 								<li class="product-color{{forloop.counter}}" onclick="redborder(this);">
-									<img class="product-attribute-item" data-attribute-id="{{attr.id}}" data-group-code="{{group.code}}" data-product-id="{{product.id}}" src='{{attr.thumb}}' alt='{{attr.name}}' />
+									<img class="product-attribute-item" data-attribute-id="{{attr.id}}" data-group-code="{{group.code}}" data-product-id="{{product.id}}" src='{{attr.thumb}}' alt='{{attr.name}}' title='{{attr.name}}'/>
 								</li>
 					{% if forloop.last %}
 							</ul>
@@ -107,5 +107,12 @@
 	{% load staticfiles %}
 	<script type="text/javascript" src="{% static 'cassie/js/base.js' %}"></script>
 	<script type="text/javascript" src="{% static 'cassie/js/jquery.jqzoom.js' %}"></script>
+	
+	<script>
+		$("#test").click(function(e){
+			$("#product-big-image").attr("jqimg","http://i.imycart.com/media/product/2/Plastic-Wet-Green-Hair-Brush-Back-View.jpg");
+			$("#product-big-image").attr("src","http://i.imycart.com/media/product/2/Plastic-Wet-Green-Hair-Brush-Back-View.jpg");
+		});
+	</script>
 {% endblock %}
 

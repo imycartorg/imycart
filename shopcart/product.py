@@ -8,6 +8,7 @@ from django.http import JsonResponse
 from django.utils.translation import ugettext as _
 from django.http import Http404
 from django.http import HttpResponse
+from shopcart.functions.product_util_func import get_menu_products
 # import the logging library
 import logging
 # Get an instance of a logger
@@ -17,6 +18,7 @@ logger = logging.getLogger('imycart.shopcart')
 def detail(request,id):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Product'
 	try:
 		product = Product.objects.get(id=id)
@@ -25,6 +27,9 @@ def detail(request,id):
 		raise Http404
 	#由于存在外键关系，只需要查出product对象，product所关联的images可以在模板中用product.images.all获得。
 	ctx['product'] = product
+	ctx['page_key_words'] = product.keywords
+	ctx['page_description'] = product.short_desc
+	
 	price_min = product.price
 	price_max = product.price
 	for attribut in product.attributes.all():
@@ -58,8 +63,10 @@ def detail(request,id):
 			#先获取商品所属分类，作为目录
 			category_list = product.categorys.all()
 			f = None
+			dir = ''
 			for cat in category_list:
-				dir = 'media/' + cat.get_dirs()
+				dir = 'www/' + cat.get_dirs()
+				dir_http = cat.get_dirs()
 				if not os.path.exists(dir):
 					os.makedirs(dir)
 				f = codecs.open(dir + product.static_file_name ,'w','utf-8')
@@ -67,7 +74,7 @@ def detail(request,id):
 				f.close()
 			result_dict['success'] = True
 			result_dict['message'] = _('File already generated.')
-			result_dict['static_url'] = dir + product.static_file_name
+			result_dict['static_url'] = dir_http + product.static_file_name
 		except Exception as err:
 			logger.error('写文件失败。' + str(err))
 			result_dict['success'] = False
@@ -80,6 +87,7 @@ def detail(request,id):
 def view_list(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Product'
 	
 	if request.method =='GET':
@@ -117,13 +125,15 @@ def view_list(request):
 def query_product_show(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Product'
 	
 	if request.method =='GET':
 		query_condition = request.GET.get('query','')
 		logger.debug('Query_String is %s ' % query_condition)
 		from django.db.models import Q
-		product_list = Product.objects.filter(Q(name__contains=query_condition))
+		product_list = Product.objects.filter(Q(name__icontains=query_condition))
+		#icontains是大小写不敏感的，contains是大小写敏感的
 		
 		if 'page_size' in request.GET:
 			product_list, page_range = my_pagination(request=request, queryset=product_list,display_amount=request.GET['page_size'])
@@ -183,7 +193,14 @@ def ajax_get_product_info(request):
 				product_extra['sub_item_number'] = pa.sub_item_number
 				product_extra['pa_id'] = pa.id
 				#20160523，添加最小购买量
+				
+				
 				product_extra['min_order_quantity'] = pa.min_order_quantity
+				product_extra['image_url'] = pa.image.image
+				if product_extra['image_url']:
+					product_extra['show_image'] = True
+				else:
+					product_extra['show_image'] = False
 				result_dict['message'] = product_extra
 				return JsonResponse(result_dict)
 			else:

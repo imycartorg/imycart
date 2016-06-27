@@ -13,6 +13,7 @@ from django.db import transaction
 import requests
 from six import b
 from django.core.urlresolvers import reverse
+from shopcart.functions.product_util_func import get_menu_products
 from django.utils.translation import ugettext as _
 from django.http import Http404
 # import the logging library
@@ -25,6 +26,7 @@ def register(request):
 	ctx = {}
 	ctx.update(csrf(request))
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Regitser'
 	ctx = add_captcha(ctx) #添加验证码
 	logger.debug('Enter register function.')
@@ -45,7 +47,8 @@ def register(request):
 def info(request):
 	ctx = {}
 	ctx.update(csrf(request))
-	ctx['system_para'] = System_Para.get_default_system_parameters()	
+	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	if request.method == 'GET':
 		#GET请求，直接返回页面
 		return render(request,System_Config.get_template_name() + '/user_info.html',ctx)
@@ -71,6 +74,7 @@ def info(request):
 def login(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Login'
 	ctx = add_captcha(ctx) #添加验证码
 	if request.method == 'GET':
@@ -170,6 +174,7 @@ def logout(request):
 def forget_password(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Forget Password'
 	ctx = add_captcha(ctx) #添加验证码
 	if request.method == 'GET':
@@ -195,6 +200,7 @@ def forget_password(request):
 def reset_password(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Reset Password'
 	if request.method == 'GET':
 		ctx['success_display'] = 'display:none;'
@@ -231,6 +237,7 @@ def reset_password(request):
 def address(request,method,id=''):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Address Book'
 	result_dict = {}
 	result = False
@@ -325,6 +332,7 @@ def address(request,method,id=''):
 def address_list(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'Address Book'
 	if request.method=='GET':
 		myuser = request.user

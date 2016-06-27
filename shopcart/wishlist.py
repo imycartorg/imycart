@@ -8,6 +8,7 @@ from django.db import transaction
 from shopcart.utils import System_Para,my_pagination,get_system_parameters
 from django.utils.translation import ugettext as _
 from django.contrib.auth.decorators import login_required
+from shopcart.functions.product_util_func import get_menu_products
 
 # import the logging library
 import logging
@@ -40,6 +41,7 @@ def add_to_wishlist(request):
 def view_wishlist(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	ctx['page_name'] = 'My Wishlist'
 	if request.method =='GET':
 		wish_list = Wish.objects.filter(user=request.user)
@@ -54,6 +56,7 @@ def remove_from_wishlist(request):
 	ctx.update(csrf(request))
 	result_dict = {}
 	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
 	if request.method =='POST':
 		wish_to_be_delete = json.loads((request.body).decode())	
 		try:

@@ -57,6 +57,10 @@
 					添加商品（不要用后面那个）
               </a>
 			
+			  <a href="/admin/product/make-static/" class="addlink">
+					生成静态文件
+              </a>
+			
               {% url cl.opts|admin_urlname:'add' as add_url %}
               <a href="{% add_preserved_filters add_url is_popup to_field %}" class="addlink">
                 {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
