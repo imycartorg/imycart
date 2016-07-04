@@ -72,6 +72,7 @@ urlpatterns = patterns("",
 	url('^admin/menu/$', 'shopcart.myadmin.index.menu_view',name='admin_index_menu_view'),
 	url('^admin/order/$', 'shopcart.myadmin.order.view',name='admin_order_view'),
 	url('^admin/order-list/$', 'shopcart.myadmin.order.list_view',name='admin_order_list_view'),
+	url('^admin/order-oper/$', 'shopcart.myadmin.order.oper',name='admin_order_oper'),
 	
 	#下面是初始化方法
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
