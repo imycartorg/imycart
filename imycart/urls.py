@@ -67,7 +67,12 @@ urlpatterns = patterns("",
 	url('^admin/product/(.+)/(\d+)/$', 'shopcart.myadmin.product.product_opration',name='admin_product_opration'),
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^i18n/', include('django.conf.urls.i18n')),
-
+	
+	#一下是正式的admin url
+	url('^admin/menu/$', 'shopcart.myadmin.index.menu_view',name='admin_index_menu_view'),
+	url('^admin/order/$', 'shopcart.myadmin.order.view',name='admin_order_view'),
+	url('^admin/order-list/$', 'shopcart.myadmin.order.list_view',name='admin_order_list_view'),
+	
 	#下面是初始化方法
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
