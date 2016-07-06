@@ -123,9 +123,11 @@ class Category(models.Model):
 	code = models.CharField(max_length = 100,default='',db_index=True,unique=True,verbose_name = '分类代码')
 	name = models.CharField(max_length = 100,default='',verbose_name = '分类名称')
 	sort_order = models.CharField(max_length = 100,default='',verbose_name = '排序序号')
+	parent = models.ForeignKey('self',null=True,default=None,related_name='childrens',blank=True,verbose_name = '上级分类')
+	detail_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='商品详情页指定模板')
+	category_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='分类指定模板')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建时间')
 	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新时间')
-	parent = models.ForeignKey('self',null=True,default=None,related_name='childrens',blank=True,verbose_name = '上级分类')
 	
 	def get_parent_stack(self):
 		from shopcart.utils import Stack  
@@ -171,6 +173,7 @@ class Product(models.Model):
 	categorys = models.ManyToManyField(Category,verbose_name='商品分类')
 	min_order_quantity = models.IntegerField(default=0,verbose_name='最小下单数量')
 	is_publish = models.BooleanField(default=False,verbose_name='上架')
+	detail_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='详情页指定模板')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 

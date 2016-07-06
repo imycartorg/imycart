@@ -48,7 +48,7 @@
                 <div class="box-body no-padding">
 					<form id="order_oper_form" method="POST" action="/admin/order-oper/">
 						<input type="hidden" value="" id="oper-ids" name="oper-ids"/>
-						<table class="table table-striped">
+						<table id="main-content-table" class="table table-striped">
 							<tbody>
 							<!--多余th为了调整表格色块-->
 							<tr><th></th></tr>
@@ -98,8 +98,10 @@
                 </div>
                 <div class="box-footer clearfix">
                     <div class="xy-box-select">
-                        <input type="checkbox">
+                        <input id="main-content-checkbox-all" type="checkbox">
                         <a>全选</a>
+						
+						<input id="test_oper" type="checkbox">
                         <button id="order_batch_delete" type="button" class="btn btn-danger">删除</button>
                     </div>
                     <div class="xy-pages-jump">
@@ -138,17 +140,5 @@
 {% endblock %}
 {% block scripts %}
 	{% load staticfiles %}
-	<script>
-		$("#order_batch_delete").click(function(e){
-			var id_list = [];
-			 $("input[name='is_oper']").each(function(){
-				if($(this).is(':checked')){
-					id_list.push($(this).data("order-id"));
-				}
-			});
-			var oper_ids = id_list.join(',');
-			$("#oper-ids").val(oper_ids);
-			$("#order_oper_form").submit();
-		});
-	</script>
+	<script src="{% static 'admin/js/imycart-admin.js' %}"></script>
 {% endblock %}
