@@ -96,22 +96,29 @@ function imycartAjaxCallWithCallback(url,object,callback,triggerControl,extraInf
 };
 
 //公共方法
-jQuery("#main-content-checkbox-all").click(function(e){
+jQuery("#main-content-checkbox-all").change(function(){
 	if($("#main-content-checkbox-all").is(":checked")){
 		//从没选中到选中
-		//alert("1");
-		$("#test_oper").attr("checked","true");
-		//$("#main-content-table").find("input[type='checkbox']").each(function(){
-		//	$(this).attr("checked","checked");
-		//});
-	}else{
-		$("#test_oper").removeAttr("checked");
 		$("#main-content-table").find("input[type='checkbox']").each(function(){
-			$(this).attr("checked",false);
+			$(this).prop("checked", true);//jQuery1.6以上，都要使用prop属性，不然会出现只能选中一次，第二次无效的问题。
+		});
+	}else{
+		$("#main-content-table").find("input[type='checkbox']").each(function(){
+			$(this).prop("checked", false);
 		});
 	}
-	
+}); 
+
+jQuery("#main-content-btn-all").click(function(e){
+	event.preventDefault();
+	if($("#main-content-checkbox-all").is(":checked")){
+		$("#main-content-checkbox-all").prop("checked",false);
+	}else{
+		$("#main-content-checkbox-all").prop("checked",true);
+	}
+	$("#main-content-checkbox-all").trigger("change");
 });
+
 
 
 //订单管理界面
