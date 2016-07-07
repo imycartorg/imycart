@@ -17,7 +17,7 @@ logger = logging.getLogger('imycart.shopcart')
 
 def get_page_size():
 	try:
-		size = System_Config.objects.get(name='admin_order_list_page_size')
+		size = System_Config.objects.get(name='admin_order_list_page_size').val
 	except:
 		logger.info('"admin_order_list_page_size" is not setted.Use default value 12.')
 		size = 12
