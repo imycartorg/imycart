@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.shortcuts import render,redirect,render_to_response
 from django.core.urlresolvers import reverse
-from shopcart.models import System_Config,MyUser,Order,Address,Product,Order_Products,Cart_Products,Cart,Product_Attribute
+from shopcart.models import System_Config,MyUser,Order,Address,Product,Order_Products,Cart_Products,Cart,Product_Attribute,ExpressType
 from shopcart.utils import System_Para,my_pagination,get_serial_number,get_system_parameters
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,JsonResponse,Http404
@@ -53,14 +53,14 @@ def place_order(request):
 			return render(request,System_Config.get_template_name() + '/order_result.html',ctx)
 		
 		#金额
-		sub_total,shipping,discount,total,remark = request.POST['sub_total'],request.POST['shipping'],request.POST['discount'],request.POST['total'],request.POST['remark']
+		sub_total,shipping,discount,total,remark,express_type = request.POST['sub_total'],request.POST['shipping'],request.POST['discount'],request.POST['total'],request.POST['remark'],request.POST['express']
 		logger.debug('>>>>>0:sub_total=' + str(sub_total))
 		#生成主订单
 		logger.debug('>>>>>1')
 		order = Order.objects.create(order_number=get_serial_number(),user=request.user,status=Order.ORDER_STATUS_PLACE_ORDER,country=address.country,province=address.province,city=address.city,district=address.district,address_line_1=address.address_line_1,
 			address_line_2=address.address_line_2,first_name=address.first_name,last_name=address.last_name,zipcode=address.zipcode,tel=address.tel,mobile=address.mobile,email=request.user.email,
-			products_amount = sub_total,shipping_fee=shipping,discount=discount,order_amount=total,to_seller=remark)
-
+			products_amount = sub_total,shipping_fee=shipping,discount=discount,order_amount=total,to_seller=remark,express_type_name = ExpressType.objects.get(id=express_type).name)
+			
 		logger.debug('>>>>>2:order.id='+str(order.id))
 		cart_product_id = request.POST.getlist('cart_product_id',[])
 		logger.debug('>>>>>3:cart_product_id='+str(cart_product_id))

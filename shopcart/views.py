@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import JsonResponse,QueryDict
-from shopcart.models import System_Config,Product,Product_Images,Category,MyUser,Email,Reset_Password,Address,Product_Attribute,Attribute_Group,Attribute,Article,Express
+from shopcart.models import System_Config,Product,Product_Images,Category,MyUser,Email,Reset_Password,Address,Product_Attribute,Attribute_Group,Attribute,Article,Express,ExpressType
 from shopcart.utils import my_send_mail,get_serial_number
 from django.db import transaction
 from django.utils.translation import ugettext as _
@@ -37,7 +37,22 @@ def init_database(request):
 	cat = Category(code='whole',name='所有品类')
 	cat.save()
 	
-	express = Express.objects.create(name='快递公司一',price_fixed=5.00,price_per_kilogram=2)
+	express_type_fastest = ExpressType.objects.create(name='Fastest',price_fixed=10.00,price_per_kilogram=0)
+	express_type_faster = ExpressType.objects.create(name='Faster',price_fixed=8.00,price_per_kilogram=0)
+	express_type_normal = ExpressType.objects.create(name='Normal',price_fixed=6.00,price_per_kilogram=0)
+	
+	express = Express.objects.create(name='Fedx',price_fixed=0.00,price_per_kilogram=0)
+	express.express_types.add(express_type_fastest)
+	express.express_types.add(express_type_faster)
+	express.save()
+	
+	express = Express.objects.create(name='DHL',price_fixed=0.00,price_per_kilogram=0)
+	express.express_types.add(express_type_faster)
+	express.save()
+	
+	express = Express.objects.create(name='EMS',price_fixed=0.00,price_per_kilogram=0)
+	express.express_types.add(express_type_normal)
+	express.save()
 	
 	sys_con = System_Config.objects.create(name='template_name',val='cassie')
 	sys_con = System_Config.objects.create(name='site_name',val='iMyCart 小伙伴们的购物车')

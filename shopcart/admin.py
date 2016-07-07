@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute,Express,Inquiry,Product_Images
+from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute,Express,ExpressType,Inquiry,Product_Images
 
 # Register your models here.
 class InquiryAdmin(admin.ModelAdmin):
@@ -17,6 +17,13 @@ class ExpressAdmin(admin.ModelAdmin):
 	#自然是排序所用了，减号代表降序排列
 	ordering = ('-create_time',)
 admin.site.register(Express,ExpressAdmin)
+
+
+class ExpressTypeAdmin(admin.ModelAdmin):
+	list_filter = ('create_time',)
+	#自然是排序所用了，减号代表降序排列
+	ordering = ('-create_time',)
+admin.site.register(ExpressType,ExpressTypeAdmin)
 
 class EmailListAdmin(admin.ModelAdmin):
 	list_filter = ('create_time',)
@@ -97,7 +104,7 @@ class OrderAdmin(admin.ModelAdmin):
 	#编辑页
 	#fields = ['order_number', 'user','status','shipping_status']
 	fieldsets = [
-		('订单基本信息',{'fields':['order_number', 'user','status','shipper_name','shpping_no','order_amount','country','province','city','address_line_1','address_line_2','first_name','last_name','zipcode','tel']}),
+		('订单基本信息',{'fields':['order_number', 'user','status','express_type_name','shipper_name','shpping_no','order_amount','country','province','city','address_line_1','address_line_2','first_name','last_name','zipcode','tel']}),
 	]
 	inlines = [Order_ProductsInline]	
 	

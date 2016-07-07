@@ -1,6 +1,6 @@
 #coding=utf-8
 from django.shortcuts import render,redirect
-from shopcart.models import Cart,Product,Cart_Products,System_Config,Express,Address
+from shopcart.models import Cart,Product,Cart_Products,System_Config,ExpressType,Address
 from django.core.context_processors import csrf
 from django.http import HttpResponse,JsonResponse
 import json,uuid
@@ -210,11 +210,11 @@ def check_out(request):
 		cart_product_id_list = request.POST.getlist('cart_product_id',[])
 
 		#添加快递选择
-		ctx['express_list'] = Express.objects.all()		
+		ctx['express_list'] = ExpressType.objects.all()		
 		
-		ctx['default_express'] = Express.objects.all()[0]
+		ctx['default_express'] = ExpressType.objects.all()[0]
 		
-		prices = get_prices(cart_product_id_list=cart_product_id_list,express=ctx['default_express'])
+		prices = get_prices(cart_product_id_list=cart_product_id_list,express_type=ctx['default_express'])
 		
 		ctx['product_list'] = prices['product_list']
 		ctx['sub_total'] =  prices['sub_total']
@@ -254,18 +254,18 @@ def re_calculate_price(request):
 		cart_product_id_list = request.GET.getlist('cart_product_id',[])
 		express_id = request.GET.get('express','')
 		try:
-			express = Express.objects.get(id=express_id)
+			express_type = ExpressType.objects.get(id=express_id)
 		except Exception as err:
-			logger.error('Can not find express which id is %s.' % (express_id) + str(err))
+			logger.error('Can not find express_type which id is %s.' % (express_id) + str(err))
 			return JsonResponse(ret_dict)
-		prices = get_prices(cart_product_id_list=cart_product_id_list,express=express)
+		prices = get_prices(cart_product_id_list=cart_product_id_list,express_type=express_type)
 		#将商品详细情况去掉，不需要
 		prices['product_list'] = None
 		ret_dict['success'] = True
 		ret_dict['message'] = prices
 	return JsonResponse(ret_dict)
 		
-def get_prices(cart_product_id_list,discount=0.0,express=None,express_mode='fixed'):
+def get_prices(cart_product_id_list,discount=0.0,express_type=None,express_mode='fixed'):
 	cart_product_list = Cart_Products.objects.filter(id__in=cart_product_id_list)
 	ret_dict = {}
 	ret_dict['product_list'] = cart_product_list
@@ -277,9 +277,9 @@ def get_prices(cart_product_id_list,discount=0.0,express=None,express_mode='fixe
 	for cp in cart_product_list:
 		ret_dict['sub_total'] = ret_dict['sub_total'] + cp.get_total()
 		
-	if express:
+	if express_type:
 		if express_mode == 'fixed':
-			ret_dict['shipping'] = express.price_fixed
+			ret_dict['shipping'] = express_type.price_fixed
 	
 	ret_dict['total'] = ret_dict['sub_total'] + ret_dict['shipping'] - ret_dict['discount']
 	return ret_dict
