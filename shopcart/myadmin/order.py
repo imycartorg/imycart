@@ -19,8 +19,8 @@ def get_page_size():
 	try:
 		size = System_Config.objects.get(name='admin_order_list_page_size')
 	except:
-		logger.info('"admin_order_list_page_size" is not setted.Use default value 15.')
-		size = 15
+		logger.info('"admin_order_list_page_size" is not setted.Use default value 12.')
+		size = 12
 	return size
 
 @staff_member_required

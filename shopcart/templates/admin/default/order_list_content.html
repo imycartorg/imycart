@@ -109,7 +109,7 @@
 
                         <ul class="pagination pagination-sm no-margin pull-right">
 								{% if order_list.has_previous %}
-									<li><a name="pageChange" data-tag="Previous" class="pageChage prev" data-page="{{ order_list.previous_page_number }}">&lt;</a></li>
+									<li><a name="pageChange" href="#" data-tag="Previous" class="pageChage prev" data-page="{{ order_list.previous_page_number }}">&lt;</a></li>
 								{% else %}
 									<li><a class="prev">&lt;</a></li>
 								{% endif %}
@@ -123,7 +123,7 @@
 									{% endifequal %}
 								 {% endfor %}
 								 {% if order_list.has_next %}
-									<li><a name="pageChange" class="pageChage next" data-page = "{{p}}" data-page-range="{{page_range}}" data-tag="Next"></a></li>
+									<li><a name="pageChange" class="pageChage next" href="#" data-page = "{{p}}" data-page-range="{{page_range}}" data-tag="Next">&gt;</a></li>
 								 {% else %}
 									<li><a class="next">&gt;</a></li>
 								 {% endif %}
