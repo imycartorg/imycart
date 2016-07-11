@@ -33,19 +33,28 @@ def file_upload(request,item_type,item_id):
 			except:
 				raise Http404
 		elif item_type == 'article':
-			raise Http404
+			try:
+				item = Article.objects.get(id=item_id)
+				ctx['item'] = item
+				try:
+					ctx['image_list'] = Album.objects.filter(item_type=item_type,item_id=item.id).order_by('create_time').reverse()
+				except:
+					ctx['image_list'] = []
+			except:
+				raise Http404
 		else:
 			raise Http404
 		return render(request,'admin/file_upload.html',ctx)
 	else:
+		
+		manual_name = request.POST.get('manual_name','noname')	
+		same_name_handle = request.POST.get('same_name_handle','reject')
+	
 		if item_type == 'product' or item_type == 'product_album':
 			try:
 				item = Product.objects.get(id=item_id)
 			except:
 				raise Http404
-				
-			manual_name = request.POST.get('manual_name','noname')	
-			same_name_handle = request.POST.get('same_name_handle','reject')
 						
 			filenames = handle_uploaded_file(request.FILES['upload'],item_type,item_id,request.POST['filename_type'],manual_name,same_name_handle)
 			if filenames['upload_result'] == False:
@@ -93,7 +102,8 @@ def file_delete(request,item_type,item_id,host_item_id):
 				image = Album.objects.get(id=item_id)
 				image.delete()
 			elif item_type == 'article':
-				raise Http404
+				image = Album.objects.get(id=item_id)
+				image.delete()
 			else:
 				raise Http404
 		except:
