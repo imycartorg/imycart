@@ -486,6 +486,7 @@ class Article(models.Model):
 	folder = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '静态文件目录')
 	breadcrumbs = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '导航位置')
 	image = models.URLField(null=True,blank=True,verbose_name = '图片链接')
+	detail_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='详情页指定模板')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
 	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
 	
