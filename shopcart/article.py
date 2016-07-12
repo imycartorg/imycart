@@ -35,7 +35,7 @@ def detail(request,id):
 	if request.method =='GET': #正常访问，返回动态页面
 		return render(request,System_Config.get_template_name() + template, ctx)
 	elif request.method == 'POST':#通过ajax访问，生成静态文件
-		content = render_to_string(System_Config.get_template_name() + '/article.html', ctx)
+		content = render_to_string(System_Config.get_template_name() + template, ctx)
 		result_dict = {}
 		try:
 			import codecs,os
