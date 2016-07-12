@@ -3,33 +3,56 @@
 {% load i18n %}
 {% load staticfiles %}
     <div class="home main">
-        <div class="container">			
+        <div class="container">
             <div class="row">
-                <div class="sliders"><img src="{% static "cassie/images/banner.jpg"%}" alt="banner"></div>
+                <!--<div class="sliders">-->
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#myCarousel" data-slide-to="1"></li>
+                            <li data-target="#myCarousel" data-slide-to="2"></li>
+                        </ol>
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="images/slider1.jpg" style="width: 100%" data-src=" " alt="First slide">
+                            </div>
+                            <div class="item">
+                                <img src="images/slider2.jpg" style="width: 100%" data-src="" alt="Second slide">
+                            </div>
+                            <div class="item">
+                                <img src="images/slider3.jpg" style="width: 100%" data-src="" alt="Third slide">
+                            </div>
+                        </div>
+                        <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left">
+	</span></a><a class="right carousel-control" href="#myCarousel" data-slide="next"><span
+                            class="glyphicon glyphicon-chevron-right"></span></a>
+                    </div>
+                </div>
             </div>
-        </div>
+        <!--</div>-->
         <div class="container">
         <div class="row home-products">
             <h1>Better Hairbrush</h1>
             <p class="home-product-des">Make a chance for your hair as well as your pocket</p>
             <div class="row home-products-main">
             <div class="col-md-3 col-xs-6">
-                    <a href="#"><img src="{% static "cassie/images/products-example.jpg"%}"></a>
+                    <a href="#"><img src="images/products-example.jpg"></a>
                    <h2><a href="#">Top sellers plastic detangling hairbrush wet</a></h2>
                    <p>$25.00</p>
             </div>
             <div class="col-md-3 col-xs-6">
-                    <a href="#"><img src="{% static "cassie/images/products-example.jpg"%}"></a>
+                    <a href="#"><img src="images/products-example.jpg"></a>
                     <h2><a href="#">Top sellers plastic detangling hairbrush wet</a></h2>
                     <p>$25.00</p>
             </div>
             <div class="col-md-3 col-xs-6">
-                    <a href="#"><img src="{% static "cassie/images/products-example.jpg"%}"></a>
+                    <a href="#"><img src="images/products-example.jpg"></a>
                     <h2><a href="#">Top sellers plastic detangling hairbrush wet</a></h2>
                     <p>$25.00</p>
             </div>
             <div class="col-md-3 col-xs-6">
-                    <a href="#"><img src="{% static "cassie/images/products-example.jpg"%}"></a>
+                    <a href="#"><img src="images/products-example.jpg"></a>
                     <h2><a href="#">Top sellers plastic detangling hairbrush wet</a></h2>
                     <p>$25.00</p>
             </div>
@@ -40,8 +63,8 @@
         <div class="row">
         <div class="row">
             <div  class="home-about">
-            <a href="#" class="col-md-4 col-xs-4"><img src="{% static "cassie/images/home-about-left.jpg"%}"></a>
-            <a href="#" class="col-md-8 col-xs-8"><img src="{% static "cassie/images/home-about-right.jpg"%}"></a>
+            <a href="#" class="col-md-4 col-xs-4"><img src="images/home-about-left.jpg"></a>
+            <a href="#" class="col-md-8 col-xs-8"><img src="images/home-about-right.jpg"></a>
             </div>
         </div>
     </div>
@@ -50,9 +73,9 @@
         <div class="row">
         <div class="row home-adv">
 
-                <div class="col-md-4 col-xs-4"><h4>Why Choose Us</h4><a href="#"><img src="{% static "cassie/images/home-adv.jpg"%}"></a></div>
-                <div class="col-md-4 col-xs-4"><h4>Become A Dealer</h4><a href="#"><img src="{% static "cassie/images/home-adv.jpg"%}"></a></div>
-                <div class="col-md-4 col-xs-4"><h4>Awards</h4><a href="#"><img src="{% static "cassie/images/home-adv.jpg"%}"></a></div>
+                <div class="col-md-4 col-xs-4"><h4>Why Choose Us</h4><a href="/about_us/why-become-awards.html"><img src="images/why-choose-us.jpg"></a></div>
+                <div class="col-md-4 col-xs-4"><h4>Become A Dealer</h4><a href="/about_us/why-become-awards.html"><img src="images/become-a-dealer.jpg"></a></div>
+                <div class="col-md-4 col-xs-4"><h4>Awards</h4><a href="/about_us/why-become-awards.html"><img src="images/Awards.jpg"></a></div>
         </div>
         </div>
     </div>

@@ -26,28 +26,37 @@ def detail(request,id):
 		
 	ctx['article'] = article
 		
-	if request.method =='GET': #正常访问，返回动态页面
-		template = '/article.html'
+	template = '/article.html'
 		
-		if article.detail_template != '':
-			if article.detail_template != 'USE_DEFAULT':
-				template = '/custmize/' + article.detail_template
-	
+	if article.detail_template != '':
+		if article.detail_template != 'USE_DEFAULT':
+			template = '/custmize/' + article.detail_template	
+		
+	if request.method =='GET': #正常访问，返回动态页面
 		return render(request,System_Config.get_template_name() + template, ctx)
 	elif request.method == 'POST':#通过ajax访问，生成静态文件
 		content = render_to_string(System_Config.get_template_name() + '/article.html', ctx)
 		result_dict = {}
 		try:
 			import codecs,os
-			#先获取商品所属分类，作为目录
-			dir = 'media/' + article.folder
+			dir = 'www/' + article.folder
+			dir_http = article.folder
+			
 			if not os.path.exists(dir):
 				os.makedirs(dir)
+				
+			if not dir.endswith('/'):
+				dir = dir + '/'
+				
+			if not dir_http.endswith('/'):
+				dir_http = dir_http + '/'
+			
 			f = codecs.open(dir + article.static_file_name ,'w','utf-8')
 			f.write(content)
 			f.close()
 			result_dict['success'] = True
 			result_dict['message'] = _('File already generated.')
+			result_dict['static_url'] = dir_http + article.static_file_name
 		except Exception as err:
 			logger.error('写文件失败。' + str(err))
 			result_dict['success'] = False
