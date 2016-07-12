@@ -123,9 +123,11 @@ class Category(models.Model):
 	code = models.CharField(max_length = 100,default='',db_index=True,unique=True,verbose_name = '分类代码')
 	name = models.CharField(max_length = 100,default='',verbose_name = '分类名称')
 	sort_order = models.CharField(max_length = 100,default='',verbose_name = '排序序号')
+	parent = models.ForeignKey('self',null=True,default=None,related_name='childrens',blank=True,verbose_name = '上级分类')
+	detail_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='商品详情页指定模板')
+	category_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='分类指定模板')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建时间')
 	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新时间')
-	parent = models.ForeignKey('self',null=True,default=None,related_name='childrens',blank=True,verbose_name = '上级分类')
 	
 	def get_parent_stack(self):
 		from shopcart.utils import Stack  
@@ -171,6 +173,7 @@ class Product(models.Model):
 	categorys = models.ManyToManyField(Category,verbose_name='商品分类')
 	min_order_quantity = models.IntegerField(default=0,verbose_name='最小下单数量')
 	is_publish = models.BooleanField(default=False,verbose_name='上架')
+	detail_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='详情页指定模板')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 
@@ -372,6 +375,7 @@ class Order(models.Model):
 	tel = models.CharField(max_length = 20,default='',blank=True,verbose_name='电话')
 	mobile = models.CharField(max_length = 20,default='',blank=True)
 	email = models.CharField(max_length = 100,default='',blank=True)
+	express_type_name = models.CharField(max_length=100,null=True,blank=True,verbose_name='送货方式')
 	shipper_name = models.CharField(max_length = 100,default='',blank=True,verbose_name='快递名称')
 	shpping_no = models.CharField(max_length = 100,default='',blank=True,verbose_name='快递单号')
 	pay_id = models.CharField(max_length = 100,default='',blank=True)
@@ -482,6 +486,7 @@ class Article(models.Model):
 	folder = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '静态文件目录')
 	breadcrumbs = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '导航位置')
 	image = models.URLField(null=True,blank=True,verbose_name = '图片链接')
+	detail_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='详情页指定模板')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
 	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
 	
@@ -516,10 +521,10 @@ class Email_List(models.Model):
 	class Meta:
 		verbose_name = '订阅邮件列表'
 		verbose_name_plural = '订阅邮件列表'
-		
+
 @python_2_unicode_compatible
-class Express(models.Model):
-	name = models.CharField(max_length=100,null=True,verbose_name = '快递名称')
+class ExpressType(models.Model):
+	name = models.CharField(max_length=100,null=True,verbose_name = '送货方式')
 	price_fixed = models.FloatField(verbose_name = '固定运费')
 	price_per_kilogram = models.FloatField(verbose_name = '每千克运费')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
@@ -529,9 +534,27 @@ class Express(models.Model):
 		return self.name
 	
 	class Meta:
-		verbose_name = '快递'
-		verbose_name_plural = '快递'
+		verbose_name = '送货方式'
+		verbose_name_plural = '送货方式'
+
 		
+@python_2_unicode_compatible
+class Express(models.Model):
+	name = models.CharField(max_length=100,null=True,verbose_name = '快递名称')
+	express_type = models.ManyToManyField(ExpressType,null=True,related_name='express_types')
+	price_fixed = models.FloatField(verbose_name = '固定运费')
+	price_per_kilogram = models.FloatField(verbose_name = '每千克运费')
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
+	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
+	
+	def __str__(self):
+		return self.name
+	
+	class Meta:
+		verbose_name = '快递公司'
+		verbose_name_plural = '快递公司'
+			
+
 @python_2_unicode_compatible		
 class Inquiry(models.Model):
 	name = models.CharField(max_length=100,null=True,verbose_name = '对方称呼')

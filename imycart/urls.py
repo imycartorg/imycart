@@ -55,19 +55,26 @@ urlpatterns = patterns("",
 	url(r'^ajax_val_captcha/$', 'shopcart.validate.ajax_validate_captcha',name='ajax_validate_captcha'),
 	url(r'^paypal/', include('paypal.standard.ipn.urls')),
 	url(r'^comments/', include('django_comments.urls')),
-	url(r'^file-upload/(.+)/(.+)/$', 'shopcart.admin_views.file_upload',name='admin_file_upload'),
-	url(r'^file-delete/(.+)/(.+)/(.+)/$', 'shopcart.admin_views.file_delete',name='admin_file_delete'),
+	url(r'^admin/file-upload/(.+)/(.+)/$', 'shopcart.myadmin.file.file_upload',name='admin_file_upload'),
+	url(r'^file-delete/(.+)/(.+)/(.+)/$', 'shopcart.myadmin.file.file_delete',name='admin_file_delete'),
 	url(r'^email-list/add/$', 'shopcart.emaillist.add_to_email_list',name='emaillist_add_to_email_list'),
 	url(r'^query/product/$', 'shopcart.product.query_product_show',name='product_query_product_show'),
 
 	url(r'^contact/show/$', 'shopcart.views.contact_page',name='views_contact_page'),
 	url(r'^inquiry/add/$', 'shopcart.inquiry.add',name='inquiry.add'),
-	url('^admin/ckediter/(.+)/(.+)/$', 'shopcart.admin_views.ckediter',name='admin_ckediter'),
-	url('^admin/product/make-static/$', 'shopcart.admin_views.product_make_static',name='admin_product_make_static'),
-	url('^admin/product/(.+)/(\d+)/$', 'shopcart.admin_views.product_opration',name='admin_product_opration'),
+	url('^admin/ckediter/(.+)/(.+)/$', 'shopcart.myadmin.file.ckediter',name='admin_ckediter'),
+	url('^admin/product/make-static/$', 'shopcart.myadmin.product.product_make_static',name='admin_product_make_static'),
+	url('^admin/product/(.+)/(\d+)/$', 'shopcart.myadmin.product.product_opration',name='admin_product_opration'),
+	url('^admin/article/make-static/$', 'shopcart.myadmin.article.article_make_static',name='admin_article_make_static'),
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^i18n/', include('django.conf.urls.i18n')),
-
+	
+	#一下是正式的admin url
+	url('^admin/menu/$', 'shopcart.myadmin.index.menu_view',name='admin_index_menu_view'),
+	url('^admin/order/$', 'shopcart.myadmin.order.view',name='admin_order_view'),
+	url('^admin/order-list/$', 'shopcart.myadmin.order.list_view',name='admin_order_list_view'),
+	url('^admin/order-oper/$', 'shopcart.myadmin.order.oper',name='admin_order_oper'),
+	
 	#下面是初始化方法
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

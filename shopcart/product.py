@@ -54,7 +54,23 @@ def detail(request,id):
 				if product == wish.product:
 					logger.debug('The product which id is %s has been added to user\'s wishlist.' % (product.id))
 					ctx['is_my_wish'] = True
-		return render(request,System_Config.get_template_name() + '/product_detail.html', ctx)
+		
+		#获取特定的模板，先判断商品是否设置了模板，没有则判断商品所在的分类是否设置了指定模板，都没有，则使用系统统一模板
+		template = '/product_detail.html'
+		
+		if product.categorys.count() > 0:
+			cat = product.categorys.all()[0]
+			if cat.detail_template != '':
+				template = '/custmize/' + cat.detail_template
+		
+		if product.detail_template != '':
+			if product.detail_template.upper() == 'USE_DEFAULT':
+				#强行指定用默认模板
+				template = '/product_detail.html'
+			else:
+				template = '/custmize/' + product.detail_template
+		
+		return render(request,System_Config.get_template_name() + template, ctx)
 	elif request.method == 'POST':#通过ajax访问，生成静态文件
 		content = render_to_string(System_Config.get_template_name() + '/product_detail.html', ctx)
 		result_dict = {}
