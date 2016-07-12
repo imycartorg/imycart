@@ -31,7 +31,9 @@ def detail(request,id):
 	if article.detail_template != '':
 		if article.detail_template != 'USE_DEFAULT':
 			template = '/custmize/' + article.detail_template	
-		
+	
+	logger.info('The template name is %s' % template)
+	
 	if request.method =='GET': #正常访问，返回动态页面
 		return render(request,System_Config.get_template_name() + template, ctx)
 	elif request.method == 'POST':#通过ajax访问，生成静态文件
