@@ -570,3 +570,45 @@ class Inquiry(models.Model):
 	class Meta:
 		verbose_name = '询盘信息'
 		verbose_name_plural = '询盘信息'
+
+		
+@python_2_unicode_compatible			
+class Promotion(models.Model):
+	code = models.CharField(max_length=100,db_index=True,verbose_name='促销码')
+	is_reuseable = models.BooleanField(verbose_name='可否重复使用')
+	is_valid = models.BooleanField(verbose_name='是否有效')
+	valid_date_begin = models.DateTimeField(verbose_name='有效期开始时间')
+	valid_date_end = models.DateTimeField(verbose_name='有效期结束时间')
+	
+	DISCOUNT_TYPE_FIXED = 'FIXED'
+	DISCOUNT_TYPE_SCALE = 'SCALE'
+	DISCOUNT_TYPE_OFF_WHEN_UPTOX = 'OFF_WHEN_UPTOX'
+	DISCOUNT_TYPE_FREE_SHIPPING = 'FREE_SHIPPING'
+	DISCOUNT_TYPE_FUNCTION = 'FUNCTION'
+	DISCOUNT_TYPE_CHOICES = ( 
+		(DISCOUNT_TYPE_FIXED,'固定优惠'),
+		(DISCOUNT_TYPE_SCALE,'百分比'),
+		(DISCOUNT_TYPE_OFF_WHEN_UPTOX,'满减'),
+		(DISCOUNT_TYPE_FREE_SHIPPING,'免邮费'),
+		(DISCOUNT_TYPE_FUNCTION,'公式自定义'),
+	)
+	
+	discount_condition = models.CharField(max_length=255,null=True,blank=True,verbose_name='优惠条件(表达式)')
+	
+	discount_type = models.CharField(max_length=20,verbose_name='优惠方式')
+	discount = models.CharField(max_length=255,verbose_name='优惠额或公式')
+	
+	item_type = models.CharField(null=True,blank=True,max_length=20,verbose_name='优惠对象类型')
+	item_id = models.IntegerField(null=True,blank=True,verbose_name='优惠对象ID')
+	
+	
+	
+	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
+	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
+	
+	def __str__(self):
+		return self.name
+	
+	class Meta:
+		verbose_name = '促销代码'
+		verbose_name_plural = '促销代码'
