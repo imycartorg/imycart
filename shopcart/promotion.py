@@ -5,10 +5,12 @@ from shopcart.models import System_Config,Promotion
 import json
 from django.http import JsonResponse,Http404,HttpResponse
 from django.utils.translation import ugettext as _
+from django.views.decorators.csrf import csrf_exempt
 import logging
 logger = logging.getLogger('imycart.shopcart')
 
 # Create your views here.
+@csrf_exempt
 def calculate(request):
 	if request.method == 'POST':
 		code = request.GET.get('code','')

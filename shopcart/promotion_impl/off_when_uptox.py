@@ -1,4 +1,5 @@
 #coding=utf-8
+from shopcart.promotion_impl.common_function import is_valid
 import logging
 logger = logging.getLogger('imycart.shopcart')
 
@@ -41,7 +42,7 @@ def calculate(request,promotion):
 		
 		logger.debug('Total amount:%s' % (total) )
 		
-		if total > float(discount_condition):
+		if total >= float(discount_condition):
 			ret['total'] = total - float(promotion.discount)
 			ret['discount_amount'] = float(promotion.discount)
 	else:
@@ -49,17 +50,3 @@ def calculate(request,promotion):
 		
 	return ret
 	
-	
-def is_valid(promotion):
-	if not promotion.is_valid:
-		logger.info('The promotion code has been used.')
-		return False
-	
-	import datetime
-	now = datetime.datetime.now()
-	
-	if now.timestamp() > promotion.valid_date_begin.timestamp() and now.timestamp() < promotion.valid_date_end.timestamp():
-		return True
-	else:
-		logger.info('Promotion code is not valid,now:[%s],valid_date_begin:[%s],valid_date_end:[%s]' % (now.timestamp(),promotion.valid_date_begin.timestamp(),promotion.valid_date_end.timestamp()))
-		return False

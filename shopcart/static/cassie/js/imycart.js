@@ -162,6 +162,27 @@ jQuery(":radio[name='express']").click(function(){
 	});
 });
 
+//输入优惠码
+jQuery(".try-promotion-code").click(function(e){
+	var url = "/promotion/?code="+$("#promotion_code").val();
+	$.ajax({
+		cache: false,
+		type: "POST",
+		url:url,
+		data:$("#place_order_form").serialize(),
+		async: false,
+		error: function(request) {
+			alert("System error");
+		},
+		success: function(data) {
+			if(data.success==true){
+				$("#total_amount").text(data.total.toFixed(2));
+				$("#discount_amount").text(data.discount_amount.toFixed(2));
+			}
+		}
+	});
+});
+
 //每页显示数量设置
 jQuery(".pageSize").click(function(){
 	event.preventDefault();
