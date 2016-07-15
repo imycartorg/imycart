@@ -144,7 +144,11 @@
 										<input name="discount" type="hidden" value="{{discount}}" />
 										<input name="total" type="hidden" value="{{total}}" />
 										<input name="remark" type="hidden" value="" />
+										
+										<p>Discount<span>$</span><span id="discount_amount">{{discount|floatformat:"2"}}</span></p>
 										<p>Grand Total<span>$</span><span id="total_amount">{{total|floatformat:"2"}}</span></p>
+										
+										<input id="promotion_code" name="promotion_code" type="text" value="" /> <a class="delay try-promotion-code">USE PROMOTION CODE</a>
 										<a class="delay btn-place-order">Place Order Now</a>
 									</div>
 								</div>
@@ -216,5 +220,27 @@
 			},
         }
     });
+	</script>
+	
+	<script>
+		$(".try-promotion-code").click(function(e){
+			var url = "/promotion/?code="+$("#promotion_code").val();
+			$.ajax({
+				cache: false,
+				type: "POST",
+				url:url,
+				data:$("#place_order_form").serialize(),
+				async: false,
+				error: function(request) {
+					alert("System error");
+				},
+				success: function(data) {
+					if(data.success==true){
+						$("#total_amount").text(data.total.toFixed(2));
+						$("#discount_amount").text(data.discount_amount.toFixed(2));
+					}
+				}
+			});
+		});
 	</script>
 {% endblock %} 

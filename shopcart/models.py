@@ -601,13 +601,13 @@ class Promotion(models.Model):
 	item_type = models.CharField(null=True,blank=True,max_length=20,verbose_name='优惠对象类型')
 	item_id = models.IntegerField(null=True,blank=True,verbose_name='优惠对象ID')
 	
-	
+	impl_class = models.CharField(null=True,blank=True,max_length=255,verbose_name='优惠插件名称')	
 	
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')
 	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新日期')
 	
 	def __str__(self):
-		return self.name
+		return self.code
 	
 	class Meta:
 		verbose_name = '促销代码'

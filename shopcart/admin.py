@@ -1,6 +1,14 @@
 from django.contrib import admin
 
-from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute,Express,ExpressType,Inquiry,Product_Images
+from shopcart.models import Product,Order,Order_Products,Category,System_Config,Attribute,Attribute_Group,Article,Email_List,Product_Attribute,Express,ExpressType,Inquiry,Product_Images,Promotion
+
+# Register your models here.
+class PromotionAdmin(admin.ModelAdmin):
+	list_display = ('code', 'is_valid', 'is_reuseable','valid_date_begin','valid_date_end','discount_type','create_time','update_time') 
+	list_filter = ('create_time',)
+	#自然是排序所用了，减号代表降序排列
+	ordering = ('-create_time',)
+admin.site.register(Promotion,PromotionAdmin)
 
 # Register your models here.
 class InquiryAdmin(admin.ModelAdmin):

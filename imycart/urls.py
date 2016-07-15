@@ -77,4 +77,6 @@ urlpatterns = patterns("",
 	
 	#下面是初始化方法
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
+	
+	url(r'^promotion/$', 'shopcart.promotion.calculate',name='promotion_calculate'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
