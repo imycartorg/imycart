@@ -92,7 +92,8 @@ def add_to_cart(request):
 		response = HttpResponse()
 		response['Content-Type'] = "text/javascript"
 		response.write(json.dumps(result_dict))
-		response.set_cookie('cart_id',cart.id)
+		response.set_cookie('cart_id',cart.id, max_age = 3600*24*365) 
+		response.set_cookie('cart_item_type_count',cart.cart_products.all().count(),max_age = 3600 * 24 * 365)
 		return response
 
 def ajax_modify_cart(request):
@@ -114,7 +115,12 @@ def ajax_modify_cart(request):
 			result_dict['sub_total'] = parent_cart.get_sub_total()
 			result_dict['success'] = True
 			result_dict['message'] = _('Opration successful.')
-			return JsonResponse(result_dict)
+			result_dict['cart_item_type_count'] = 0
+			response = HttpResponse()
+			response['Content-Type'] = "text/javascript"
+			response.write(json.dumps(result_dict))
+			response.set_cookie('cart_item_type_count',0,max_age = 3600 * 24 * 365)
+			return response
 		
 		#如果不是clear，则表明cart_id代表的是购物车中每一笔记录的id
 		try:
@@ -140,9 +146,16 @@ def ajax_modify_cart(request):
 		elif cart['method'] == 'del':
 			parent_cart = cart_exist.cart
 			cart_exist.delete()
-			result_dict['sub_total'] = parent_cart.get_sub_total()			
+			result_dict['sub_total'] = parent_cart.get_sub_total()
+			result_dict['success'] = True
+			result_dict['cart_item_type_count'] = parent_cart.cart_products.all().count()
+			response = HttpResponse()
+			response['Content-Type'] = "text/javascript"
+			response.write(json.dumps(result_dict))
+			response.set_cookie('cart_item_type_count',parent_cart.cart_products.all().count(),max_age = 3600 * 24 * 365)
+			return response
+			
 		elif cart['method'] == 'set':
-			logger.debug('111')
 			quantity = int(cart['quantity'])
 			logger.debug('quantity:' + str(quantity))
 			if not set_cart_product_quantity(quantity,cart_exist,result_dict):
@@ -156,6 +169,7 @@ def ajax_modify_cart(request):
 	
 	return JsonResponse(result_dict)
 
+	
 def set_cart_product_quantity(quantity,cart_exist,result_dict):
 	
 	min_order_quantity = 0
@@ -180,23 +194,31 @@ def set_cart_product_quantity(quantity,cart_exist,result_dict):
 		return False
 
 def view_cart(request):
-	ctx = {}
-	ctx['system_para'] = get_system_parameters()
-	ctx['menu_products'] = get_menu_products()
-	ctx['page_name'] = 'My Cart'
-	if request.method =='GET':
-		if 'cart_id' in request.COOKIES:
-			cart_id = request.COOKIES["cart_id"]
-			cart,created = Cart.objects.get_or_create(id=cart_id)
+	if 'cart_id' in request.COOKIES:
+		cart_id = request.COOKIES["cart_id"]
+		cart,created = Cart.objects.get_or_create(id=cart_id)
+	else:
+		if request.user.is_authenticated():
+			cart,object = Cart.objects.get_or_create(user=request.user)
 		else:
-			if request.user.is_authenticated():
-				cart,object = Cart.objects.get_or_create(user=request.user)
-			else:
-				cart = Cart.objects.create(user=None)
-		ctx['cart'] = cart
-		response = render(request,System_Config.get_template_name() + '/cart_detail.html',ctx)
-		response.set_cookie('cart_id',cart.id)
-		return response
+			cart = Cart.objects.create(user=None)
+
+	if request.is_ajax():
+		ret_dict = {}
+		ret_dict['success'] = True
+		ret_dict['item_type_count'] = cart.cart_products.all().count()
+		return JsonResponse(ret_dict) 
+		
+	else:
+		ctx = {}
+		ctx['system_para'] = get_system_parameters()
+		ctx['menu_products'] = get_menu_products()
+		ctx['page_name'] = 'My Cart'
+		if request.method =='GET':
+			ctx['cart'] = cart
+			response = render(request,System_Config.get_template_name() + '/cart_detail.html',ctx)
+			response.set_cookie('cart_id',cart.id ,max_age = 3600*24*365)
+			return response
 
 @login_required()
 def check_out(request): 

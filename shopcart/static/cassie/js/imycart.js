@@ -95,6 +95,25 @@ function imycartAjaxCallWithCallback(url,object,callback,triggerControl,extraInf
 	});
 };
 
+jQuery(document).ready(function(e){
+	item_count = $.cookie('cart_item_type_count')==null ? 0:$.cookie('cart_item_type_count');
+	$(".top-cart-num-link").text(item_count);
+});
+
+//鼠标滑过顶部的购物车数量时的事件
+jQuery(".top-cart-num-link").hover(function(e){
+	var url = '/cart/show/';
+	var triggerControl = $(this);
+	imycartAjaxCallWithCallback(url,null,imycartAjaxGetCartInfoCallback,triggerControl,null);
+});
+
+function imycartAjaxGetCartInfoCallback(result,triggerControl,extraInfo){
+	if(result.success==true){
+		triggerControl.text(result.item_type_count);
+		$.cookie('cart_item_type_count',result.item_type_count,{expires: 365,path:'/'});
+	}
+};
+
 
 //提交询盘问题
 jQuery("#inquiry-submit").click(function(e){
@@ -376,10 +395,12 @@ function imycartModifyCartCallback(result,triggerControl,extraInfo){
 		var tr = triggerControl.parent().parent();	
 		tr.remove();
 		flag = true;
+		$(".top-cart-num-link").text(result.cart_item_type_count);
 	}else if(extraInfo.method == "clear"){
 		//都清空
 		flag = true;
 		$(".carts-item").remove();
+		$(".top-cart-num-link").text(result.cart_item_type_count);
 	}
 
 	//更新总金额
