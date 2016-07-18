@@ -101,7 +101,8 @@ def login(request):
 					redirect_url = request.POST['next']
 			
 			response = redirect(redirect_url)
-			response.set_cookie('cart_id',mycart.id)
+			response.set_cookie('cart_id',mycart.id,max_age = 3600*24*365)
+			response.set_cookie('cart_item_type_count',mycart.cart_products.all().count(),max_age = 3600*24*365)
 			response.set_cookie('imycartuser',myuser.email)
 			return response
 		else:
