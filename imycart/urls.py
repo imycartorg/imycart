@@ -79,4 +79,7 @@ urlpatterns = patterns("",
 	url(r'^initdb/$', 'shopcart.views.init_database',name='init_database'),
 	
 	url(r'^promotion/$', 'shopcart.promotion.calculate',name='promotion_calculate'),
+	
+	#URL解析器
+	url(r'(.*\.html)$','shopcart.views.url_dispatch',name='url_dispatch'),
 ) + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

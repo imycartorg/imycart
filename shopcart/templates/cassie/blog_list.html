@@ -23,8 +23,8 @@
 
 				{% for article in article_list %}
 				 <div class="artical-item">
-                    <a href="/article/{{article.id}}"><img src="{{article.image}}"></a>
-                    <h2><a href="/article/{{article.id}}">{{article.title}}</a></h2>
+                    <a href="{{article.get_url}}"><img src="{{article.image}}"></a>
+                    <h2><a href="{{article.get_url}}">{{article.title}}</a></h2>
                     <p>{{article.abstract}}</p>
                     <p class="artical-list-date">Date:{{article.create_time|date:"Y-m-d"}}</p>
                  </div>

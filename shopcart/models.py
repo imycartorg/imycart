@@ -126,6 +126,7 @@ class Category(models.Model):
 	parent = models.ForeignKey('self',null=True,default=None,related_name='childrens',blank=True,verbose_name = '上级分类')
 	detail_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='商品详情页指定模板')
 	category_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='分类指定模板')
+	static_file_name = models.CharField(max_length = 254,null=True,blank=True,verbose_name='静态文件名(不包含路径，以html结尾)')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建时间')
 	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新时间')
 	
@@ -191,6 +192,10 @@ class Product(models.Model):
 		
 	def get_product_detail_images(self):
 		return self.images.filter(is_show_in_product_detail=True).order_by('sort')
+		
+	def get_url(self):
+		from shopcart.functions.product_util_func import get_url
+		return get_url(self)
 	
 	def __str__(self):
 		return self.name
@@ -493,6 +498,10 @@ class Article(models.Model):
 	def __str__(self):
 		return self.title
 	
+	def get_url(self):
+		from shopcart.functions.article_util_func import get_url
+		return get_url(self)
+
 	class Meta:
 		verbose_name = '文章'
 		verbose_name_plural = '文章'

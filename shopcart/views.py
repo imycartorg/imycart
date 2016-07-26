@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render,redirect
+from django.http import HttpResponse,Http404
 from django.http import JsonResponse,QueryDict
 from shopcart.models import System_Config,Product,Product_Images,Category,MyUser,Email,Reset_Password,Address,Product_Attribute,Attribute_Group,Attribute,Article,Express,ExpressType
 from shopcart.utils import my_send_mail,get_serial_number
@@ -24,6 +24,37 @@ def contact_page(request):
 	
 	return render(request,System_Config.get_template_name() + '/contact.html',ctx)
 
+def url_dispatch(request,url):
+	logger.debug('Url to dispatch:' + url)
+	
+	from shopcart.models import Product,Category,Article
+	#优先级 1 ：解析商品路径
+	try:
+		product = Product.objects.get(static_file_name=url)
+		#mvc解析
+		from shopcart.product import detail
+		return detail(request,product.id)
+		
+		#301跳转模式
+		#return redirect('/product/'+str(product.id))
+	except Exception as err:
+		logger.error('Can not find url [%s] in products.' % (url))
+	
+	
+	#优先级 2 ：解析分类路径
+	#暂未实现
+	
+	#优先级 3 ：解析文章路径
+	try:
+		article = Article.objects.get(static_file_name=url)
+		from shopcart.article import detail
+		return detail(request,article.id)
+	except Exception as err:
+		logger.error('Can not find url [%s] in artilces.' % (url))
+		
+	raise Http404
+	
+	
 @transaction.atomic()
 def init_database(request):
 	try:

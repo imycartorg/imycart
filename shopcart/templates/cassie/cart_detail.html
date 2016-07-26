@@ -31,7 +31,7 @@
 							<div class="carts-item" id="goods1">
 								<input  name="cart_product_id" type="hidden" value="{{cart_product.id}}" />	
 								<div class="carts-goods-img">
-									<a href="/product/{{cart_product.product.id}}">
+									<a href="{{cart_product.product.get_url}}">
 										{% if cart_product.product_attribute %}
 											<img src="{{cart_product.product_attribute.image.thumb}}" alt="{{cart_product.product.name}}">
 										{% else %}
@@ -39,7 +39,7 @@
 										{% endif %}
 									</a>
 								</div>
-								<div class="carts-goods-name"><div><a href="/product/{{cart_product.product.id}}">{{cart_product.product.name}}</a></div>
+								<div class="carts-goods-name"><div><a href="{{cart_product.product.get_url}}">{{cart_product.product.name}}</a></div>
 									<p>{{cart_product.get_short_product_attr}}</p>
 								</div>
 								<div class="carts-goods-price price1">${{cart_product.get_product_price|floatformat:"2"}}</div>
