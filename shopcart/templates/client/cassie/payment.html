@@ -1,7 +1,7 @@
-{% extends "cassie/base.html" %}
+{% extends "client/cassie/base.html" %}
 {%block head_extra%}
 	{% load staticfiles %}
-	<link rel="stylesheet" href="{% static 'cassie/css/cart.css'%}" type="text/css"/>
+	<link rel="stylesheet" href="{% static 'client/cassie/css/cart.css'%}" type="text/css"/>
 {%endblock%}
 {% block main %}
 {% load i18n %}
@@ -11,7 +11,7 @@
                 <h1>Payment</h1>
                 <div class="forget-main">
                     <h2>Waiting for Payment</h2>
-                    <h3>Please wait for few seconds,  prepare payment.<img src="{% static 'cassie/images/ico/pay-load.gif' %}"></h3>
+                    <h3>Please wait for few seconds,  prepare payment.<img src="{% static 'client/cassie/images/ico/pay-load.gif' %}"></h3>
                 </div>
             </div>
         </div>

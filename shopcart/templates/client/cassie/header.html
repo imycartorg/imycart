@@ -34,9 +34,9 @@
 							<input name="language" value="en" type="hidden" />
 							<ul>
 								<li>
-									<a href="#" class="change_locale_btn"><img src="{% static "cassie/images/ico/Chinese.jpg"%}">简体中文<span class="ico-down"></span></a>
+									<a href="#" class="change_locale_btn"><img src="{% static "client/cassie/images/ico/Chinese.jpg"%}">简体中文<span class="ico-down"></span></a>
 									<ul>
-										<li><a href="#" class="change_locale_btn"><img src="{% static "cassie/images/ico/America.jpg"%}">English</a></li>
+										<li><a href="#" class="change_locale_btn"><img src="{% static "client/cassie/images/ico/America.jpg"%}">English</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -44,9 +44,9 @@
 							<input name="language" value="zh-hans" type="hidden" />
 		                    <ul>
 								<li>
-									<a href="#" class="change_locale_btn"><img src="{% static "cassie/images/ico/America.jpg"%}">English<span class="ico-down"></span></a>
+									<a href="#" class="change_locale_btn"><img src="{% static "client/cassie/images/ico/America.jpg"%}">English<span class="ico-down"></span></a>
 									<ul>
-										<li><a href="#" class="change_locale_btn"><img src="{% static "cassie/images/ico/Chinese.jpg"%}">简体中文</a></li>
+										<li><a href="#" class="change_locale_btn"><img src="{% static "client/cassie/images/ico/Chinese.jpg"%}">简体中文</a></li>
 									</ul>
 								</li>
 							</ul>
@@ -88,7 +88,7 @@
                     </button>
                 </div>
                 <div class="top-logo">
-                    <a href="#"><img src="{% static "cassie/images/logo.jpg"%}" class="logo"></a>
+                    <a href="#"><img src="{% static "client/cassie/images/logo.jpg"%}" class="logo"></a>
                 </div>
                 <div class="top-middle-right">
                     <div class="top-phone"><span class="glyphicon glyphicon-earphone"></span><span>{{system_para.hot_line}}</span></div>
@@ -106,7 +106,7 @@
                 <ul>
                     <li><a href="/">home</a></li>
                     <li><a href="/about_us/about-us.html">about us</a></li>
-                    <li><a href="/product/">products <img src="{% static "cassie/images/ico/menu-arrow.jpg"%}"></a>
+                    <li><a href="/product/">products <img src="{% static "client/cassie/images/ico/menu-arrow.jpg"%}"></a>
 							<ul class="menu-low-one" id="phone-plus1">
 								{% for product in menu_products%}
 									<li><a href="{{product.get_url}}"><i></i>{{product.name}}</a></li>

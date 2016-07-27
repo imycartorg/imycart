@@ -10,7 +10,6 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.translation import ugettext as _
 from django.db import transaction
 
-from shopcart.myadmin.admin_utils import get_admin_template_name
 # Get an instance of a logger
 import logging
 logger = logging.getLogger('imycart.shopcart')
@@ -29,7 +28,7 @@ def view(request):
 	ctx['system_para'] = get_system_parameters()
 	ctx['page_name'] = 'Order List'
 	
-	return render(request,get_admin_template_name('order_list.html'),ctx)
+	return render(request,System_Config.get_template_name('admin') + '/order_list.html',ctx)
 	
 @staff_member_required
 def list_view(request):
@@ -59,7 +58,7 @@ def list_view(request):
 		ctx['page_range'] = page_range
 		ctx['page_size'] = page_size
 		ctx['order_count'] = all.count()
-		return render(request,get_admin_template_name('order_list_content.html'),ctx)
+		return render(request,System_Config.get_template_name('admin') + '/order_list_content.html',ctx)
 	else:
 		raise Http404
 

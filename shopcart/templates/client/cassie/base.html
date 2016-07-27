@@ -8,16 +8,16 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
 	{% load staticfiles %}
-	<link rel="stylesheet" href="{% static "cassie/css/bootstrapValidator.min.css"%}" type="text/css"/>
-    <link rel="stylesheet" href="{% static "cassie/css/style.css"%}" type="text/css"/>
-    <link rel="stylesheet" href="{% static "cassie/css/bootstrap.min.css"%}" type="text/css"/>
+	<link rel="stylesheet" href="{% static "client/cassie/css/bootstrapValidator.min.css"%}" type="text/css"/>
+    <link rel="stylesheet" href="{% static "client/cassie/css/style.css"%}" type="text/css"/>
+    <link rel="stylesheet" href="{% static "client/cassie/css/bootstrap.min.css"%}" type="text/css"/>
 	{%block head_extra%}
 	{%endblock%}
 </head>
 <body>
 <!--手机左侧菜单-->
     <!--header 头部! -->
-	{% include 'cassie/header.html' %}
+	{% include 'client/cassie/header.html' %}
 	<!-- Breadcrumbs -->
 	{% block breadcrumbs %}
 	{% endblock %}
@@ -27,17 +27,17 @@
 	{% endblock %}
 	<!-- Main Container End --> 
 
-	{% include 'cassie/modal_win.html' %}
+	{% include 'client/cassie/modal_win.html' %}
 	<!-- 底部 Footer!-->
-	{% include 'cassie/footer.html' %}
+	{% include 'client/cassie/footer.html' %}
 	<!-- JavaScript -->
 </div>
 <script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.3/jquery.min.js"></script>
-<script type="text/javascript" src="{% static 'cassie/js/main.js'%}"></script>
-<script type="text/javascript" src="{% static 'cassie/js/bootstrap.min.js' %}"></script> 
-<script type="text/javascript" src="{% static 'cassie/js/imycart.js' %}"></script>
-<script type="text/javascript" src="{% static 'cassie/js/jquery.cookie.js' %}"></script>
-<script type="text/javascript" src="{% static 'cassie/js/jquery.json.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'client/cassie/js/main.js'%}"></script>
+<script type="text/javascript" src="{% static 'client/cassie/js/bootstrap.min.js' %}"></script> 
+<script type="text/javascript" src="{% static 'client/cassie/js/imycart.js' %}"></script>
+<script type="text/javascript" src="{% static 'client/cassie/js/jquery.cookie.js' %}"></script>
+<script type="text/javascript" src="{% static 'client/cassie/js/jquery.json.min.js' %}"></script>
 <!--
 <script type="text/javascript" src="//cdn.bootcss.com/bootstrap-validator/0.5.2/js/bootstrapValidator.min.js"></script>
 -->

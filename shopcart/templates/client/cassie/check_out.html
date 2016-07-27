@@ -1,7 +1,7 @@
-{% extends "cassie/base.html" %}
+{% extends "client/cassie/base.html" %}
 {%block head_extra%}
 	{% load staticfiles %}
-	<link rel="stylesheet" href="{% static 'cassie/css/cart.css'%}" type="text/css"/>
+	<link rel="stylesheet" href="{% static 'client/cassie/css/cart.css'%}" type="text/css"/>
 {%endblock%}
 {% block main %}
 {% load i18n %}
@@ -136,7 +136,7 @@
 									<div class="check-pay-item">
 										<input type="radio" checked>
 										
-										<img src="{% static 'cassie/images/ico/icon_paypal.jpg' %}">
+										<img src="{% static 'client/cassie/images/ico/icon_paypal.jpg' %}">
 									</div>
 									<div class="check-pay-count">
 										<input name="sub_total" type="hidden" value="{{sub_total}}" />
@@ -165,7 +165,7 @@
 {% endblock %}
 {% block scripts %}
 	{% load staticfiles %}
-	<script type="text/javascript" src="{% static 'cassie/js/bootstrapValidator.js' %}"></script>
+	<script type="text/javascript" src="{% static 'client/cassie/js/bootstrapValidator.js' %}"></script>
 	<script>		
 		$('#address-form').bootstrapValidator({
 //        live: 'disabled',

@@ -1,4 +1,4 @@
-{% extends "cassie/base.html" %}	
+{% extends "client/cassie/base.html" %}	
 {% block breadcrumbs %}
 <div class="crumb main">
     <div class="container">
@@ -15,8 +15,7 @@
 
 <div class="detail">
   <div class="detail-main">
-  <h1>这是一个另外的模板，现在演示的时候，是本商品的分类所指定的</h1>
-  <h1>由于商品可能属于多个分类，目前默认取最先分配的分类</h1>
+  <h1>这是一个另外的模板，现在演示的时候，是本商品指定的</h1>
    <div id="preview" class="spec-preview">
       <span class="jqzoom">
         <img id="product-big-image" jqimg="{{product.image}}" alt="" src="{{product.image}}" class="cart-move-img"/>      </span>
@@ -108,8 +107,8 @@
 {% endblock %}
 {% block scripts %}
 	{% load staticfiles %}
-	<script type="text/javascript" src="{% static 'cassie/js/base.js' %}"></script>
-	<script type="text/javascript" src="{% static 'cassie/js/jquery.jqzoom.js' %}"></script>
+	<script type="text/javascript" src="{% static 'client/cassie/js/base.js' %}"></script>
+	<script type="text/javascript" src="{% static 'client/cassie/js/jquery.jqzoom.js' %}"></script>
 	
 	<script>
 		$("#test").click(function(e){

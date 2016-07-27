@@ -1,4 +1,4 @@
-{% extends "cassie/base.html" %}
+{% extends "client/cassie/base.html" %}
 {% block main %}
 {% load i18n %}
     <div class="register main">
@@ -53,7 +53,7 @@
 {% endblock %}
 {% block scripts %}
 	{% load staticfiles %}
-	<script type="text/javascript" src="{% static 'cassie/js/bootstrapValidator.js' %}"></script>
+	<script type="text/javascript" src="{% static 'client/cassie/js/bootstrapValidator.js' %}"></script>
 		<script type="text/javascript">
 		$('#registerForm').bootstrapValidator({
 //        live: 'disabled',

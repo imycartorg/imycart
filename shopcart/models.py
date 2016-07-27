@@ -101,9 +101,31 @@ class System_Config(models.Model):
 
 	@staticmethod
 	#获取模板名字
-	def get_template_name():
+	def get_template_name(type='client'):
 		sys_conf = System_Config.objects.get(name='template_name')
-		return sys_conf.val
+		prefix = ''
+		if type.lower() == 'client':
+			prefix = 'client/'
+			return prefix + sys_conf.val
+		elif type.lower() == 'admin':
+			prefix = 'admin/'
+			admin_template = ''
+			try:
+				admin_template = System_Config.objects.get(name='admin_template_name').val
+			except Exception as err:
+				logger.info('System Parameter "admin_template_name" not defined.Use the default value "default".')
+			return prefix + admin_template
+		elif type.lower() == 'email':
+			prefix = 'email/'
+			email_template = ''
+			try:
+				email_template = System_Config.objects.get(name='email_template_name').val
+			except Exception as err:
+				logger.info('System Parameter "email_template_name" not defined.Use the default value "default".')
+			return prefix + email_template
+		else:
+			return sys_conf.val
+		
 	
 	@staticmethod
 	#获取网站根路径
