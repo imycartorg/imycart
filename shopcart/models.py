@@ -434,6 +434,22 @@ class Order(models.Model):
 		verbose_name_plural = '订单'
 
 @python_2_unicode_compatible		
+class OrderRemark(models.Model):
+	order = models.ForeignKey(Order,null=True,related_name='order_remarks')
+	content = models.CharField(max_length=254,null=True,blank=True,verbose_name='备注内容')
+	user = models.ForeignKey(MyUser,null=True,related_name='order_remarks')
+	create_time = models.DateTimeField(auto_now_add = True)
+	update_time = models.DateTimeField(auto_now = True)
+	
+	def __str__(self):
+		return self.content
+	
+	class Meta:
+		verbose_name = '订单备注'
+		verbose_name_plural = '订单备注'
+	
+
+@python_2_unicode_compatible		
 class Order_Products(models.Model):
 	product_id = models.IntegerField(default=0,verbose_name='商品编号')
 	product_attribute = models.ForeignKey(Product_Attribute,null=True)

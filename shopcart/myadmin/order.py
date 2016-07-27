@@ -7,8 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,JsonResponse,Http404
 import logging,json
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import permission_required
 from django.utils.translation import ugettext as _
 from django.db import transaction
+from shopcart.myadmin.utils import NO_PERMISSION_PAGE
+
 
 # Get an instance of a logger
 import logging
@@ -30,7 +33,9 @@ def view(request):
 	
 	return render(request,System_Config.get_template_name('admin') + '/order_list.html',ctx)
 	
+
 @staff_member_required
+@permission_required('shopcart.can_list_order', login_url=NO_PERMISSION_PAGE)
 def list_view(request):
 	ctx = {}
 	ctx['system_para'] = get_system_parameters()
