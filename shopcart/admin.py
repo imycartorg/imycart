@@ -5,7 +5,7 @@ from shopcart.models import Product,Order,Order_Products,Category,System_Config,
 
 # Register your models here.
 class MyPermissionAdmin(admin.ModelAdmin):
-	pass
+	list_display = ('name', 'codename', 'content_type',) 
 admin.site.register(Permission,MyPermissionAdmin)
 
 # Register your models here.

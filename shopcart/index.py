@@ -31,4 +31,3 @@ def refresh_captcha(request):
 		to_json_response['new_cptch_key'] = CaptchaStore.generate_key()  
 		to_json_response['new_cptch_image'] = captcha_image_url(to_json_response['new_cptch_key'])  
 		return HttpResponse(json.dumps(to_json_response), content_type='application/json')
-

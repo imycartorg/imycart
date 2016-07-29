@@ -15,7 +15,6 @@ logger = logging.getLogger('imycart.shopcart')
 # Create your views here.
 def ajax_validate_user(request,exits):
 	result_dict = {}
-	logger.debug('111')
 
 	myuser = None
 	if 'value' in request.GET:
@@ -28,7 +27,6 @@ def ajax_validate_user(request,exits):
 	except:
 		pass
 	
-	logger.debug('333')
 	if myuser == None:
 		#myuser是None，说明用户不存在
 		if exits == 'hope-not-exits':

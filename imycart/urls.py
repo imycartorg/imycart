@@ -42,6 +42,8 @@ urlpatterns = patterns("",
 	url(r'^order/show/$', 'shopcart.order.show_order',name='order_show_order'),
 	url(r'^order/show/(\d+)/$', 'shopcart.order.order_detail',name='order_order_detail'),
 	url(r'^order/cancel$', 'shopcart.order.ajax_cancel_order',name='order_ajax_cancel_order'),
+	url(r'^order-remark/list/(\d+)/$', 'shopcart.order.list_order_remark',name='order_list_order_remark'),
+	
 	url(r'^wishlist/$', 'shopcart.wishlist.view_wishlist',name='wishlist_view_wishlist'),
 	url(r'^wishlist/add$', 'shopcart.wishlist.add_to_wishlist',name='wishlist_add_to_wishlist'),
 	url(r'^wishlist/remove$', 'shopcart.wishlist.remove_from_wishlist',name='wishlist_remove_from_wishlist'),

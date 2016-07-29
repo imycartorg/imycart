@@ -236,4 +236,4 @@ def ajax_get_product_description(request,id):
 		except Exception as err:
 			logger.error('检索id为%s的商品不存在.' % [id])
 	return HttpResponse(product_desc)
-	
+

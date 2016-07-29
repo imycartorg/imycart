@@ -1,7 +1,7 @@
 #coding=utf-8
 from django.shortcuts import render,redirect,render_to_response
 from django.core.urlresolvers import reverse
-from shopcart.models import System_Config,MyUser,Order,Address,Product,Order_Products,Cart_Products,Cart,Product_Attribute,ExpressType
+from shopcart.models import System_Config,MyUser,Order,Address,Product,Order_Products,Cart_Products,Cart,Product_Attribute,ExpressType,OrderRemark
 from shopcart.utils import System_Para,my_pagination,get_serial_number,get_system_parameters
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse,JsonResponse,Http404
@@ -221,7 +221,19 @@ def order_detail(request,id):
 		ctx['order'] = order
 		return render(request,System_Config.get_template_name() + '/order_view.html',ctx)
 		
-
-
+		
+@login_required()		
+def list_order_remark(request,order_no):
+	ctx = {}
+	ctx['system_para'] = get_system_parameters()
+	ctx['menu_products'] = get_menu_products()
+	ctx['page_name'] = 'My Orders'
+	remark_list = OrderRemark.objects.filter(order__order_number=order_no)
+	if request.user.has_perm('shopcart.can_list_order_remark'):
+		ctx['remark_list'] = remark_list
+	else:
+		ctx['remark_list'] = ''
+	
+	return HttpResponse(str(remark_list))
 
 	

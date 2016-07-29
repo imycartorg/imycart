@@ -17,6 +17,13 @@ import logging
 # Get an instance of a logger
 logger = logging.getLogger('imycart.shopcart')
 
+
+#去掉网址最后的‘/’
+def url_with_out_slash(url):
+	if url.endswith('/'):
+		url =  url[:-1]
+	return url
+
 def add_captcha(ctx):
 	hashkey = CaptchaStore.generate_key()  
 	imgage_url = captcha_image_url(hashkey)

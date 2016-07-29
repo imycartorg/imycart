@@ -214,7 +214,7 @@ def view_cart(request):
 		
 		#先不返回购物车中商品信息
 		serialized_cart = serializer(cart,datetime_format='string',output_type='dict',many=False)
-		logger.debug(serialized_cart)
+		#logger.debug(serialized_cart)
 		ret_dict['cart'] = serialized_cart
 		return JsonResponse(ret_dict) 
 		

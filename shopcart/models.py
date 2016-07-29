@@ -148,7 +148,7 @@ class Category(models.Model):
 	parent = models.ForeignKey('self',null=True,default=None,related_name='childrens',blank=True,verbose_name = '上级分类')
 	detail_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='商品详情页指定模板')
 	category_template = models.CharField(max_length = 254,default='',blank=True,verbose_name='分类指定模板')
-	static_file_name = models.CharField(max_length = 254,null=True,blank=True,verbose_name='静态文件名(不包含路径，以html结尾)')
+	static_file_name = models.CharField(max_length = 254,db_index=True,unique=True,null=True,blank=True,verbose_name='静态文件名(不包含路径，以html结尾)')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建时间')
 	update_time = models.DateTimeField(auto_now = True,verbose_name = '更新时间')
 	
@@ -192,7 +192,7 @@ class Product(models.Model):
 	image = models.URLField(verbose_name='主图大图')
 	is_free_shipping = models.BooleanField(default=False,verbose_name='是否包邮')
 	sort_order = models.IntegerField(default=0,verbose_name='排序序号')
-	static_file_name = models.CharField(max_length = 254,null=True,blank=True,verbose_name='静态文件名(不包含路径，以html结尾)')
+	static_file_name = models.CharField(max_length = 254,null=True,db_index=True,unique=True,blank=True,verbose_name='静态文件名(不包含路径，以html结尾)')
 	categorys = models.ManyToManyField(Category,verbose_name='商品分类')
 	min_order_quantity = models.IntegerField(default=0,verbose_name='最小下单数量')
 	is_publish = models.BooleanField(default=False,verbose_name='上架')
@@ -525,7 +525,7 @@ class Article(models.Model):
 	content = models.TextField(null=True,blank=True,verbose_name = '内容')
 	user = models.ForeignKey(MyUser,null=True,blank=True,verbose_name = '用户')
 	keywords = models.CharField(max_length=254,null=True,blank=True,verbose_name = '关键字')
-	static_file_name = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '静态文件名')
+	static_file_name = models.CharField(max_length = 254,db_index=True,unique=True,null=True,blank=True,verbose_name = '静态文件名')
 	folder = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '静态文件目录')
 	breadcrumbs = models.CharField(max_length = 254,null=True,blank=True,verbose_name = '导航位置')
 	image = models.URLField(null=True,blank=True,verbose_name = '图片链接')
@@ -588,7 +588,7 @@ class ExpressType(models.Model):
 @python_2_unicode_compatible
 class Express(models.Model):
 	name = models.CharField(max_length=100,null=True,verbose_name = '快递名称')
-	express_type = models.ManyToManyField(ExpressType,null=True,related_name='express_types')
+	express_type = models.ManyToManyField(ExpressType,null=True,related_name='expresses')
 	price_fixed = models.FloatField(verbose_name = '固定运费')
 	price_per_kilogram = models.FloatField(verbose_name = '每千克运费')
 	create_time = models.DateTimeField(auto_now_add = True,verbose_name = '创建日期')

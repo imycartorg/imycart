@@ -1,4 +1,5 @@
 #coding=utf-8
+#from shopcart.handler import sendmail
 from django.shortcuts import render,redirect,render_to_response
 from shopcart.models import System_Config,MyUser,Cart,Product,Cart_Products,Wish,Reset_Password,Address,Order,Order_Products,Abnormal_Order
 from shopcart.utils import System_Para,my_pagination,add_captcha,my_send_mail,get_serial_number,get_system_parameters
@@ -13,6 +14,7 @@ from django.db import transaction
 import requests
 from six import b
 from django.core.urlresolvers import reverse
+from shopcart import signals
 from shopcart.functions.product_util_func import get_menu_products
 from django.utils.translation import ugettext as _
 from django.http import Http404
@@ -37,12 +39,18 @@ def register(request):
 		form = register_form(request.POST) # 获取Post表单数据
 		if form.is_valid():# 验证表单
 			myuser = MyUser.objects.create_user(username=None,email=form.cleaned_data['email'].lower(),password=form.cleaned_data['password'],first_name=form.cleaned_data['first_name'],last_name=form.cleaned_data['last_name'])
+			
+			#触发用户注册成功的事件
+			signals.user_registration_success.send(sender='MyUser',email=myuser.email)
 			return redirect('/user/login')
 		else:
 			logger.error('form is not valid')
 			ctx['reg_result'] = _('Registration faild.')
-			return render(request,System_Config.get_template_name() + '/register.html',ctx)
+			return render(request,System_Config.get_template_name() + '/register.html',ctx)			
+			
 
+			
+			
 @login_required
 def info(request):
 	ctx = {}
