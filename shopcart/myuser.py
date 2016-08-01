@@ -197,9 +197,13 @@ def forget_password(request):
 			ctx.update(csrf(request))
 			s_uuid = str(uuid.uuid4())
 			reset_password = Reset_Password.objects.create(email=request.POST['email'],validate_code=s_uuid,apply_time=datetime.datetime.now(),expirt_time=(datetime.datetime.now() + datetime.timedelta(hours=24)),is_active=True)
-			mail_ctx = {}
-			mail_ctx['reset_url'] =  System_Config.get_base_url() + "/user/reset-password?email=" + reset_password.email + "&validate_code=" + reset_password.validate_code
-			my_send_mail(useage='reset_password',ctx=mail_ctx,send_to=reset_password.email,title=_('You are resetting you password in %(site_name)s .') % {'site_name':System_Config.objects.get(name='site_name').val})
+			
+			#触发用户申请重置密码的事件
+			signals.user_password_modify_applied.send(sender='MyUser',reset_password=reset_password)
+			
+			#mail_ctx = {}
+			#mail_ctx['reset_url'] =  System_Config.get_base_url() + "/user/reset-password?email=" + reset_password.email + "&validate_code=" + reset_password.validate_code
+			#my_send_mail(useage='reset_password',ctx=mail_ctx,send_to=reset_password.email,title=_('You are resetting you password in %(site_name)s .') % {'site_name':System_Config.objects.get(name='site_name').val})
 			ctx['apply_message'] = _('If there is an account associated with %(email_address)s you will receive an email with a link to reset your password.') % {'email_address':reset_password.email}
 			ctx['success_display'] = ''
 		else:
@@ -232,6 +236,10 @@ def reset_password(request):
 			reset_password.is_active = False
 			reset_password.save()
 			myuser.save()
+			
+			#触发用户重置密码成功的事件
+			signals.user_password_modify_success.send(sender='MyUser',user=myuser)
+			
 			ctx['success_display'] = ''
 			ctx['form_display'] = 'display:none;'
 			ctx['reset_message'] = _('The password has been reseted.')

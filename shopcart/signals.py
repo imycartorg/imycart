@@ -7,8 +7,8 @@ user_registration_success = Signal(providing_args=['user'])
 
 
 # 用户密码修改的相关消息
-user_password_modify_applied = Signal(providing_args=['email','verify_code'])
-user_password_modify_success = Signal(providing_args=['email'])
+user_password_modify_applied = Signal(providing_args=['reset_password'])
+user_password_modify_success = Signal(providing_args=['user'])
 
 #商品的相关消息
 product_added_to_cart = Signal(providing_args=['cart_id','product_id'])

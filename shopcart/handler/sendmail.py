@@ -23,16 +23,31 @@ def user_registration_success_send_mail(sender, **kwargs):
 @receiver(signals.user_password_modify_applied)			
 def user_password_modify_applied_send_mail(sender,	**kwargs):
 	logger.info('Enter user_password_modify_applied_send_mail hanlder!')
-	email = kwargs['email']
+	email = kwargs['reset_password'].email
+	validate_code = kwargs['reset_password'].validate_code
 	mail_ctx = {}
-	sendmail('user_registration_success_send_mail',email,mail_ctx,'')
+	from shopcart.utils import get_system_parameters
+	from shopcart.utils import url_with_out_slash
+	mail_ctx['system_para'] = get_system_parameters()
+	reset_url =  '%s/user/reset-password?email=%s&validate_code=%s' % (url_with_out_slash(mail_ctx['system_para']['base_url']),email,validate_code)
+	logger.debug('reset_url:' + reset_url)
+	mail_ctx['email'] = email
+	mail_ctx['reset_password_link'] = reset_url
+	
+	sendmail('user_password_modify_applied_send_mail',email,mail_ctx,title=None,useage='user_password_modify_applied')
+	
 
 @receiver(signals.user_password_modify_success)
 def user_password_modify_success_send_mail(sender,	**kwargs):
 	logger.info('Enter user_password_modify_success_send_mail hanlder!')
-	email = kwargs['email']
+	user = kwargs['user']
 	mail_ctx = {}
-	sendmail('user_registration_success_send_mail',email,mail_ctx,'')
+	from shopcart.utils import get_system_parameters
+	from shopcart.utils import url_with_out_slash
+	mail_ctx['system_para'] = get_system_parameters()
+	mail_ctx['first_name'] = user.first_name
+	mail_ctx['last_name'] = user.last_name
+	sendmail('user_password_modify_success_send_mail',user.email,mail_ctx,title=None,useage='user_password_modify_success')
 
 @receiver(signals.product_added_to_cart)		
 def product_added_to_cart_send_mail(sender,	**kwargs):
@@ -78,6 +93,7 @@ def order_was_complete_send_mail(sender,**kwargs):
 
 #发送邮件	
 def sendmail(type,email,mail_ctx,title,useage=type):
+	logger.debug(type + ': Prepare to send mail.')
 	if is_sendmail(type):
 		logger.info('Mail [%s] has been sended to [%s].' % (type,email))
 		from shopcart.utils import my_send_mail,url_with_out_slash
