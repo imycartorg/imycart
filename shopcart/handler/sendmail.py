@@ -17,8 +17,8 @@ def user_registration_success_send_mail(sender, **kwargs):
 	mail_ctx['last_name'] = user.last_name
 	mail_ctx['email'] = user.email
 	mail_ctx['system_para'] = get_system_parameters()
-	title = 'CassieHairBrush.com'
-	sendmail('user_registration_success_send_mail',user.email,mail_ctx,title,useage='user_registration_success')
+		
+	sendmail('user_registration_success_send_mail',user.email,mail_ctx,title=None,useage='user_registration_success')
 	
 @receiver(signals.user_password_modify_applied)			
 def user_password_modify_applied_send_mail(sender,	**kwargs):
@@ -94,6 +94,13 @@ def sendmail(type,email,mail_ctx,title,useage=type):
 			template_file = template_file
 		
 		template_path =  'email/%s/%s' % (template,template_file)
+		
+		
+		if title == None or title == '':
+			from django.template import Context,loader,base
+			title_template = base.Template(template_string = email_definition.title)
+			title = title_template.render(Context(mail_ctx))
+		
 		my_send_mail(ctx=mail_ctx,send_to=email,title=title,template_path=template_path,username=email_definition.username,password=email_definition.password,smtp_host=email_definition.smtp_host,sender=email_definition.email_address)
 	else:
 		logger.info('Mail function is closed.')	
