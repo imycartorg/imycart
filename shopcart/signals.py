@@ -3,11 +3,11 @@ from django.dispatch import Signal
 
 
 # 用户注册的相关消息
-user_registration_success = Signal(providing_args=['email'])
+user_registration_success = Signal(providing_args=['user'])
 
 
 # 用户密码修改的相关消息
-user_password_modify_applyed = Signal(providing_args=['email','verify_code'])
+user_password_modify_applied = Signal(providing_args=['email','verify_code'])
 user_password_modify_success = Signal(providing_args=['email'])
 
 #商品的相关消息

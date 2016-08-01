@@ -126,20 +126,19 @@ def get_system_parameters():
 	return dict
 	
 	
-def my_send_mail(useage,ctx,send_to,title):
+def my_send_mail(ctx,send_to,title,template_path,username,password,smtp_host,sender):
 	logger.info('准备发送邮件： %s ' % [send_to,])
 	try:
 		conn = get_connection() # 返回当前使用的邮件后端的实例
-		email = Email.objects.get(useage=useage)
-		conn.username = email.username# 更改用户名
-		conn.password = email.password # 更改密码
-		conn.host = email.smtp_host # 设置邮件服务器
+		conn.username = username# 更改用户名
+		conn.password = password # 更改密码
+		conn.host = smtp_host # 设置邮件服务器
 		conn.open() # 打开连接
 		
-		t = loader.get_template('email/' + email.template)
+		t = loader.get_template(template_path)
 		mail_list = [send_to, ]
 		
-		EMAIL_HOST_USER = email.email_address
+		EMAIL_HOST_USER = sender
 		subject, from_email, to = title, EMAIL_HOST_USER, mail_list
 		html_content = t.render(Context(ctx))
 		msg = EmailMultiAlternatives(subject, html_content, from_email, to)

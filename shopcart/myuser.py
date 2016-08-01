@@ -41,7 +41,7 @@ def register(request):
 			myuser = MyUser.objects.create_user(username=None,email=form.cleaned_data['email'].lower(),password=form.cleaned_data['password'],first_name=form.cleaned_data['first_name'],last_name=form.cleaned_data['last_name'])
 			
 			#触发用户注册成功的事件
-			signals.user_registration_success.send(sender='MyUser',email=myuser.email)
+			signals.user_registration_success.send(sender='MyUser',user=myuser)
 			return redirect('/user/login')
 		else:
 			logger.error('form is not valid')

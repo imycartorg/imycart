@@ -347,10 +347,12 @@ class Wish(models.Model):
 class Email(models.Model):
 	useage = models.CharField(max_length = 100,unique=True)
 	email_address = models.EmailField(null=True)
+	title = models.CharField(max_length=254,verbose_name='邮件主题')
 	smtp_host = models.CharField(max_length=100)
 	username = models.CharField(max_length=100)
 	password = models.CharField(max_length=100)
-	template = models.CharField(max_length=254)
+	template = models.CharField(max_length=254,null=True,blank=True,verbose_name='模板组名称')
+	template_file = models.CharField(max_length=254,null=True,blank=True,verbose_name='模板文件名称')
 	create_time = models.DateTimeField(auto_now_add = True)
 	update_time = models.DateTimeField(auto_now = True)
 
