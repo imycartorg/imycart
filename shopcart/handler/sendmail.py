@@ -129,8 +129,9 @@ def sendmail(type,email,mail_ctx,title,useage=type):
 			from django.template import Context,loader,base
 			title_template = base.Template(template_string = email_definition.title)
 			title = title_template.render(Context(mail_ctx))
-		
+		logger.debug('Start to send mail.')
 		my_send_mail(ctx=mail_ctx,send_to=email,title=title,template_path=template_path,username=email_definition.username,password=email_definition.password,smtp_host=email_definition.smtp_host,sender=email_definition.email_address)
+		logger.debug('Send mail end.')
 	else:
 		logger.info('Mail function is closed.')	
 			

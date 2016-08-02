@@ -127,6 +127,7 @@ def get_system_parameters():
 	
 	
 def my_send_mail(ctx,send_to,title,template_path,username,password,smtp_host,sender):
+	logger.debug('Enter my_send_mail function.')
 	logger.info('Start to send mail ： %s ' % (send_to))
 	try:
 		conn = get_connection() # 返回当前使用的邮件后端的实例
