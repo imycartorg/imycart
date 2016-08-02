@@ -17,8 +17,9 @@ product_price_changed = Signal(providing_args=['product_id','price_before','pric
 product_quantity_warn = Signal(providing_args=['product_id','product_attribute_id'])
 
 #订单
-order_was_placed = Signal(providing_args=['order_id'])
-order_was_canceled = Signal(providing_args=['order_id'])
-order_was_shipped = Signal(providing_args=['order_id'])
-order_was_complete = Signal(providing_args=['order_id'])
+order_was_placed = Signal(providing_args=['order'])
+order_was_payed = Signal(providing_args=['order'])
+order_was_canceled = Signal(providing_args=['order'])
+order_was_shipped = Signal(providing_args=['order'])
+order_was_complete = Signal(providing_args=['order'])
 

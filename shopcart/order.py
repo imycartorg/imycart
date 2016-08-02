@@ -182,6 +182,10 @@ def paypal_notify(sender, **kwargs):
 	order.status = Order.ORDER_STATUS_PAYED_SUCCESS
 	order.pay_status = 'Paid Successfully'
 	order.save()
+	
+	#触发付款成功的事件
+	from shopcart import signals
+	signals.order_was_payed.send(sender="Order",order=order)
 	return
 
 @login_required()

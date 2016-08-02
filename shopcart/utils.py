@@ -127,7 +127,7 @@ def get_system_parameters():
 	
 	
 def my_send_mail(ctx,send_to,title,template_path,username,password,smtp_host,sender):
-	logger.info('准备发送邮件： %s ' % [send_to,])
+	logger.info('Start to send mail ： %s ' % (send_to))
 	try:
 		conn = get_connection() # 返回当前使用的邮件后端的实例
 		conn.username = username# 更改用户名
@@ -145,11 +145,11 @@ def my_send_mail(ctx,send_to,title,template_path,username,password,smtp_host,sen
 		msg.attach_alternative(html_content, "text/html")
 		conn.send_messages([msg,]) # 我们用send_messages发送邮件
 	except Exception as err:
-		logger.error('邮件发送失败：' + str(err))
+		logger.error('Mail send error：' + str(err))
 	finally:
 		try:
 			if conn:
-				logger.info('准备关闭连接：' + str(conn))
+				logger.info('Close connection：' + str(conn))
 				conn.close()# 发送完毕记得关闭连接
 		except:
 			pass
