@@ -1,6 +1,6 @@
-@font-face {  
- font-family: opensan;  /*名称自定义*/
- src: url("../fonts/opensan.ttf")   /*字体文件上传放进网站对应目录*/
+@font-face {
+    font-family: opensan;  /*名称自定义*/
+    src: url("../fonts/opensan.ttf")   /*字体文件上传放进网站对应目录*/
 }
 body {font-family: opensan, Arial, Helvetica;font-size: 14px;line-height: 24px;color: #666;overflow-x:hidden;}
 a:hover,a,a:focus{text-decoration: none;cursor: pointer;}
@@ -18,7 +18,7 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 /*top*/
 .menu-phone{display: none;}
 .top{height:36px; width:100%; background: #f7f7f7; line-height:18px; padding:9px 0;font-size: 12px;}
-.top-language{position: relative;float:left;}
+.top-language{position: relative;float:left; display: none;}
 .top-language li a{ display: block; text-transform: uppercase; color:#666; text-align:left;line-height:24px}
 .top-language ul ul li img{height:24px;padding: 3px 10px 5px 0; }
 .top-language li img{height:18px;padding: 0px 10px 2px 0; }
@@ -136,6 +136,8 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 /*home about*/
 .home-about a{float:left;}
 .home-about img{width:100%;}
+.pinte{float:left;}
+
 /*home 优势*/
 .home-adv div{width:33.333%;float:left;}
 .home-adv{margin-bottom:45px;}
@@ -237,13 +239,17 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
 .contact-form div p{line-height: 30px; height:30px;margin-bottom: 0; color:#ff0000;}
 .contact-form p span{ display: none;}
 
- @media (max-width:1200px) {
-.copy-media{width:36%;}
-.copy-pay{width:64%;text-align: right;}
-.copy p{width:100%; text-align: center;}
-.detail {width: 970px;}
-.detail-attr { width: 470px;}
-.detail-des-line{width:854px;}
+@media (max-width:1200px) {
+    .copy-media{width:36%;}
+    .copy-pay{width:64%;text-align: right;}
+    .copy p{width:100%; text-align: center;}
+    .detail {width: 970px;}
+    .detail-attr { width: 470px;}
+    .detail-des-line{width:854px;}
+}
+@media (max-width:1170px) {
+    .pinte{ display: none;}
+    .home-about a{width:100%;}
 }
 
 @media (max-width:1200px) and (min-width:769px) {
@@ -251,20 +257,20 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
     .detail-attr-des{height:72px;}
 }
 @media (max-width:992px){
-.artical-sidbar{display: none;}
-.detail {width:750px;}
-.detail-attr {width: 370px;padding-left:25px;}
-.detail-main {width: 380px;}
-.spec-scroll .items ul li{width:70px;margin: 12px 6px 12px 0;}
-.detail-des-line{width:635px;}
-.register p, .forget p, .reset-password p{padding: 12px 0 10px 0px !important;}
-.register-submit, .forget-submit, .reset-password-submit{width:100%;}
-.contact-form div textarea{min-height: 150px;}
-.contact-form div button{margin-top:50px;}
+    .artical-sidbar{display: none;}
+    .detail {width:750px;}
+    .detail-attr {width: 370px;padding-left:25px;}
+    .detail-main {width: 380px;}
+    .spec-scroll .items ul li{width:70px;margin: 12px 6px 12px 0;}
+    .detail-des-line{width:635px;}
+    .register p, .forget p, .reset-password p{padding: 12px 0 10px 0px !important;}
+    .register-submit, .forget-submit, .reset-password-submit{width:100%;}
+    .contact-form div textarea{min-height: 150px;}
+    .contact-form div button{margin-top:50px;}
 }
 
 @media (max-width:992px) and (min-width:600px){
-.home-products-main div,.products-main div{width:25% !important;}
+    .home-products-main div,.products-main div{width:25% !important;}
 
 }
 @media (min-width:769px) and (max-width:992px){
@@ -277,12 +283,12 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
     .spec-scroll .items ul li{width:16%;margin: 12px 2%;}
 }
 @media (min-width:769px) {
-.menu-phone-ico,.login-creat{ display: none;}
-.menu-phone{ display: none !important;}
-.detail-des{margin-top:30px;}
-.menu-low li a {padding:6px 0 !important;}
-.menu-low li a:hover{text-decoration: none !important;}
-.menu ul ul li,.menu ul ul{max-width: 524px;}
+    .menu-phone-ico,.login-creat{ display: none;}
+    .menu-phone{ display: none !important;}
+    .detail-des{margin-top:30px;}
+    .menu-low li a {padding:6px 0 !important;}
+    .menu-low li a:hover{text-decoration: none !important;}
+    .menu ul ul li,.menu ul ul{max-width: 524px;}
 }
 @media (max-width:768px) {
     .col-xs-12{width:100% !important;}
@@ -306,7 +312,7 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
     .login-main, .register-main, .forget-main, .reset-password-main {padding: 20px 15px 35px 15px;}
     .login-creat{display: inline-block;width:100%;margin-bottom:40px;text-align: right;}
     .login-creat a{font-size: 14px;padding: 8px 18px;background: #f7931d;   color: #fff;}
-	.login-creat a:hover{color:#666;border:1px solid #ccc; background: #fff;}
+    .login-creat a:hover{color:#666;border:1px solid #ccc; background: #fff;}
     .login-right span{margin-bottom:30px; line-height:20px;padding-top:10px;}
     .login p{padding-bottom:15px;}
     .login-left { width:100%;padding:0px;height: auto;position:unset;}
@@ -347,8 +353,8 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
     .top-link ul li{padding:0 12px;}
 }
 @media (max-width:767px) {
-.top-link ul li:first-child{display: none;}
-.top-link ul li:last-child{padding-right:2px;}
+    .top-link ul li:first-child{display: none;}
+    .top-link ul li:last-child{padding-right:2px;}
 }
 @media (max-width:560px) {
     .top-link ul li:nth-child(3){display: none;}
@@ -369,12 +375,12 @@ button:hover{border-radius:0;border-bottom-left-radius:0;border-bottom-right-rad
     .artical-content{padding-bottom:40px;}
     .login-right span {text-align:left;}
     .detail{ margin: 20px auto;}
-	.login-creat a {width: 100%;display: block;text-align: center;}
-	.login-submit a {width: 100%;display: block;}
+    .login-creat a {width: 100%;display: block;text-align: center;}
+    .login-submit a {width: 100%;display: block;}
     .login-submit button{width:100%;}
-	.register-submit button, .forget-submit button, .reset-password-submit button{width: 100%;display: block;}
-	.register-submit a, .forget-submit a, .reset-password-submit a, .register-submit a:hover, .forget-submit a:hover, .reset-password-submit a:hover {
-    width: 100%;}
+    .register-submit button, .forget-submit button, .reset-password-submit button{width: 100%;display: block;}
+    .register-submit a, .forget-submit a, .reset-password-submit a, .register-submit a:hover, .forget-submit a:hover, .reset-password-submit a:hover {
+        width: 100%;}
 
 }
 @media (max-width:400px) {
