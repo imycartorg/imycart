@@ -128,26 +128,32 @@ def get_system_parameters():
 	
 def my_send_mail(ctx,send_to,title,template_path,username,password,smtp_host,sender):
 	logger.debug('Enter my_send_mail function.')
-	logger.info('Start to send mail ： %s ' % (send_to))
+	#logger.info('Start to send mail ： %s ' % (send_to))
 	try:
+		logger.debug('1')
 		conn = get_connection() # 返回当前使用的邮件后端的实例
 		conn.username = username# 更改用户名
 		conn.password = password # 更改密码
 		conn.host = smtp_host # 设置邮件服务器
 		conn.open() # 打开连接
-		
+		logger.debug('2')
 		t = loader.get_template(template_path)
 		mail_list = [send_to, ]
-		
+		logger.debug('3')
+		logger.debug('4:' + send_to)
 		EMAIL_HOST_USER = sender
 		subject, from_email, to = title, EMAIL_HOST_USER, mail_list
 		html_content = t.render(Context(ctx))
 		msg = EmailMultiAlternatives(subject, html_content, from_email, to)
 		msg.attach_alternative(html_content, "text/html")
+		logger.debug('5')
 		conn.send_messages([msg,]) # 我们用send_messages发送邮件
+		logger.debug('6')
 	except Exception as err:
+		logger.debug('7')
 		logger.error('Mail send error：' + str(err))
 	finally:
+		logger.debug('8')
 		try:
 			if conn:
 				logger.info('Close connection：' + str(conn))
